@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>Briefing Técnico — Aplicativo de Gestão Financeira por Caixinhas</title>
+<style>
+  :root {
+    --navy: #123047;
+    --navy-2: #1d4860;
+    --gold: #f0b429;
+    --ink: #243342;
+    --muted: #637282;
+    --line: #dbe3e9;
+    --paper: #ffffff;
+    --bg: #f3f6f8;
+    --soft: #edf3f6;
+    --green: #247653;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font: 16px/1.65 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  }
+  a { color: var(--navy-2); }
+  .hero {
+    color: white;
+    background: linear-gradient(135deg, #102b40 0%, #1b4961 100%);
+    padding: 56px 24px 46px;
+    border-bottom: 5px solid var(--gold);
+  }
+  .hero-inner, .layout { max-width: 1180px; margin: 0 auto; }
+  .eyebrow {
+    display: inline-block; padding: 6px 10px; border: 1px solid #8fa8b6;
+    border-radius: 999px; font-size: .78rem; font-weight: 700; letter-spacing: .08em;
+    text-transform: uppercase; color: #e5edf2;
+  }
+  h1 { max-width: 850px; font-size: clamp(2rem, 4.5vw, 3.6rem); line-height: 1.08; margin: 20px 0 16px; letter-spacing: -.035em; }
+  .hero p { max-width: 780px; color: #dbe6ed; font-size: 1.08rem; margin: 0; }
+  .hero-meta { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 24px; }
+  .hero-meta span { background: #ffffff16; border: 1px solid #ffffff2b; border-radius: 8px; padding: 7px 11px; font-size: .88rem; }
+  .layout { display: grid; grid-template-columns: 245px minmax(0, 1fr); gap: 28px; padding: 28px 20px 60px; align-items: start; }
+  nav {
+    position: sticky; top: 18px; background: var(--paper); border: 1px solid var(--line);
+    border-radius: 14px; padding: 18px; max-height: calc(100vh - 36px); overflow: auto;
+  }
+  nav strong { display: block; margin: 0 0 12px; color: var(--navy); }
+  nav a { display: block; text-decoration: none; padding: 6px 0; color: var(--muted); font-size: .9rem; border-bottom: 1px solid #edf1f4; }
+  nav a:hover { color: var(--navy); }
+  main { min-width: 0; }
+  section, .intro-card { background: var(--paper); border: 1px solid var(--line); border-radius: 14px; padding: clamp(20px, 3vw, 34px); margin-bottom: 20px; box-shadow: 0 3px 14px #19354a08; }
+  h2 { color: var(--navy); font-size: clamp(1.45rem, 2.5vw, 2rem); line-height: 1.2; margin: 0 0 18px; letter-spacing: -.02em; }
+  h3 { color: var(--navy-2); font-size: 1.12rem; margin: 25px 0 9px; }
+  h4 { color: var(--navy); margin: 18px 0 6px; }
+  p { margin: 9px 0 13px; }
+  ul, ol { padding-left: 1.35rem; }
+  li { margin: 5px 0; }
+  .lead { font-size: 1.08rem; }
+  .muted { color: var(--muted); }
+  .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+  .card { background: #fbfcfd; border: 1px solid var(--line); border-radius: 11px; padding: 17px; }
+  .card h3, .card h4 { margin-top: 0; }
+  .tag { display: inline-block; background: var(--soft); color: var(--navy); border-radius: 6px; padding: 3px 8px; font-size: .78rem; font-weight: 750; }
+  .callout { border-left: 4px solid var(--gold); background: #fff9e9; padding: 14px 17px; border-radius: 0 9px 9px 0; margin: 16px 0; }
+  .important { border-left-color: var(--navy-2); background: #eef5f8; }
+  .flow { display: grid; grid-template-columns: 1fr; gap: 9px; max-width: 700px; margin: 20px auto; }
+  .flow-step { border: 1px solid var(--line); background: #fbfcfd; padding: 14px 18px; border-radius: 10px; text-align: center; }
+  .flow-step strong { display: block; color: var(--navy); }
+  .arrow { color: var(--gold); text-align: center; font-size: 1.3rem; line-height: 1; }
+  .formula { background: var(--navy); color: white; padding: 18px; border-radius: 10px; font-weight: 650; text-align: center; overflow-wrap: anywhere; }
+  table { width: 100%; border-collapse: collapse; margin: 14px 0 8px; font-size: .94rem; }
+  th, td { text-align: left; padding: 11px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { color: var(--navy); background: #f0f5f7; font-weight: 750; }
+  tbody tr:nth-child(even) { background: #fbfcfd; }
+  .table-wrap { width: 100%; overflow-x: auto; }
+  .checklist { list-style: none; padding: 0; }
+  .checklist li { padding-left: 28px; position: relative; margin: 10px 0; }
+  .checklist li::before { content: "✓"; position: absolute; left: 0; top: 0; color: var(--green); font-weight: 900; }
+  .status { color: var(--green); font-size: .76rem; font-weight: 800; text-transform: uppercase; letter-spacing: .04em; }
+  .footer { text-align: center; padding: 28px 20px 40px; color: var(--muted); font-size: .9rem; }
+  .actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
+  button { cursor: pointer; border: 0; border-radius: 8px; padding: 11px 15px; background: var(--gold); color: #172b38; font: inherit; font-weight: 800; }
+  button.secondary { background: transparent; border: 1px solid #9db1bd; color: white; }
+  .hero button { margin-top: 25px; }
+  @media (max-width: 850px) {
+    .layout { grid-template-columns: 1fr; padding: 16px 12px 40px; }
+    nav { position: static; max-height: none; }
+    nav .nav-links { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 15px; }
+    .grid-3 { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 560px) {
+    .hero { padding: 38px 19px 32px; }
+    .grid { grid-template-columns: 1fr; }
+    nav .nav-links { grid-template-columns: 1fr; }
+    section, .intro-card { padding: 19px; }
+    th, td { padding: 9px; }
+  }
+  @media print {
+    body { background: white; font-size: 10pt; }
+    .hero { padding: 28px; print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+    .layout { display: block; max-width: none; padding: 12px 0; }
+    nav, .actions, .hero button { display: none !important; }
+    section, .intro-card { box-shadow: none; break-inside: avoid; border-color: #bbb; margin-bottom: 12px; padding: 18px; }
+    h2, h3 { break-after: avoid; }
+    table { font-size: 9pt; }
+    a { text-decoration: none; }
+    .footer { padding: 10px; }
+  }
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="hero-inner">
+    <span class="eyebrow">Documento-base · MVP · Versão 1.0</span>
+    <h1>Aplicativo de Gestão Financeira por Caixinhas</h1>
+    <p>Briefing técnico consolidado para orientar a arquitetura, o desenvolvimento, os testes e a validação de um gerenciador financeiro pessoal e empresarial, com distribuição de recebimentos, controle de despesas e vencimentos.</p>
+    <div class="hero-meta">
+      <span>PWA instalável</span><span>Offline-first</span><span>Dados locais</span><span>Moeda: BRL</span>
+    </div>
+    <button onclick="window.print()">Imprimir / salvar como PDF</button>
+  </div>
+</header>
+
+<div class="layout">
+  <nav aria-label="Índice do briefing">
+    <strong>Índice do documento</strong>
+    <div class="nav-links">
+      <a href="#visao">1. Visão do produto</a>
+      <a href="#mvp">2. Escopo do MVP</a>
+      <a href="#arquitetura">3. Plataforma e dados</a>
+      <a href="#modelo">4. Modelo financeiro</a>
+      <a href="#regras">5. Regras de negócio</a>
+      <a href="#telas">6. Telas e navegação</a>
+      <a href="#rf">7. Requisitos funcionais</a>
+      <a href="#rnf">8. Requisitos não funcionais</a>
+      <a href="#aceitacao">9. Critérios de aceitação</a>
+      <a href="#premissas">10. Premissas a validar</a>
+      <a href="#plano">11. Plano de desenvolvimento</a>
+      <a href="#pronto">12. Definição de pronto</a>
+    </div>
+  </nav>
+
+  <main>
+    <div class="intro-card" id="visao">
+      <h2>1. Visão geral do produto</h2>
+      <p class="lead">O aplicativo será um <strong>gerenciador financeiro baseado em caixinhas</strong>. Quando o usuário registra um recebimento, o sistema sugere quanto destinar a cada caixinha conforme regras configuradas. O usuário revisa, ajusta e confirma antes de salvar.</p>
+      <p>O produto também controla contas bancárias, despesas, transferências entre caixinhas, metas, boletos e débitos automáticos, mantendo um histórico auditável. A primeira versão prioriza operações essenciais, confiabilidade dos cálculos e simplicidade de uso.</p>
+      <div class="grid">
+        <div class="card"><h3>Distribuição inteligente</h3><p>Regras individuais por caixinha, com percentuais ou valores fixos e cálculo sobre o valor bruto ou o saldo restante.</p></div>
+        <div class="card"><h3>Contas sob controle</h3><p>Boletos organizados por vencimento, com contagem regressiva, status e alertas visuais dentro do aplicativo.</p></div>
+        <div class="card"><h3>Integridade financeira</h3><p>Confirmação antes de salvar e histórico preservado nas correções de movimentações.</p></div>
+        <div class="card"><h3>Autonomia e privacidade</h3><p>PWA instalável, funcionamento offline, dados locais e sem conta obrigatória ou sincronização em nuvem.</p></div>
+      </div>
+    </div>
+
+    <section id="mvp">
+      <h2>2. Escopo aprovado do MVP</h2>
+      <p>O MVP deverá ser utilizável na rotina financeira real, sem depender de integração bancária ou conexão permanente à internet.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Módulo</th><th>Escopo previsto</th></tr></thead>
+          <tbody>
+            <tr><td>Painel inicial</td><td>Saldo bancário, valores reservados, valor não alocado, contas próximas e atalhos.</td></tr>
+            <tr><td>Recebimentos</td><td>Registro manual, descrição livre e distribuição sugerida.</td></tr>
+            <tr><td>Caixinhas</td><td>Modelos iniciais, criação livre, regras de cálculo, metas e saldos.</td></tr>
+            <tr><td>Contas bancárias</td><td>Cadastro manual, múltiplas contas, saldo inicial e ajustes.</td></tr>
+            <tr><td>Despesas</td><td>Registro manual, categoria, conta de saída e caixinha utilizada.</td></tr>
+            <tr><td>Boletos e débitos</td><td>Vencimentos, recorrência, contagem regressiva, status e histórico.</td></tr>
+            <tr><td>Transferências</td><td>Entre caixinhas e entre contas bancárias, com origem e destino.</td></tr>
+            <tr><td>Histórico</td><td>Lista cronológica com filtros por período, tipo, caixinha, conta e contexto.</td></tr>
+            <tr><td>Relatórios</td><td>Indicadores essenciais e resumos financeiros simples.</td></tr>
+            <tr><td>Dados e auditoria</td><td>Histórico de alterações, exportação e importação manuais.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout"><strong>Fora do escopo inicial:</strong> integração bancária, Open Finance, notificações push, login, sincronização entre dispositivos, automação de pagamentos e conciliação bancária automática.</div>
+    </section>
+
+    <section id="arquitetura">
+      <h2>3. Plataforma, arquitetura e armazenamento</h2>
+      <h3>3.1 Plataforma</h3>
+      <ul>
+        <li>Aplicativo web progressivo (PWA), instalável em dispositivos compatíveis.</li>
+        <li>Interface responsiva para celular e computador.</li>
+        <li>Funcionamento offline para consultar, criar e editar registros.</li>
+        <li>Português brasileiro, moeda em reais (BRL) e datas no padrão brasileiro.</li>
+        <li>Navegação inferior no celular, adaptada para telas maiores.</li>
+      </ul>
+      <h3>3.2 Armazenamento</h3>
+      <ul>
+        <li>Dados mantidos localmente no dispositivo, preferencialmente em IndexedDB.</li>
+        <li>Cache dos arquivos da aplicação para abertura offline.</li>
+        <li>Migrações versionadas do modelo de dados.</li>
+        <li>Exportação e importação manuais para transferência de dados.</li>
+        <li>Sem promessa de recuperação automática em caso de perda do dispositivo ou limpeza dos dados do navegador.</li>
+      </ul>
+      <div class="callout important"><strong>Segurança:</strong> exportações devem ser tratadas como arquivos financeiros sensíveis. Recomenda-se exportação estruturada, validação de integridade e aviso antes de substituir dados na importação. Criptografia do arquivo exportado deve ser avaliada.</div>
+    </section>
+
+    <section id="modelo">
+      <h2>4. Modelo financeiro e entidades de dados</h2>
+      <h3>4.1 Entidades principais</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Entidade</th><th>Campos e informações principais</th></tr></thead>
+          <tbody>
+            <tr><td><code>BankAccount</code></td><td>ID, nome, contexto pessoal/empresa, saldo inicial, data de criação e status.</td></tr>
+            <tr><td><code>Caixinha</code></td><td>ID, nome, contexto, saldo calculado, regra padrão, meta e status.</td></tr>
+            <tr><td><code>DistributionRule</code></td><td>Tipo de cálculo, percentual ou valor fixo, base de cálculo e ordem.</td></tr>
+            <tr><td><code>Transaction</code></td><td>ID, tipo, valor, data, descrição, contexto, conta, categoria e status.</td></tr>
+            <tr><td><code>Allocation</code></td><td>Recebimento, caixinha de destino, valor calculado, regra aplicada e ajustes.</td></tr>
+            <tr><td><code>Bill</code></td><td>Nome, valor, vencimento, frequência, data final, categoria, contexto e observações.</td></tr>
+            <tr><td><code>BillOccurrence</code></td><td>Vencimento específico, valor previsto, status e data de confirmação de pagamento.</td></tr>
+            <tr><td><code>Goal</code></td><td>Caixinha vinculada, valor-alvo, método de progresso e prazo opcional.</td></tr>
+            <tr><td><code>Category</code></td><td>Nome, tipo, contexto e status.</td></tr>
+            <tr><td><code>AuditLog</code></td><td>Registro original, alteração, valores anteriores e novos, data e motivo.</td></tr>
+            <tr><td><code>Reconciliation</code></td><td>Conta, saldo calculado, saldo informado, diferença e justificativa.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Todos os registros devem ter identificadores únicos e datas de criação e atualização. Valores monetários devem ser armazenados em centavos inteiros ou representação decimal exata, evitando erros de arredondamento de ponto flutuante.</p>
+      <h3>4.2 Contexto pessoal e empresarial</h3>
+      <ul>
+        <li>Contas, recebimentos, despesas e caixinhas terão contexto definido.</li>
+        <li>Histórico e relatórios permitirão filtrar pessoal e empresa.</li>
+        <li>Transferências não serão contabilizadas como receita ou despesa consolidada.</li>
+        <li>A possibilidade de uma mesma conta servir aos dois contextos fica pendente de validação.</li>
+      </ul>
+    </section>
+
+    <section id="regras">
+      <h2>5. Regras de negócio</h2>
+      <h3>5.1 Recebimentos e distribuição entre caixinhas</h3>
+      <div class="flow" aria-label="Fluxo de recebimento">
+        <div class="flow-step"><strong>1. Registrar recebimento</strong>Valor, data, descrição livre, contexto e conta bancária</div>
+        <div class="arrow">↓</div>
+        <div class="flow-step"><strong>2. Selecionar caixinhas</strong>Cada opção mostra sua regra padrão</div>
+        <div class="arrow">↓</div>
+        <div class="flow-step"><strong>3. Calcular sugestão</strong>Permitir ajustar percentuais e valores neste recebimento</div>
+        <div class="arrow">↓</div>
+        <div class="flow-step"><strong>4. Conferir e confirmar</strong>Mostrar total distribuído, saldo não alocado e avisos</div>
+        <div class="arrow">↓</div>
+        <div class="flow-step"><strong>5. Salvar movimentação</strong>Atualizar conta bancária, caixinhas e histórico</div>
+      </div>
+      <ol>
+        <li>O usuário poderá criar caixinhas livremente e partir de modelos iniciais.</li>
+        <li>Não haverá tipos de recebimento predefinidos; a descrição será livre.</li>
+        <li>O usuário selecionará manualmente quais caixinhas participam de cada distribuição.</li>
+        <li>Cada caixinha terá uma regra padrão independente: percentual ou valor fixo.</li>
+        <li>Cada regra poderá usar como base o valor bruto ou o saldo restante, conforme configuração individual.</li>
+        <li>Alterações no lançamento atual não modificam a regra padrão.</li>
+        <li>Se a distribuição superar o recebimento, haverá alerta e será necessário corrigir ou resolver explicitamente a inconsistência.</li>
+        <li>Se a distribuição for menor, a diferença ficará como valor não alocado.</li>
+        <li>Sem regra predefinida aplicável, a alocação será manual.</li>
+        <li>Todo recebimento será revisado e confirmado antes de ser salvo.</li>
+      </ol>
+      <h3>5.2 Exemplo ilustrativo de cálculo</h3>
+      <p>Considere um recebimento de R$ 1.000,00. Os valores abaixo apenas demonstram o funcionamento do motor de cálculo, não definem as regras financeiras do usuário.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Destino</th><th>Regra configurada</th><th>Valor sugerido</th></tr></thead>
+          <tbody>
+            <tr><td>Investimentos</td><td>20% do valor bruto</td><td>R$ 200,00</td></tr>
+            <tr><td>Dízimo</td><td>10% do valor bruto</td><td>R$ 100,00</td></tr>
+            <tr><td>Contas</td><td>R$ 300,00 fixos</td><td>R$ 300,00</td></tr>
+            <tr><td>Pró-labore</td><td>25% do saldo restante de R$ 400,00</td><td>R$ 100,00</td></tr>
+            <tr><th colspan="2">Total distribuído</th><th>R$ 700,00</th></tr>
+            <tr><th colspan="2">Não alocado</th><th>R$ 300,00</th></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout">A ordem de aplicação das regras que usam o saldo restante deve ser determinística e visível ao usuário.</div>
+
+      <h3>5.3 Contas bancárias e saldos</h3>
+      <p>O usuário poderá cadastrar várias contas manualmente, com saldo inicial e contexto pessoal ou empresarial.</p>
+      <div class="formula">Saldo final = saldo inicial + entradas − saídas + ajustes</div>
+      <ul>
+        <li>Transferências entre contas reduzem a origem e aumentam o destino, sem gerar receita ou despesa consolidada.</li>
+        <li>O saldo será calculado a partir das movimentações registradas.</li>
+        <li>O sistema não deve atualizar saldos por alterações independentes que gerem inconsistências.</li>
+      </ul>
+
+      <h3>5.4 Saldos das caixinhas</h3>
+      <p>Caixinhas são reservas virtuais dentro do dinheiro bancário existente.</p>
+      <ul>
+        <li>Distribuir um recebimento aumenta as caixinhas, mas não gera nova saída bancária.</li>
+        <li>Uma despesa vinculada reduz a conta bancária e a caixinha correspondente.</li>
+        <li>Transferir entre caixinhas altera os saldos de origem e destino, sem alterar o saldo bancário ou o total de receitas e despesas.</li>
+        <li>Um saque deve ser registrado como saída da conta e vinculado à caixinha quando aplicável.</li>
+        <li>Ajustes exigem confirmação, justificativa e histórico.</li>
+        <li>Despesa superior ao saldo da caixinha exige aviso e decisão explícita: aceitar saldo negativo ou registrar diferença pendente.</li>
+      </ul>
+      <div class="callout important"><strong>Regra do painel:</strong> o total reservado nas caixinhas já está incluído no saldo bancário. Não somar as duas quantias como dinheiro independente.</div>
+
+      <h3>5.5 Despesas</h3>
+      <p>Cada despesa exigirá conta bancária, valor, data, categoria, descrição e contexto. O usuário escolherá a caixinha utilizada.</p>
+      <ul>
+        <li>Apresentar os efeitos sobre a conta e a caixinha antes de salvar.</li>
+        <li>Exigir confirmação antes de registrar.</li>
+        <li>Permitir categorias sugeridas, editáveis, removíveis e criadas pelo usuário.</li>
+        <li>Preservar o histórico quando a despesa for editada.</li>
+        <li>Exibir avisos de saldo insuficiente sem alterar valores silenciosamente.</li>
+      </ul>
+
+      <h3>5.6 Boletos e débitos automáticos</h3>
+      <p>O módulo controla vencimentos; não realiza pagamentos bancários. Cada compromisso terá nome, valor, vencimento, recorrência, categoria, contexto e observações opcionais.</p>
+      <ol>
+        <li>Permitir compromissos únicos e recorrentes, com frequência semanal, mensal, anual ou personalizada.</li>
+        <li>Permitir configurar uma data final para recorrências.</li>
+        <li>Ordenar pendências pelo vencimento mais próximo e exibir valor, contagem regressiva e status.</li>
+        <li>Destacar visualmente os compromissos dentro do prazo de aviso configurado.</li>
+        <li>Usar avisos dentro do app, sem notificações push.</li>
+        <li>Manter o compromisso pendente após o vencimento até confirmação manual.</li>
+        <li>Ao confirmar pagamento, atualizar o status e preservar a ocorrência no histórico.</li>
+        <li>Registrar a despesa financeira separadamente, sem descontar a conta automaticamente e sem gerar duplicidade.</li>
+        <li>Gerar ocorrências individualizadas de recorrência sem apagar vencimentos anteriores.</li>
+      </ol>
+
+      <h3>5.7 Metas das caixinhas</h3>
+      <ul>
+        <li><strong>Saldo atual:</strong> progresso baseado no saldo existente na caixinha.</li>
+        <li><strong>Aportes acumulados:</strong> progresso baseado na soma das contribuições destinadas à meta, mesmo após uso de parte do saldo.</li>
+        <li>Exibir valor atual, valor-alvo, quanto falta e indicador visual de progresso.</li>
+        <li>Prazo da meta não será obrigatório; será opcional ou validado antes da publicação.</li>
+      </ul>
+
+      <h3>5.8 Histórico e auditoria</h3>
+      <ul>
+        <li>Histórico cronológico com filtros por período, tipo, caixinha, conta e contexto.</li>
+        <li>Guardar valores anteriores e novos, data da alteração e motivo quando aplicável.</li>
+        <li>Como não haverá login, a autoria ficará limitada ao dispositivo ou perfil local; não se deve alegar identificação autenticada de pessoas.</li>
+      </ul>
+
+      <h3>5.9 Transferências</h3>
+      <ul>
+        <li><strong>Entre caixinhas:</strong> origem, destino, valor, data e justificativa opcional. Não afeta o banco nem o resultado financeiro.</li>
+        <li><strong>Entre contas:</strong> origem, destino, valor e data. Afeta ambas as contas, mas não é receita ou despesa.</li>
+        <li>Todas as transferências exigem revisão e confirmação.</li>
+      </ul>
+
+      <h3>5.10 Conciliação e ajustes</h3>
+      <p>A conferência será manual. O usuário informa o saldo observado no banco, compara com o saldo calculado e registra uma diferença com justificativa. O ajuste não altera retroativamente recebimentos e despesas; aparece como movimentação identificável e auditável.</p>
+    </section>
+
+    <section id="telas">
+      <h2>6. Telas e navegação</h2>
+      <p>A interface deve ser simples, previsível e direta, com ações claras e sem excesso de informação simultânea.</p>
+      <div class="grid">
+        <div class="card"><span class="tag">Tela 1</span><h3>Painel inicial</h3><ul><li>Saldo das contas bancárias.</li><li>Total reservado e valor não alocado.</li><li>Próximos boletos e vencidos.</li><li>Atalhos para receber, despesa e caixinhas.</li><li>Resumo essencial, sem excesso de gráficos.</li></ul></div>
+        <div class="card"><span class="tag">Tela 2</span><h3>Novo recebimento</h3><p>Valor, data, descrição, contexto e conta bancária; distribuição sugerida; revisão e confirmação.</p></div>
+        <div class="card"><span class="tag">Tela 3</span><h3>Caixinhas</h3><p>Lista de saldos, regras padrão, percentuais ou valores fixos, base de cálculo, metas e transferências.</p></div>
+        <div class="card"><span class="tag">Tela 4</span><h3>Boletos e compromissos</h3><p>Pendências por vencimento, contagem regressiva, recorrências, confirmação de pagamento e histórico.</p></div>
+        <div class="card"><span class="tag">Tela 5</span><h3>Histórico</h3><p>Movimentações cronológicas, filtros, detalhes, edição controlada e histórico de alterações.</p></div>
+        <div class="card"><span class="tag">Tela 6+</span><h3>Outros módulos</h3><p>Despesas, contas bancárias, relatórios, categorias, configurações e configuração inicial guiada.</p></div>
+      </div>
+      <div class="callout">A identidade visual definitiva será fornecida pelo usuário posteriormente. Não criar uma nova marca antes disso.</div>
+    </section>
+
+    <section id="rf">
+      <h2>7. Requisitos funcionais</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>ID</th><th>Requisito</th></tr></thead>
+          <tbody>
+            <tr><td>RF01</td><td>Cadastrar múltiplas contas bancárias com saldo inicial.</td></tr>
+            <tr><td>RF02</td><td>Criar, editar e arquivar caixinhas.</td></tr>
+            <tr><td>RF03</td><td>Configurar regras padrão de distribuição por caixinha.</td></tr>
+            <tr><td>RF04</td><td>Registrar recebimentos e calcular sugestões de distribuição.</td></tr>
+            <tr><td>RF05</td><td>Permitir ajustes pontuais sem alterar a regra padrão.</td></tr>
+            <tr><td>RF06</td><td>Exibir avisos para excesso distribuído e valores não alocados.</td></tr>
+            <tr><td>RF07</td><td>Registrar despesas com conta bancária e caixinha escolhidas.</td></tr>
+            <tr><td>RF08</td><td>Registrar transferências entre caixinhas e contas.</td></tr>
+            <tr><td>RF09</td><td>Registrar ajustes de saldo com justificativa.</td></tr>
+            <tr><td>RF10</td><td>Cadastrar boletos únicos e recorrentes.</td></tr>
+            <tr><td>RF11</td><td>Exibir contagem regressiva, pendências e compromissos vencidos.</td></tr>
+            <tr><td>RF12</td><td>Confirmar manualmente o pagamento de um boleto.</td></tr>
+            <tr><td>RF13</td><td>Manter histórico de ocorrências de boletos pagos.</td></tr>
+            <tr><td>RF14</td><td>Criar metas com método de progresso individual.</td></tr>
+            <tr><td>RF15</td><td>Exibir histórico financeiro com filtros.</td></tr>
+            <tr><td>RF16</td><td>Preservar auditoria das alterações.</td></tr>
+            <tr><td>RF17</td><td>Gerar relatórios básicos por período e contexto.</td></tr>
+            <tr><td>RF18</td><td>Exportar e importar dados manualmente.</td></tr>
+            <tr><td>RF19</td><td>Permitir consulta, criação e edição offline.</td></tr>
+            <tr><td>RF20</td><td>Solicitar confirmação antes de gravar movimentações financeiras.</td></tr>
+            <tr><td>RF21</td><td>Oferecer configuração inicial guiada.</td></tr>
+            <tr><td>RF22</td><td>Separar finanças pessoais e empresariais nos filtros e relatórios.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="rnf">
+      <h2>8. Requisitos não funcionais</h2>
+      <h3>RNF01. Usabilidade e acessibilidade</h3>
+      <ul><li>Textos diretos, linguagem simples e botões com rótulos claros.</li><li>Fluxos consistentes e previsíveis.</li><li>Feedback visual após cada operação.</li><li>Erros compreensíveis com orientação para correção.</li><li>Evitar animações excessivas, informação desnecessária e mudanças inesperadas.</li><li>Suporte à navegação por teclado e leitores de tela.</li></ul>
+      <h3>RNF02. Integridade financeira</h3>
+      <ul><li>Precisão decimal adequada para valores monetários.</li><li>Validação de campos, valores e datas.</li><li>Prevenção de lançamentos duplicados por clique repetido.</li><li>Aplicação atômica de alterações relacionadas.</li><li>Saldos derivados de registros consistentes.</li><li>Trilha de auditoria nas correções.</li></ul>
+      <h3>RNF03. Operação offline</h3>
+      <ul><li>Abertura offline após instalação ou primeiro carregamento bem-sucedido.</li><li>Consulta e gravação de dados locais sem internet.</li><li>Cálculos financeiros sem dependência de APIs remotas.</li><li>Feedback claro quando uma operação não puder ser persistida.</li></ul>
+      <h3>RNF04. Privacidade e segurança</h3>
+      <ul><li>Sem login ou envio de dados financeiros para servidores.</li><li>Dados de cada dispositivo separados.</li><li>Evitar exposição de valores em mensagens de erro e logs técnicos.</li><li>Avisar sobre risco de perda de dados locais.</li><li>Validar arquivos importados e proteger a integridade da base.</li></ul>
+      <h3>RNF05. Compatibilidade e manutenção</h3>
+      <ul><li>Interface responsiva em navegadores modernos.</li><li>Modelo de dados versionado e migrações controladas.</li><li>Código modular, testável e documentado.</li><li>Testes automatizados das regras financeiras.</li><li>Evolução dos módulos sem comprometer dados existentes.</li></ul>
+    </section>
+
+    <section id="aceitacao">
+      <h2>9. Critérios de aceitação</h2>
+      <p>Todos os cenários abaixo devem passar antes de considerar o MVP pronto para uso.</p>
+      <ol class="checklist">
+        <li><strong>CA01. Distribuição de recebimento:</strong> registrar R$ 1.000,00, selecionar caixinhas e visualizar a sugestão correta. O saldo bancário aumenta em R$ 1.000,00, as reservas são atualizadas e o restante aparece como não alocado.</li>
+        <li><strong>CA02. Regra pontual:</strong> alterar o percentual em um recebimento não muda a regra padrão usada depois.</li>
+        <li><strong>CA03. Excesso de distribuição:</strong> mostrar aviso e impedir que o excesso seja salvo inadvertidamente.</li>
+        <li><strong>CA04. Despesa vinculada:</strong> uma despesa de R$ 100,00 reduz a conta bancária e a caixinha escolhida em R$ 100,00, sem duplicar a saída.</li>
+        <li><strong>CA05. Saldo insuficiente:</strong> alertar e exigir decisão explícita antes de aceitar saldo negativo ou diferença pendente.</li>
+        <li><strong>CA06. Transferência entre caixinhas:</strong> transferir R$ 50,00 reduz a origem e aumenta o destino, sem alterar saldo bancário.</li>
+        <li><strong>CA07. Boleto pago:</strong> confirmação manual atualiza status e histórico, sem lançar despesa bancária automaticamente.</li>
+        <li><strong>CA08. Boleto vencido:</strong> continua pendente até regularização manual.</li>
+        <li><strong>CA09. Recorrência:</strong> gerar ocorrências previstas, respeitar a data final e preservar ocorrências anteriores.</li>
+        <li><strong>CA10. Metas:</strong> escolher saldo atual ou aportes acumulados e exibir valor atual, alvo e restante corretamente.</li>
+        <li><strong>CA11. Correção auditável:</strong> edição preserva valores anteriores e recalcula saldos sem duplicação.</li>
+        <li><strong>CA12. Conciliação:</strong> registrar saldo real diferente do calculado com justificativa e histórico.</li>
+        <li><strong>CA13. Offline:</strong> consultar, cadastrar e editar registros localmente sem internet, após o app estar disponível no dispositivo.</li>
+        <li><strong>CA14. Exportação e importação:</strong> recuperar dados de arquivo válido e rejeitar arquivo inválido sem corromper a base existente.</li>
+        <li><strong>CA15. Contextos:</strong> filtrar pessoal e empresa e confirmar que transferências não são contadas como receita ou despesa.</li>
+      </ol>
+    </section>
+
+    <section id="premissas">
+      <h2>10. Premissas e ambiguidades a validar</h2>
+      <p>O briefing permite iniciar arquitetura e prototipação. Os itens abaixo são decisões pendentes, não funcionalidades já aprovadas.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Tema</th><th>Premissa inicial recomendada</th></tr></thead>
+          <tbody>
+            <tr><td>Percentual sobre saldo restante</td><td>Aplicar regras em ordem explícita, definida pelo usuário e mostrada na simulação.</td></tr>
+            <tr><td>Arredondamento</td><td>Calcular em centavos e mostrar diferença residual antes da confirmação.</td></tr>
+            <tr><td>Excesso de distribuição</td><td>Exigir correção ou decisão explícita; nunca salvar inconsistência silenciosamente.</td></tr>
+            <tr><td>Diferença pendente na caixinha</td><td>Identificar separadamente do saldo negativo, sem contar a diferença duas vezes.</td></tr>
+            <tr><td>Contextos pessoal e empresa</td><td>Impedir combinações incompatíveis ou pedir confirmação explícita.</td></tr>
+            <tr><td>Contas compartilhadas</td><td>Não permitir mistura de contextos por padrão; validar exceções.</td></tr>
+            <tr><td>Metas</td><td>Prazo opcional no MVP.</td></tr>
+            <tr><td>Recorrência mensal</td><td>Definir tratamento para meses sem o dia escolhido, como dia 31.</td></tr>
+            <tr><td>Importação</td><td>Definir substituição total ou mesclagem, com confirmação prévia.</td></tr>
+            <tr><td>Exclusão de registros</td><td>Preferir arquivamento ou cancelamento auditável quando houver movimentos associados.</td></tr>
+            <tr><td>Privacidade local</td><td>Avaliar bloqueio opcional do app e criptografia dos dados armazenados.</td></tr>
+            <tr><td>Backup</td><td>Sem backup automático; exportação manual como mecanismo inicial de portabilidade.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout important"><strong>Ponto crítico:</strong> saldo negativo significa que a caixinha representa um saldo devedor. Diferença pendente significa que parte da despesa ainda precisa ser atribuída ou regularizada. Cada valor deve ser representado uma única vez, para evitar dupla contagem.</div>
+    </section>
+
+    <section id="plano">
+      <h2>11. Ordem recomendada de desenvolvimento</h2>
+      <div class="grid">
+        <div class="card"><span class="tag">Fase 1</span><h3>Fundação</h3><p>Estrutura do projeto, PWA, persistência local, migrações, navegação, configuração inicial e testes básicos.</p></div>
+        <div class="card"><span class="tag">Fase 2</span><h3>Motor financeiro</h3><p>Contas, caixinhas, recebimentos, regras de distribuição, despesas e transferências. Priorizar cálculos e testes unitários.</p></div>
+        <div class="card"><span class="tag">Fase 3</span><h3>Compromissos e metas</h3><p>Boletos, recorrências, contagem regressiva, status de pagamento, metas e avisos internos.</p></div>
+        <div class="card"><span class="tag">Fase 4</span><h3>Histórico e controle</h3><p>Auditoria, conciliação manual, filtros, categorias e relatórios básicos.</p></div>
+        <div class="card"><span class="tag">Fase 5</span><h3>Confiabilidade</h3><p>Exportação/importação, testes offline, acessibilidade, tratamento de erros e validação em celular e computador.</p></div>
+      </div>
+    </section>
+
+    <section id="pronto">
+      <h2>12. Definição de pronto do MVP</h2>
+      <ul class="checklist">
+        <li>Todos os critérios de aceitação obrigatórios foram aprovados.</li>
+        <li>Saldos bancários e das caixinhas permanecem consistentes em operações, transferências, ajustes e correções.</li>
+        <li>Cálculos de distribuição estão cobertos por testes, incluindo arredondamento e valores insuficientes.</li>
+        <li>Nenhuma movimentação financeira é salva sem confirmação explícita.</li>
+        <li>Boletos não produzem saídas bancárias automáticas ou despesas duplicadas.</li>
+        <li>A aplicação funciona offline nas operações previstas.</li>
+        <li>Exportação e importação foram testadas com dados válidos e inválidos.</li>
+        <li>A interface é utilizável com teclado e tecnologias assistivas.</li>
+        <li>As premissas que impactam cálculos financeiros foram resolvidas antes da publicação.</li>
+      </ul>
+      <h3>Próximo artefato recomendado</h3>
+      <p>A próxima entrega técnica deverá detalhar o modelo de dados e relacionamentos, fórmulas definitivas, fluxos e estados das telas, contratos dos serviços internos, plano de testes e estrutura inicial do projeto PWA.</p>
+      <div class="callout"><strong>Recomendação:</strong> construir e testar o motor financeiro antes de finalizar toda a interface. O principal risco do produto é uma distribuição, transferência, edição ou confirmação de pagamento alterar incorretamente o dinheiro disponível.</div>
+    </section>
+  </main>
+</div>
+
+<footer class="footer">
+  <p><strong>Briefing técnico consolidado · Aplicativo de Gestão Financeira por Caixinhas</strong></p>
+  <p>Documento-base para planejamento e desenvolvimento do MVP. Premissas pendentes devem ser validadas antes da publicação.</p>
+</footer>
+</body>
+</html>

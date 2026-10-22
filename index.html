@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tangerina — Manual de Identidade Visual</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="/favicon.svg">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Fontes Google -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'gold-primary': '#C59B27',
+                        'gold-light': '#E5C05B',
+                        'gold-dark': '#9A771C',
+                        'emerald-deep': '#0B3C2A',
+                        'emerald-dark': '#06261A',
+                        'emerald-soft': '#1B523E',
+                        'silk-white': '#F9F8F3',
+                        'silk-cream': '#F3F0E6',
+                        'mint-accent': '#E2ECE9',
+                        'charcoal': '#1A1A1A',
+                    },
+                    fontFamily: {
+                        serif: ['Cormorant Garamond', 'Georgia', 'serif'],
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #F9F8F3;
+            color: #1A1A1A;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+        .font-brand {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+        }
+        .gold-gradient-text {
+            background: linear-gradient(135deg, #D4AF37 0%, #C59B27 50%, #9A771C 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .gold-gradient-bg {
+            background: linear-gradient(135deg, #D4AF37 0%, #C59B27 50%, #9A771C 100%);
+        }
+        .emerald-gradient-bg {
+            background: linear-gradient(135deg, #0B3C2A 0%, #06261A 100%);
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(197, 155, 39, 0.15);
+        }
+        .glass-dark {
+            background: rgba(11, 60, 42, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #F3F0E6;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #C59B27;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-gold-primary selection:text-white">
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 transition-all duration-300 ease-in-out bg-emerald-deep text-silk-white px-5 py-3 rounded-xl shadow-2xl flex items-center border border-gold-primary/30">
+        <i class="fa-solid fa-check-circle text-gold-primary mr-3 text-lg"></i>
+        <span id="toast-message" class="text-sm font-medium">Código copiado com sucesso!</span>
+    </div>
+
+    <!-- Navigation Header -->
+    <header class="sticky top-0 z-40 w-full bg-silk-white/90 backdrop-blur-md border-b border-gold-primary/10 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+            <a href="#hero" class="flex items-center space-x-3 group">
+                <!-- Logo Icon Small -->
+                <img src="/Principal_icon_semFundo.png" alt="Logo Tangerina"  class="h-10 overflow-hidden ">
+            </a>
+
+            <nav class="hidden lg:flex items-center space-x-8 text-xs font-semibold uppercase tracking-wider text-charcoal/70">
+                <a href="#manifesto" class="hover:text-gold-primary transition-colors">Manifesto</a>
+                <a href="#logotipo" class="hover:text-gold-primary transition-colors">Construção</a>
+                <a href="#variacoes" class="hover:text-gold-primary transition-colors">Variações</a>
+                <a href="#cores" class="hover:text-gold-primary transition-colors">Cores</a>
+                <a href="#tipografia" class="hover:text-gold-primary transition-colors">Tipografia</a>
+                <a href="#regras" class="hover:text-gold-primary transition-colors">Do's & Don'ts</a>
+                <a href="#app-preview" class="hover:text-gold-primary transition-colors">App Preview</a>
+            </nav>
+
+            <a href="#app-preview" class="hidden sm:inline-flex items-center px-5 py-2.5 rounded-full text-xs font-semibold uppercase tracking-wider text-silk-white bg-emerald-deep hover:bg-emerald-dark transition-all duration-300 shadow-md border border-gold-primary/30 hover:border-gold-primary">
+                Ver Protótipo
+            </a>
+        </div>
+    </header>
+
+    <!-- 1. Hero / Header Capa -->
+    <section id="hero" class="relative min-h-[85vh] flex items-center justify-center overflow-hidden border-b border-gold-primary/10">
+        <!-- Background Ornaments -->
+        <div class="absolute inset-0 bg-[radial-gradient(#C59B27_1px,transparent_1px)] [background-size:32px_32px] opacity-15"></div>
+        <div class="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-gold-primary/10 blur-3xl"></div>
+        <div class="absolute -bottom-24 -left-24 w-96 h-96 rounded-full bg-emerald-deep/10 blur-3xl"></div>
+
+        <div class="relative max-w-5xl mx-auto px-6 py-20 text-center">
+            <!-- Badge -->
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-silk-cream border border-gold-primary/20 text-gold-dark text-xs uppercase tracking-widest font-semibold mb-8">
+                <span class="w-2 h-2 rounded-full bg-gold-primary animate-pulse"></span>
+                Manual de Identidade Visual Oficial
+            </div>
+
+            <!-- Master Logo SVG Display -->
+            <div class="mb-10 flex flex-col items-center justify-center">
+                <div class="relative w-48 h-48 md:w-56 md:h-56 mb-6">
+                    <!-- Botanical Flower Logo SVG -->
+                    <img src="/Principal_Light.png" alt="Logo Principal Light" class="w-full h-full object-contain">
+            </div>
+
+            <p class="max-w-2xl mx-auto text-charcoal/80 text-base md:text-lg leading-relaxed font-light mb-12">
+                A convergência entre a delicadeza botânica da floração financeira e o rigor da alta gestão patrimonial. Guia de diretrizes de marca para ecossistemas digitais e impressos.
+            </p>
+
+            <!-- Quick Stats/Pillars -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto">
+                <div class="p-4 rounded-2xl bg-white/60 border border-gold-primary/10 shadow-sm">
+                    <span class="block text-2xl font-brand font-bold text-emerald-deep">01. Atemporal</span>
+                    <span class="text-xs text-charcoal/60 uppercase tracking-wider">Sofisticação Clássica</span>
+                </div>
+                <div class="p-4 rounded-2xl bg-white/60 border border-gold-primary/10 shadow-sm">
+                    <span class="block text-2xl font-brand font-bold text-emerald-deep">02. Orgânica</span>
+                    <span class="text-xs text-charcoal/60 uppercase tracking-wider">Crescimento Sustentável</span>
+                </div>
+                <div class="p-4 rounded-2xl bg-white/60 border border-gold-primary/10 shadow-sm">
+                    <span class="block text-2xl font-brand font-bold text-emerald-deep">03. Exclusiva</span>
+                    <span class="text-xs text-charcoal/60 uppercase tracking-wider">Private Banking Standard</span>
+                </div>
+                <div class="p-4 rounded-2xl bg-white/60 border border-gold-primary/10 shadow-sm">
+                    <span class="block text-2xl font-brand font-bold text-emerald-deep">04. Digital</span>
+                    <span class="text-xs text-charcoal/60 uppercase tracking-wider">Interface Fluida</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 2. Manifesto & Conceito da Marca -->
+    <section id="manifesto" class="py-24 bg-silk-cream/50 border-b border-gold-primary/10">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                <div class="lg:col-span-5">
+                    <span class="text-xs font-bold uppercase tracking-widest text-gold-dark mb-2 block">Capítulo I</span>
+                    <h2 class="font-brand text-4xl md:text-5xl font-bold text-emerald-deep mb-6 leading-tight">
+                        A Flor de Tangerina & O Florecer Financeiro
+                    </h2>
+                    <div class="w-16 h-0.5 bg-gold-primary mb-6"></div>
+                    <p class="text-charcoal/80 leading-relaxed mb-4">
+                        Historicamente, a flor do citros representa a promessa da colheita abundante, a vitalidade e a renovação dos ciclos. No ecossistema <strong>Tangerina</strong>, a flor não é apenas um adorno; é o símbolo da gestação inteligente do patrimônio.
+                    </p>
+                    <p class="text-charcoal/80 leading-relaxed mb-6">
+                        Diferente do mercado financeiro tradicional que foca na aridez dos números, a Tangerina adota o cuidado orgânico, cultivo paciente e prosperidade dourada.
+                    </p>
+                </div>
+
+                <div class="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <div class="p-8 rounded-2xl bg-silk-white border border-gold-primary/20 shadow-md">
+                        <div class="w-12 h-12 rounded-xl bg-gold-primary/10 flex items-center justify-center text-gold-dark mb-5 text-xl">
+                            <i class="fa-solid fa-seedling"></i>
+                        </div>
+                        <h3 class="font-brand text-2xl font-bold text-emerald-deep mb-2">Cultivo Patrimonial</h3>
+                        <p class="text-sm text-charcoal/70 leading-relaxed">
+                            A gestão financeira vista como um jardim de alta performance, onde cada decisão gera frutos perenes e seguros.
+                        </p>
+                    </div>
+
+                    <div class="p-8 rounded-2xl bg-emerald-deep text-silk-white border border-gold-primary/30 shadow-xl">
+                        <div class="w-12 h-12 rounded-xl bg-gold-primary/20 flex items-center justify-center text-gold-primary mb-5 text-xl">
+                            <i class="fa-solid fa-crown"></i>
+                        </div>
+                        <h3 class="font-brand text-2xl font-bold text-gold-primary mb-2">Estética Private</h3>
+                        <p class="text-sm text-silk-white/80 leading-relaxed">
+                            Uma linguagem de luxo silencioso (quiet luxury). Elegância atemporal para clientes exigentes e investidores sofisticados.
+                        </p>
+                    </div>
+
+                    <div class="p-8 rounded-2xl bg-emerald-deep text-silk-white border border-gold-primary/30 shadow-xl">
+                        <div class="w-12 h-12 rounded-xl bg-gold-primary/20 flex items-center justify-center text-gold-primary mb-5 text-xl">
+                            <i class="fa-solid fa-gem"></i>
+                        </div>
+                        <h3 class="font-brand text-2xl font-bold text-gold-primary mb-2">Dourado Imperial</h3>
+                        <p class="text-sm text-silk-white/80 leading-relaxed">
+                            O tom metálico representa a solidez, valor inestimável e a luminosidade da conquista financeira consciente.
+                        </p>
+                    </div>
+
+                    <div class="p-8 rounded-2xl bg-silk-white border border-gold-primary/20 shadow-md">
+                        <div class="w-12 h-12 rounded-xl bg-emerald-deep/10 flex items-center justify-center text-emerald-deep mb-5 text-xl">
+                            <i class="fa-solid fa-shield-halved"></i>
+                        </div>
+                        <h3 class="font-brand text-2xl font-bold text-emerald-deep mb-2">Verde Esmeralda</h3>
+                        <p class="text-sm text-charcoal/70 leading-relaxed">
+                            A cor da estabilidade, prosperidade e confiabilidade institucional de instituições de classe global.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. Logotipo & Construção Visual -->
+    <section id="logotipo" class="py-24 bg-silk-white border-b border-gold-primary/10">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="text-xs font-bold uppercase tracking-widest text-gold-dark mb-2 block">Capítulo II</span>
+                <h2 class="font-brand text-4xl md:text-5xl font-bold text-emerald-deep mb-4">Construção & Grid da Marca</h2>
+                <p class="text-charcoal/70">A harmonia precisa entre as curvas orgânicas da flor e o peso equilibrado das serifas clássicas.</p>
+            </div>
+
+            <!-- Grid Display Card -->
+            <div class="bg-silk-cream border border-gold-primary/20 rounded-3xl p-8 md:p-12 shadow-lg mb-12 relative overflow-hidden">
+                <!-- Technical Blueprint Grid Backdrop -->
+                <div class="absolute inset-0 opacity-20 bg-[linear-gradient(to_right,#0B3C2A_1px,transparent_1px),linear-gradient(to_bottom,#0B3C2A_1px,transparent_1px)] bg-[size:24px_24px]"></div>
+
+                <div class="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                    <!-- SVG Visual Blueprint -->
+                    <div class="flex flex-col items-center justify-center bg-silk-white/90 p-8 rounded-2xl border border-gold-primary/30 shadow-inner">
+                        <div class="relative w-64 h-64 flex items-center justify-center border border-dashed border-gold-primary/40 p-4">
+                            <!-- Clear Space Boundaries -->
+                            <div class="absolute inset-0 border border-emerald-deep/20 text-[10px] text-emerald-deep/60 p-1 font-mono">
+                                Margem X
+                            </div>
+                            
+                            <!-- Logo Centered -->
+                            <div class="flex flex-col items-center">
+                                <img src="/Principal_Light.png" alt="Logo Principal Light" class="w-64 h-64 mb-2">
+                            </div>
+                        </div>
+                        <span class="text-xs font-mono text-charcoal/60 mt-4">Área de Proteção = 1.5X da letra 'T'</span>
+                    </div>
+
+                    <!-- Guidelines Spec -->
+                    <div class="space-y-6">
+                        <div>
+                            <h3 class="font-brand text-2xl font-bold text-emerald-deep mb-2">Área de Respiro (Clear Space)</h3>
+                            <p class="text-sm text-charcoal/70 leading-relaxed">
+                                Para garantir a máxima legibilidade e impacto visual, o logotipo deve sempre manter uma área livre de elementos gráficos, textos ou bordas equivalente ao diâmetro do botão lateral da flor.
+                            </p>
+                        </div>
+
+                        <div class="pt-4 border-t border-gold-primary/20">
+                            <h3 class="font-brand text-2xl font-bold text-emerald-deep mb-2">Redução Mínima</h3>
+                            <div class="grid grid-cols-2 gap-4 mt-3">
+                                <div class="bg-silk-white p-4 rounded-xl border border-gold-primary/20">
+                                    <span class="block text-xs font-semibold text-gold-dark uppercase mb-1">Mídia Impressa</span>
+                                    <span class="text-lg font-bold text-emerald-deep">25 mm</span>
+                                    <span class="block text-[11px] text-charcoal/60">Largura mínima recomendada</span>
+                                </div>
+                                <div class="bg-silk-white p-4 rounded-xl border border-gold-primary/20">
+                                    <span class="block text-xs font-semibold text-gold-dark uppercase mb-1">Mídia Digital</span>
+                                    <span class="text-lg font-bold text-emerald-deep">90 px</span>
+                                    <span class="block text-[11px] text-charcoal/60">Largura em telas digitais</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. Variações de Aplicação & Versões Cromáticas -->
+    <section id="variacoes" class="py-24 bg-silk-cream/40 border-b border-gold-primary/10">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="text-xs font-bold uppercase tracking-widest text-gold-dark mb-2 block">Capítulo III</span>
+                <h2 class="font-brand text-4xl md:text-5xl font-bold text-emerald-deep mb-4">Variações Oficiais da Logo</h2>
+                <p class="text-charcoal/70">Aplicações autorizadas para fundos claros, escuros, monocromáticos e ícone de aplicativo.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- 1. Versão Principal Light -->
+                <div class="bg-silk-white p-8 rounded-3xl border border-gold-primary/20 shadow-md flex flex-col items-center justify-between text-center min-h-[320px]">
+                    <div class="w-full flex justify-between items-center text-xs text-charcoal/50 uppercase tracking-wider">
+                        <span>Principal Light</span>
+                        <span>Papel / Off-White</span>
+                    </div>
+                    
+                    <div class="my-6">
+                        <img src="/Principal_Light.png" alt="Logo Principal Light" class="w-[225px] h-[225px] mx-auto mb-3">
+                    </div>
+
+                    <p class="text-xs text-charcoal/60">Símbolo em Dourado Imperial com Tipografia em Verde Esmeralda.</p>
+                </div>
+
+                <!-- 2. Versão Dark Luxury -->
+                <div class="bg-emerald-deep p-8 rounded-3xl border border-gold-primary/30 shadow-xl flex flex-col items-center justify-between text-center min-h-[320px]">
+                    <div class="w-full flex justify-between items-center text-xs text-silk-white/50 uppercase tracking-wider">
+                        <span>Dark Luxury</span>
+                        <span>Fundo Esmeralda</span>
+                    </div>
+
+                    <div class="my-6">
+                        <img src="/Dark_Luxury.png" alt="Logo Dark Luxury" class="w-[225px] h-[225px] mx-auto mb-3">
+                    </div>
+
+                    <p class="text-xs text-silk-white/60">Símbolo em Ouro Brilhante com Tipografia em Seda/Branco.</p>
+                </div>
+
+                <!-- 3. Versão Monocromática P&B -->
+                <div class="bg-[#f9f8f3] p-8 rounded-3xl border border-gray-200 shadow-md flex flex-col items-center justify-between text-center min-h-[320px]">
+                    <div class="w-full flex justify-between items-center text-xs text-gray-400 uppercase tracking-wider">
+                        <span>Monocromático</span>
+                        <span>Preto Puríssimo</span>
+                    </div>
+
+                    <div class="my-6">
+                        <img src="/Monocromatico.png" alt="Logo Monocromático" class="w-[225px] h-[225px] mx-auto mb-3">
+                    </div>
+
+                    <p class="text-xs text-gray-500">Para aplicação em documentos oficiais, gravações e estampas monocolor.</p>
+                </div>
+
+                <!-- 4. Ícone do App / Favicon -->
+                <div class="bg-silk-white p-8 rounded-3xl border border-gold-primary/20 shadow-md flex flex-col items-center justify-between text-center min-h-[320px]">
+                    <div class="w-full flex justify-between items-center text-xs text-charcoal/50 uppercase tracking-wider">
+                        <span>App Icon / Favicon</span>
+                        <span>Smartphone Shield</span>
+                    </div>
+
+                    <div class="my-4 flex items-center gap-6">
+                        <!-- App Icon Square Smooth -->
+                        <div class="w-20 h-20 rounded-2xl bg-emerald-deep flex items-center justify-center border-2 border-gold-primary/40 shadow-xl">
+                            <img src="/mobilefaveicon.png" alt="App Icon Square" class="w-20 h-20 overflow-hidden rounded-2xl border-2 border-gold-primary/40 shadow-xl">
+                        </div>
+
+                        <!-- Round Token -->
+                        <div class="w-16 h-16 rounded-full bg-gold-primary flex items-center justify-center border-2 border-emerald-deep shadow-lg">
+                            <img src="/faveicon.png" alt="App Icon Round Token" class="w-16 h-16 rounded-full border-2 border-emerald-deep shadow-lg">
+                        </div>
+                    </div>
+
+                    <p class="text-xs text-charcoal/60">Simbolismo reduzido com foco na flor para aplicações em tela e notificações.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. Paleta de Cores Oficial com Interatividade JS -->
+    <section id="cores" class="py-24 bg-silk-white border-b border-gold-primary/10">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="text-xs font-bold uppercase tracking-widest text-gold-dark mb-2 block">Capítulo IV</span>
+                <h2 class="font-brand text-4xl md:text-5xl font-bold text-emerald-deep mb-4">Paleta de Cores Institucional</h2>
+                <p class="text-charcoal/70">Clique nos cartões de cor para copiar instantaneamente os códigos HEX para sua área de transferência.</p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
+                <!-- Color 1: Gold Imperial -->
+                <div onclick="copyToClipboard('#C59B27', 'Dourado Imperial')" class="group cursor-pointer bg-silk-cream rounded-2xl overflow-hidden border border-gold-primary/20 shadow-md hover:-translate-y-2 transition-all duration-300">
+                    <div class="h-36 bg-[#C59B27] p-4 flex justify-end items-start">
+                        <span class="bg-white/20 backdrop-blur-md text-white text-[10px] font-mono px-2 py-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity">Copiar</span>
+                    </div>
+                    <div class="p-5">
+                        <span class="text-xs uppercase tracking-wider text-gold-dark font-semibold block">Primária Ouro</span>
+                        <h3 class="font-brand text-xl font-bold text-emerald-deep">Dourado Imperial</h3>
+                        <p class="font-mono text-sm text-charcoal/70 mt-2">#C59B27</p>
+                        <p class="text-[11px] text-charcoal/50 mt-1">RGB 197, 155, 39</p>
+                    </div>
+                </div>
+
+                <!-- Color 2: Emerald Deep -->
+                <div onclick="copyToClipboard('#0B3C2A', 'Verde Esmeralda Profundo')" class="group cursor-pointer bg-silk-cream rounded-2xl overflow-hidden border border-gold-primary/20 shadow-md hover:-translate-y-2 transition-all duration-300">
+                    <div class="h-36 bg-[#0B3C2A] p-4 flex justify-end items-start">
+                        <span class="bg-white/20 backdrop-blur-md text-white text-[10px] font-mono px-2 py-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity">Copiar</span>
+                    </div>
+                    <div class="p-5">
+                        <span class="text-xs uppercase tracking-wider text-gold-dark font-semibold block">Primária Escura</span>
+                        <h3 class="font-brand text-xl font-bold text-emerald-deep">Verde Esmeralda</h3>
+                        <p class="font-mono text-sm text-charcoal/70 mt-2">#0B3C2A</p>
+                        <p class="text-[11px] text-charcoal/50 mt-1">RGB 11, 60, 42</p>
+                    </div>
+                </div>
+
+                <!-- Color 3: Silk White -->
+                <div onclick="copyToClipboard('#F9F8F3', 'Off-White Creme Silk')" class="group cursor-pointer bg-silk-cream rounded-2xl overflow-hidden border border-gold-primary/20 shadow-md hover:-translate-y-2 transition-all duration-300">
+                    <div class="h-36 bg-[#F9F8F3] p-4 flex justify-end items-start border-b border-gray-200">
+                        <span class="bg-black/10 backdrop-blur-md text-charcoal text-[10px] font-mono px-2 py-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity">Copiar</span>
+                    </div>
+                    <div class="p-5">
+                        <span class="text-xs uppercase tracking-wider text-gold-dark font-semibold block">Fundo Principal</span>
+                        <h3 class="font-brand text-xl font-bold text-emerald-deep">Seda / Off-White</h3>
+                        <p class="font-mono text-sm text-charcoal/70 mt-2">#F9F8F3</p>
+                        <p class="text-[11px] text-charcoal/50 mt-1">RGB 249, 248, 243</p>
+                    </div>
+                </div>
+
+                <!-- Color 4: Mint Accent -->
+                <div onclick="copyToClipboard('#E2ECE9', 'Verde Menta Suave')" class="group cursor-pointer bg-silk-cream rounded-2xl overflow-hidden border border-gold-primary/20 shadow-md hover:-translate-y-2 transition-all duration-300">
+                    <div class="h-36 bg-[#E2ECE9] p-4 flex justify-end items-start border-b border-gray-200">
+                        <span class="bg-black/10 backdrop-blur-md text-charcoal text-[10px] font-mono px-2 py-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity">Copiar</span>
+                    </div>
+                    <div class="p-5">
+                        <span class="text-xs uppercase tracking-wider text-gold-dark font-semibold block">Apoio & UI</span>
+                        <h3 class="font-brand text-xl font-bold text-emerald-deep">Verde Menta</h3>
+                        <p class="font-mono text-sm text-charcoal/70 mt-2">#E2ECE9</p>
+                        <p class="text-[11px] text-charcoal/50 mt-1">RGB 226, 236, 233</p>
+                    </div>
+                </div>
+
+                <!-- Color 5: Charcoal High Contrast -->
+                <div onclick="copyToClipboard('#1A1A1A', 'Grafite de Alto Contraste')" class="group cursor-pointer bg-silk-cream rounded-2xl overflow-hidden border border-gold-primary/20 shadow-md hover:-translate-y-2 transition-all duration-300">
+                    <div class="h-36 bg-[#1A1A1A] p-4 flex justify-end items-start">
+                        <span class="bg-white/20 backdrop-blur-md text-white text-[10px] font-mono px-2 py-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity">Copiar</span>
+                    </div>
+                    <div class="p-5">
+                        <span class="text-xs uppercase tracking-wider text-gold-dark font-semibold block">Texto & Leitura</span>
+                        <h3 class="font-brand text-xl font-bold text-emerald-deep">Grafite Profundo</h3>
+                        <p class="font-mono text-sm text-charcoal/70 mt-2">#1A1A1A</p>
+                        <p class="text-[11px] text-charcoal/50 mt-1">RGB 26, 26, 26</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. Tipografia Institucional -->
+    <section id="tipografia" class="py-24 bg-silk-cream/40 border-b border-gold-primary/10">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="text-xs font-bold uppercase tracking-widest text-gold-dark mb-2 block">Capítulo V</span>
+                <h2 class="font-brand text-4xl md:text-5xl font-bold text-emerald-deep mb-4">Hierarquia Tipográfica</h2>
+                <p class="text-charcoal/70">A união do prestígio editorial clássico com a funcionalidade de interfaces digitais.</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                <!-- Primária - Serif -->
+                <div class="bg-silk-white p-8 rounded-3xl border border-gold-primary/20 shadow-md">
+                    <div class="flex items-center justify-between pb-6 mb-6 border-b border-gold-primary/10">
+                        <div>
+                            <span class="text-xs font-semibold text-gold-dark uppercase tracking-wider block">Tipografia Primária</span>
+                            <h3 class="font-brand text-3xl font-bold text-emerald-deep">Cormorant Garamond</h3>
+                        </div>
+                        <span class="px-3 py-1 bg-gold-primary/10 text-gold-dark rounded-full text-xs font-semibold">Títulos & Headings</span>
+                    </div>
+
+                    <div class="space-y-6">
+                        <div>
+                            <span class="text-xs text-charcoal/50 block mb-1">Amostra de Fonte:</span>
+                            <p class="font-brand text-4xl font-bold text-emerald-deep">
+                                Aa Bb Cc Dd Ee Ff Gg Hh Ii Jj Kk Ll Mm Nn Oo Pp Qq Rr Ss Tt Uu Vv Ww Xx Yy Zz
+                            </p>
+                        </div>
+                        <div>
+                            <span class="text-xs text-charcoal/50 block mb-1">Números & Símbolos:</span>
+                            <p class="font-brand text-3xl font-semibold text-gold-dark">
+                                R$ 1.845.900,00  •  +24,8%
+                            </p>
+                        </div>
+                        <p class="text-xs text-charcoal/70 leading-relaxed bg-silk-cream p-4 rounded-xl">
+                            Utilizada na logo principal, títulos de seções e destaques de grande porte. Traz o caráter histórico dos grandes bancos europeus.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Secundária - Sans -->
+                <div class="bg-silk-white p-8 rounded-3xl border border-gold-primary/20 shadow-md">
+                    <div class="flex items-center justify-between pb-6 mb-6 border-b border-gold-primary/10">
+                        <div>
+                            <span class="text-xs font-semibold text-gold-dark uppercase tracking-wider block">Tipografia Secundária</span>
+                            <h3 class="font-sans text-3xl font-bold text-emerald-deep">Plus Jakarta Sans</h3>
+                        </div>
+                        <span class="px-3 py-1 bg-emerald-deep/10 text-emerald-deep rounded-full text-xs font-semibold">UI & Corpo de Texto</span>
+                    </div>
+
+                    <div class="space-y-6">
+                        <div>
+                            <span class="text-xs text-charcoal/50 block mb-1">Amostra de Fonte:</span>
+                            <p class="font-sans text-3xl font-bold text-emerald-deep">
+                                Aa Bb Cc Dd Ee Ff Gg Hh Ii Jj Kk Ll Mm Nn Oo Pp Qq Rr Ss Tt Uu Vv Ww Xx Yy Zz
+                            </p>
+                        </div>
+                        <div>
+                            <span class="text-xs text-charcoal/50 block mb-1">Números & Símbolos:</span>
+                            <p class="font-sans text-2xl font-bold text-emerald-dark">
+                                R$ 1.845.900,00  •  +24,8%
+                            </p>
+                        </div>
+                        <p class="text-xs text-charcoal/70 leading-relaxed bg-silk-cream p-4 rounded-xl">
+                            Especialmente projetada para excelente legibilidade em telas de smartphones. Utilizada na interface do aplicativo, menus e textos longos.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 7. Usos Incorretos (Do's & Don'ts) -->
+    <section id="regras" class="py-24 bg-silk-white border-b border-gold-primary/10">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="text-xs font-bold uppercase tracking-widest text-gold-dark mb-2 block">Capítulo VI</span>
+                <h2 class="font-brand text-4xl md:text-5xl font-bold text-emerald-deep mb-4">Usos Incorretos (Don'ts)</h2>
+                <p class="text-charcoal/70">Preserve a integridade e o prestígio da marca Tangerina evitando essas aplicações inadequadas.</p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Don't 1: Distortion -->
+                <div class="bg-silk-cream p-6 rounded-2xl border border-red-200 shadow-sm relative">
+                    <div class="absolute top-4 right-4 w-7 h-7 rounded-full bg-red-500 text-white flex items-center justify-center text-xs font-bold">
+                        <i class="fa-solid fa-xmark"></i>
+                    </div>
+                    <div class="h-32 flex items-center justify-center transform scale-x-125 mb-4">
+                        <span class="font-brand text-xl font-bold text-emerald-deep">TANGERINA</span>
+                    </div>
+                    <h4 class="font-bold text-sm text-charcoal mb-1">Não distorcer</h4>
+                    <p class="text-xs text-charcoal/60">Nunca altere a proporção horizontal ou vertical da assinatura.</p>
+                </div>
+
+                <!-- Don't 2: Unofficial Colors -->
+                <div class="bg-silk-cream p-6 rounded-2xl border border-red-200 shadow-sm relative">
+                    <div class="absolute top-4 right-4 w-7 h-7 rounded-full bg-red-500 text-white flex items-center justify-center text-xs font-bold">
+                        <i class="fa-solid fa-xmark"></i>
+                    </div>
+                    <div class="h-32 flex items-center justify-center mb-4">
+                        <span class="font-brand text-xl font-bold text-purple-600">TANGERINA</span>
+                    </div>
+                    <h4 class="font-bold text-sm text-charcoal mb-1">Cores não oficiais</h4>
+                    <p class="text-xs text-charcoal/60">Jamais utilize gradientes neon, tons magenta, roxos ou azuis fora da paleta.</p>
+                </div>
+
+                <!-- Don't 3: Low Contrast -->
+                <div class="bg-emerald-soft p-6 rounded-2xl border border-red-200 shadow-sm relative">
+                    <div class="absolute top-4 right-4 w-7 h-7 rounded-full bg-red-500 text-white flex items-center justify-center text-xs font-bold">
+                        <i class="fa-solid fa-xmark"></i>
+                    </div>
+                    <div class="h-32 flex items-center justify-center mb-4">
+                        <span class="font-brand text-xl font-bold text-emerald-deep">TANGERINA</span>
+                    </div>
+                    <h4 class="font-bold text-sm text-white mb-1">Sem contraste</h4>
+                    <p class="text-xs text-white/70">Não aplique o texto verde-escuro sobre fundos escuros de baixo contraste.</p>
+                </div>
+
+                <!-- Don't 4: Excessive Shadow -->
+                <div class="bg-silk-cream p-6 rounded-2xl border border-red-200 shadow-sm relative">
+                    <div class="absolute top-4 right-4 w-7 h-7 rounded-full bg-red-500 text-white flex items-center justify-center text-xs font-bold">
+                        <i class="fa-solid fa-xmark"></i>
+                    </div>
+                    <div class="h-32 flex items-center justify-center mb-4">
+                        <span class="font-brand text-xl font-bold text-emerald-deep [text-shadow:_4px_4px_10px_rgb(0_0_0_/_80%)]">TANGERINA</span>
+                    </div>
+                    <h4 class="font-bold text-sm text-charcoal mb-1">Sombras excessivas</h4>
+                    <p class="text-xs text-charcoal/60">Evite drop-shadows pesados ou efeitos 3D desalinhados com a estética de luxo.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 8. Mockup & Aplicação no App (UI Preview Interativo) -->
+    <section id="app-preview" class="py-24 bg-emerald-dark text-silk-white relative overflow-hidden">
+        <!-- Background Glows -->
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gold-primary/10 rounded-full blur-3xl pointer-events-none"></div>
+
+        <div class="max-w-6xl mx-auto px-6 relative z-10">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="text-xs font-bold uppercase tracking-widest text-gold-primary mb-2 block">Capítulo VII</span>
+                <h2 class="font-brand text-4xl md:text-5xl font-bold text-silk-white mb-4">Simulação do App Tangerina</h2>
+                <p class="text-silk-white/70">Experimente como a marca se comporta em tempo real no ecossistema de alta finança digital.</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                <!-- Left Details & App Features -->
+                <div class="lg:col-span-5 space-y-6">
+                    <div class="bg-emerald-deep/80 backdrop-blur-md p-6 rounded-2xl border border-gold-primary/20">
+                        <div class="flex items-center space-x-3 mb-3">
+                            <i class="fa-solid fa-chart-line text-gold-primary text-xl"></i>
+                            <h3 class="font-brand text-2xl font-bold text-silk-white">Private Banking & Wealth</h3>
+                        </div>
+                        <p class="text-xs text-silk-white/70 leading-relaxed">
+                            Controle em tempo real de fundos globais, ativos internacionais e distribuição patrimonial personalizada.
+                        </p>
+                    </div>
+
+                    <div class="bg-emerald-deep/80 backdrop-blur-md p-6 rounded-2xl border border-gold-primary/20">
+                        <div class="flex items-center space-x-3 mb-3">
+                            <i class="fa-solid fa-credit-card text-gold-primary text-xl"></i>
+                            <h3 class="font-brand text-2xl font-bold text-silk-white">Cartões Tangerina Metal</h3>
+                        </div>
+                        <p class="text-xs text-silk-white/70 leading-relaxed">
+                            Emissão de cartões de débito/crédito em titânio maciço banhado a ouro com concierge 24 horas.
+                        </p>
+                    </div>
+
+                    <!-- Theme Switcher Controls for Prototype -->
+                    <div class="p-6 rounded-2xl bg-silk-white/5 border border-gold-primary/30 flex items-center justify-between">
+                        <span class="text-xs font-semibold text-gold-primary uppercase tracking-wider">Modo do Protótipo:</span>
+                        <div class="flex space-x-2">
+                            <button onclick="setAppTheme('dark')" id="btn-theme-dark" class="px-4 py-2 rounded-xl text-xs font-bold bg-gold-primary text-emerald-dark transition-all">Dark Luxury</button>
+                            <button onclick="setAppTheme('light')" id="btn-theme-light" class="px-4 py-2 rounded-xl text-xs font-bold bg-emerald-deep text-silk-white/80 border border-gold-primary/30 hover:text-silk-white transition-all">Light Mode</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right: Smartphone Interactive Mockup -->
+                <div class="lg:col-span-7 flex justify-center">
+                    <!-- iPhone Frame -->
+                    <div class="w-[340px] h-[680px] bg-black rounded-[50px] p-4 shadow-2xl border-4 border-gold-primary/40 relative">
+                        <!-- Camera Notch -->
+                        <div class="absolute top-6 left-1/2 -translate-x-1/2 w-32 h-4 bg-black rounded-full z-30"></div>
+
+                        <!-- Phone Screen -->
+                        <div id="app-screen" class="w-full h-full bg-emerald-deep rounded-[40px] pt-10 px-5 pb-6 flex flex-col justify-between overflow-hidden text-silk-white transition-colors duration-500 relative">
+                            
+                            <!-- Top Status & Header -->
+                            <div>
+                                <div class="flex items-center justify-between mb-6">
+                                    <div class="flex items-center space-x-2">
+                                        <img src="/mobilefaveicon.png" alt="Logo Tangerina" class="w-8 h-8">
+                                    </div>
+                                    <div class="w-8 h-8 rounded-full bg-gold-primary/20 flex items-center justify-center text-xs text-gold-primary">
+                                        <i class="fa-regular fa-bell"></i>
+                                    </div>
+                                </div>
+
+                                <!-- Total Net Worth Card -->
+                                <div class="p-5 rounded-2xl bg-gradient-to-br from-gold-primary/20 to-transparent border border-gold-primary/30 backdrop-blur-sm mb-6">
+                                    <span class="text-[10px] uppercase tracking-widest text-gold-primary font-semibold block mb-1">Patrimônio Consolidado</span>
+                                    <div class="flex items-baseline space-x-1">
+                                        <span class="text-xs text-gold-primary">R$</span>
+                                        <span id="app-balance" class="text-2xl font-bold font-sans">4.892.450,00</span>
+                                    </div>
+                                    <div class="flex items-center justify-between mt-3 text-[11px]">
+                                        <span class="text-emerald-400 font-semibold flex items-center gap-1">
+                                            <i class="fa-solid fa-arrow-trend-up"></i> +R$ 124.500 (3,2%)
+                                        </span>
+                                        <span class="text-silk-white/60">Este mês</span>
+                                    </div>
+                                </div>
+
+                                <!-- Action Quick Buttons -->
+                                <div class="grid grid-cols-4 gap-2 mb-6">
+                                    <button class="p-3 rounded-xl bg-silk-white/5 border border-gold-primary/20 text-center hover:bg-gold-primary/20 transition-all">
+                                        <i class="fa-solid fa-paper-plane text-gold-primary text-sm block mb-1"></i>
+                                        <span class="text-[9px] block text-silk-white/80">Pix</span>
+                                    </button>
+                                    <button class="p-3 rounded-xl bg-silk-white/5 border border-gold-primary/20 text-center hover:bg-gold-primary/20 transition-all">
+                                        <i class="fa-solid fa-chart-pie text-gold-primary text-sm block mb-1"></i>
+                                        <span class="text-[9px] block text-silk-white/80">Investir</span>
+                                    </button>
+                                    <button class="p-3 rounded-xl bg-silk-white/5 border border-gold-primary/20 text-center hover:bg-gold-primary/20 transition-all">
+                                        <i class="fa-solid fa-globe text-gold-primary text-sm block mb-1"></i>
+                                        <span class="text-[9px] block text-silk-white/80">Offshore</span>
+                                    </button>
+                                    <button class="p-3 rounded-xl bg-silk-white/5 border border-gold-primary/20 text-center hover:bg-gold-primary/20 transition-all">
+                                        <i class="fa-solid fa-[#C59B27] fa-ellipsis text-gold-primary text-sm block mb-1"></i>
+                                        <span class="text-[9px] block text-silk-white/80">Mais</span>
+                                    </button>
+                                </div>
+
+                                <!-- Credit Card Visual -->
+                                <div class="relative h-28 rounded-2xl p-4 bg-gradient-to-r from-gold-primary via-gold-light to-gold-dark text-emerald-dark shadow-xl overflow-hidden mb-6 flex flex-col justify-between">
+                                    <div class="flex justify-between items-center">
+                                        <span class="font-brand font-bold text-xs tracking-widest">TANGERINA BLACK</span>
+                                        <i class="fa-solid fa-wifi text-xs"></i>
+                                    </div>
+                                    <div class="flex justify-between items-end">
+                                        <div>
+                                            <span class="text-[10px] block opacity-80 font-mono">•••• •••• •••• 8892</span>
+                                            <span class="text-[10px] font-bold uppercase">HERCULANO SILVA</span>
+                                        </div>
+                                        <span class="font-bold text-xs">PRIVATE</span>
+                                    </div>
+                                </div>
+
+                                <!-- Recent Activity -->
+                                <div>
+                                    <span class="text-xs uppercase tracking-wider text-gold-primary font-semibold block mb-3">Últimas Movimentações</span>
+                                    <div class="space-y-2">
+                                        <div class="p-2.5 rounded-xl bg-silk-white/5 flex items-center justify-between text-xs">
+                                            <div class="flex items-center space-x-3">
+                                                <div class="w-8 h-8 rounded-lg bg-emerald-soft flex items-center justify-center text-gold-primary">
+                                                    <i class="fa-solid fa-building-columns"></i>
+                                                </div>
+                                                <div>
+                                                    <span class="font-semibold block">Dividendos Global Fund</span>
+                                                    <span class="text-[10px] opacity-60">Hoje, 14:20</span>
+                                                </div>
+                                            </div>
+                                            <span class="text-emerald-400 font-bold">+R$ 18.400,00</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Bottom App Bar -->
+                            <div class="pt-3 border-t border-gold-primary/20 flex justify-around text-gold-primary text-xs">
+                                <i class="fa-solid fa-house text-gold-primary"></i>
+                                <i class="fa-solid fa-chart-simple opacity-50"></i>
+                                <i class="fa-solid fa-credit-card opacity-50"></i>
+                                <i class="fa-solid fa-user opacity-50"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-12 bg-silk-white border-t border-gold-primary/20 text-center text-xs text-charcoal/60">
+        <div class="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4">
+            <div class="flex items-center space-x-2">
+                <span class="font-brand font-bold text-lg tracking-widest text-emerald-deep">TANGERINA</span>
+                <span>— Manual de Identidade Visual v1.0</span>
+            </div>
+            <p>© 2026 Tangerina Private Wealth Technologies Inc. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript Interativo -->
+    <script>
+        // Função para copiar código HEX para clipboard
+        function copyToClipboard(text, name) {
+            // ExecCommand Fallback para compatibilidade em Iframe
+            const tempInput = document.createElement("input");
+            tempInput.value = text;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand("copy");
+            document.body.removeChild(tempInput);
+
+            // Mostrar Toast Notification
+            const toast = document.getElementById("toast");
+            const toastMessage = document.getElementById("toast-message");
+            
+            toastMessage.textContent = `Cor ${name} (${text}) copiada!`;
+            toast.classList.remove("translate-y-20", "opacity-0");
+            toast.classList.add("translate-y-0", "opacity-100");
+
+            setTimeout(() => {
+                toast.classList.remove("translate-y-0", "opacity-100");
+                toast.classList.add("translate-y-20", "opacity-0");
+            }, 3000);
+        }
+
+        // Função de alteração do modo/tema na simulação do App
+        function setAppTheme(mode) {
+            const screen = document.getElementById("app-screen");
+            const btnDark = document.getElementById("btn-theme-dark");
+            const btnLight = document.getElementById("btn-theme-light");
+            const logoImg = document.querySelector("#app-screen img[alt='Logo Tangerina']");
+
+
+            if (mode === 'light') {
+                screen.classList.remove("bg-emerald-deep", "text-silk-white");
+                screen.classList.add("bg-silk-white", "text-emerald-deep");
+                btnLight.classList.replace("bg-emerald-deep", "bg-gold-primary");
+                btnLight.classList.replace("text-silk-white/80", "text-emerald-dark");
+                btnDark.classList.replace("bg-gold-primary", "bg-emerald-deep");
+                btnDark.classList.replace("text-emerald-dark", "text-silk-white/80");
+                if (logoImg) {
+                    logoImg.src = "/Principal_Light.png"; // Alterar para a versão clara do logo
+                }
+
+
+            } else {
+                screen.classList.remove("bg-silk-white", "text-emerald-deep");
+                screen.classList.add("bg-emerald-deep", "text-silk-white");
+                btnDark.classList.replace("bg-emerald-deep", "bg-gold-primary");
+                btnDark.classList.replace("text-silk-white/80", "text-emerald-dark");
+                btnLight.classList.replace("bg-gold-primary", "bg-emerald-deep");
+                btnLight.classList.replace("text-emerald-dark", "text-silk-white/80");
+                if (logoImg) {
+                    logoImg.src = "/mobilefaveicon.png"; // Alterar para a versão escura do logo
+                }
+            }
+        }
+    </script>
+</body>
+</html>
