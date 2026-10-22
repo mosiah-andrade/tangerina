@@ -4,7 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light">
-<title>Briefing Técnico — Aplicativo de Gestão Financeira por Caixinhas</title>
+<meta name="theme-color" content="#0B3C2A">
+<meta name="description" content="Briefing técnico do aplicativo Tangerina de gestão financeira por caixinhas.">
+<title>Tangerina — Briefing do Aplicativo Financeiro</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root {
     --navy: #123047;
@@ -111,11 +116,79 @@
     a { text-decoration: none; }
     .footer { padding: 10px; }
   }
+
+  /* Tangerina — identidade visual oficial */
+  :root {
+    --navy: #0B3C2A;
+    --navy-2: #1B523E;
+    --gold: #C59B27;
+    --ink: #1A1A1A;
+    --muted: #626A63;
+    --line: #E2DCCB;
+    --paper: #FDFCF8;
+    --bg: #F9F8F3;
+    --soft: #F3F0E6;
+    --green: #1B523E;
+    --emerald-dark: #06261A;
+    --gold-light: #E5C05B;
+  }
+  body { background: var(--bg); color: var(--ink); font-family: 'Plus Jakarta Sans', sans-serif; }
+  .hero {
+    color: var(--ink);
+    background:
+      radial-gradient(circle at 85% 15%, rgba(197,155,39,.12), transparent 26%),
+      radial-gradient(circle at 8% 90%, rgba(11,60,42,.08), transparent 28%),
+      linear-gradient(135deg, #F9F8F3 0%, #F3F0E6 100%);
+    border-bottom: 4px solid var(--gold);
+    padding-top: 42px;
+  }
+  .hero-inner { max-width: 1180px; }
+  .brand-logo { display: block; width: min(220px, 60vw); max-height: 112px; object-fit: contain; object-position: left center; margin-bottom: 24px; }
+  .eyebrow {
+    color: var(--navy); border-color: rgba(197,155,39,.45);
+    background: rgba(197,155,39,.08); letter-spacing: .12em;
+  }
+  h1, h2, h3, h4, nav strong, .flow-step strong { font-family: 'Cormorant Garamond', Georgia, serif; }
+  h1 { color: var(--navy); font-weight: 700; letter-spacing: -.025em; }
+  .hero p { color: #4F5B53; }
+  .hero-meta span { color: var(--navy); background: rgba(255,255,255,.68); border-color: rgba(197,155,39,.25); border-radius: 999px; }
+  .hero button { background: var(--navy); color: #F9F8F3; border: 1px solid var(--gold); border-radius: 999px; box-shadow: 0 8px 22px rgba(6,38,26,.12); }
+  button { background: var(--gold); color: #06261A; border-radius: 999px; transition: transform .2s ease, filter .2s ease; }
+  button:hover { filter: brightness(1.04); transform: translateY(-1px); }
+  button.secondary { background: transparent; border-color: rgba(197,155,39,.55); color: var(--navy); }
+  a { color: var(--navy-2); }
+  nav { border-color: var(--line); border-radius: 18px; background: rgba(253,252,248,.96); box-shadow: 0 12px 35px rgba(6,38,26,.045); }
+  nav strong { color: var(--navy); font-size: 1.35rem; }
+  nav a { border-color: #EEE9DC; }
+  nav a:hover { color: var(--gold-dark, #9A771C); }
+  section, .intro-card { background: var(--paper); border-color: var(--line); border-radius: 18px; box-shadow: 0 8px 30px rgba(6,38,26,.045); }
+  h2 { color: var(--navy); font-weight: 700; }
+  h3 { color: var(--navy-2); font-weight: 700; }
+  h4 { color: var(--navy); }
+  .card, .flow-step { background: #FAF8F1; border-color: #E8E1D1; border-radius: 14px; }
+  .tag { background: #E2ECE9; color: var(--navy); border-radius: 999px; }
+  .callout { border-left-color: var(--gold); background: #F8F2DF; }
+  .important { border-left-color: var(--navy-2); background: #EAF1ED; }
+  .arrow { color: var(--gold); }
+  .formula { background: linear-gradient(135deg, #0B3C2A, #06261A); border: 1px solid rgba(197,155,39,.45); }
+  th { color: var(--navy); background: #EAF1ED; }
+  tbody tr:nth-child(even) { background: #FAF8F1; }
+  .checklist li::before, .status { color: var(--green); }
+  .footer { color: var(--muted); }
+  ::-webkit-scrollbar-track { background: #F3F0E6; }
+  ::-webkit-scrollbar-thumb { background: #C59B27; }
+  @media (max-width: 560px) {
+    .brand-logo { margin: 0 auto 22px; object-position: center; }
+    .hero { text-align: center; }
+    .hero-meta { justify-content: center; }
+  }
+
 </style>
 </head>
 <body>
 <header class="hero">
   <div class="hero-inner">
+    <img class="brand-logo" src="./imagens/logo_semFundo.svg" alt="Tangerina — identidade visual oficial">
     <span class="eyebrow">Documento-base · MVP · Versão 1.0</span>
     <h1>Aplicativo de Gestão Financeira por Caixinhas</h1>
     <p>Briefing técnico consolidado para orientar a arquitetura, o desenvolvimento, os testes e a validação de um gerenciador financeiro pessoal e empresarial, com distribuição de recebimentos, controle de despesas e vencimentos.</p>
