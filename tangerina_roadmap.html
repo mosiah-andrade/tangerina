@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0B3C2A">
+  <title>Tangerina — Roadmap do Produto</title>
+  <link rel="icon" type="image/svg+xml" href="./imagens/favicon.svg">
+  <link rel="apple-touch-icon" href="./imagens/Principal_icon_semFundo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Cormorant+Garamond:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{--green:#0B3C2A;--green2:#1B523E;--deep:#06261A;--gold:#C59B27;--gold-light:#E5C05B;--paper:#FDFCF8;--bg:#F9F8F3;--soft:#F3F0E6;--ink:#1A1A1A;--muted:#626A63;--line:#E2DCCB;--white:#fff;--radius:18px;--shadow:0 12px 34px rgba(11,60,42,.06)}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.6 "Plus Jakarta Sans",sans-serif}button,input,select{font:inherit}button{cursor:pointer}.shell{max-width:1220px;margin:auto;padding:0 26px}
+    .topbar{background:var(--paper);color:var(--green);border-bottom:1px solid var(--line)}.topbar-inner{min-height:72px;display:flex;align-items:center;justify-content:space-between;gap:18px}.brand{display:flex;align-items:center;gap:12px;color:inherit;text-decoration:none}.brand-mark{width:64px;height:64px;object-fit:contain;display:block;flex:0 0 auto}.brand-name{font-family:"Cormorant Garamond",serif;font-weight:700;font-size:28px;letter-spacing:.2px}.brand-sub{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted)}.top-links{display:flex;gap:18px;align-items:center}.top-links a{font-size:12px;color:var(--green2);text-decoration:none}.top-links a:hover{color:var(--gold)}
+    .hero{padding:58px 0 36px;background:radial-gradient(ellipse at 88% 0%,rgba(197,155,39,.13),transparent 34%),linear-gradient(135deg,var(--paper),var(--bg));border-bottom:1px solid var(--line)}.eyebrow{font-size:11px;letter-spacing:2.2px;text-transform:uppercase;color:var(--green2);font-weight:800;display:flex;align-items:center;gap:9px}.eyebrow:before{content:"";width:24px;height:1px;background:var(--gold)}h1,h2,h3,p{margin-top:0}h1{font:600 clamp(40px,6vw,66px)/.98 "Cormorant Garamond",serif;letter-spacing:-1.2px;color:var(--green);max-width:780px;margin:17px 0}.hero p{max-width:690px;color:var(--muted);font-size:15px}.hero-grid{display:grid;grid-template-columns:1.5fr .8fr;gap:28px;align-items:end}.hero-note{border:1px solid var(--line);background:rgba(255,255,255,.65);border-radius:var(--radius);padding:22px}.hero-note strong{display:block;color:var(--green);font-size:13px;margin-bottom:7px}.hero-note p{font-size:12px;margin:0}.meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}.pill{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:99px;background:var(--soft);border:1px solid var(--line);font-size:11px;color:var(--green);font-weight:700}
+    main{padding:30px 0 70px}.overview{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:28px}.stat{background:var(--paper);border:1px solid var(--line);border-radius:15px;padding:18px 20px;box-shadow:var(--shadow)}.stat-label{font-size:11px;color:var(--muted);font-weight:700}.stat-value{font-size:28px;font-weight:800;color:var(--green);margin:5px 0 2px;letter-spacing:-1px}.stat-note{font-size:10px;color:var(--muted)}.progress-track{height:5px;background:#e8e6dc;border-radius:20px;overflow:hidden;margin-top:10px}.progress-fill{height:100%;width:0;background:var(--gold);transition:width .25s}
+    .section-head{display:flex;align-items:end;justify-content:space-between;gap:20px;margin:34px 0 16px}.section-head h2{font:600 32px/1 "Cormorant Garamond",serif;color:var(--green);margin:0}.section-head p{font-size:12px;color:var(--muted);margin:7px 0 0}.toolbar{display:flex;gap:8px;flex-wrap:wrap}.control{border:1px solid var(--line);background:var(--paper);border-radius:10px;padding:9px 12px;color:var(--ink);font-size:12px}.button{border:1px solid var(--green);background:var(--green);color:white;border-radius:10px;padding:10px 14px;font-weight:700;font-size:12px}.button:hover{background:var(--green2)}.button.secondary{background:transparent;color:var(--green)}.button.gold{background:var(--gold);border-color:var(--gold);color:var(--deep)}
+    .milestones{display:grid;gap:13px}.milestone{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow)}.mile-head{display:grid;grid-template-columns:48px 1fr auto;gap:15px;align-items:center;padding:20px 22px;cursor:pointer}.mile-number{width:43px;height:43px;border-radius:50%;display:grid;place-items:center;border:1px solid #d8c78e;background:#faf5e5;color:var(--green);font-size:12px;font-weight:800}.mile-title{font-size:15px;font-weight:800;color:var(--green);margin:0 0 4px}.mile-desc{font-size:12px;color:var(--muted);margin:0}.mile-side{display:flex;align-items:center;gap:15px}.mile-count{font-size:11px;color:var(--muted);white-space:nowrap}.status{font-size:10px;font-weight:800;letter-spacing:.4px;padding:5px 8px;border-radius:99px;white-space:nowrap;background:var(--soft);color:var(--muted)}.status.in-progress{background:#e4eee8;color:var(--green)}.status.done{background:var(--green);color:white}.chevron{color:var(--gold);font-size:18px;transition:transform .2s}.milestone.open .chevron{transform:rotate(180deg)}.mile-body{display:none;padding:0 22px 22px 85px}.milestone.open .mile-body{display:block}.mile-outcome{font-size:11px;color:var(--green);background:#f5f3e9;padding:10px 12px;border-radius:9px;margin-bottom:12px}.task-list{display:grid;gap:6px}.task{display:grid;grid-template-columns:20px 1fr auto;align-items:start;gap:10px;padding:11px 12px;border:1px solid #ece9df;border-radius:10px;background:white}.task input{accent-color:var(--green);width:15px;height:15px;margin-top:4px}.task-title{font-size:12px;font-weight:700}.task-detail{font-size:11px;color:var(--muted);margin-top:3px}.task.done .task-title{text-decoration:line-through;color:#858b84}.task-meta{font-size:10px;color:var(--muted);text-align:right;white-space:nowrap}.tag{display:inline-block;padding:3px 6px;border-radius:5px;background:var(--soft);font-size:9px;font-weight:800;color:var(--green);margin-top:4px}
+    .planning-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.panel{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);padding:22px}.panel h3{font:600 25px "Cormorant Garamond",serif;color:var(--green);margin-bottom:12px}.panel p,.panel li{font-size:12px;color:var(--muted)}.panel ul{padding-left:18px;margin-bottom:0}.panel li{margin:7px 0}.weeks{display:grid;gap:12px}.week{display:grid;grid-template-columns:78px 1fr;gap:12px}.week-label{font-size:11px;font-weight:800;color:var(--green);padding-top:2px}.week-text{border-left:2px solid var(--gold);padding-left:13px;font-size:12px;color:var(--muted)}.week-text strong{display:block;color:var(--ink);font-size:12px;margin-bottom:3px}
+    .risk-list{display:grid;gap:10px}.risk{display:grid;grid-template-columns:8px 1fr;gap:10px}.risk:before{content:"";width:6px;height:6px;border-radius:50%;background:var(--gold);margin-top:7px}.risk strong{display:block;font-size:12px;color:var(--ink)}.risk span{display:block;font-size:11px;color:var(--muted);margin-top:2px}.footer{border-top:1px solid var(--line);padding:22px 0 34px;color:var(--muted);font-size:11px}.footer-inner{display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap}.footer strong{color:var(--green)}.empty{padding:25px;text-align:center;color:var(--muted);font-size:12px}.small-note{font-size:10px;color:var(--muted);margin-top:10px}
+    @media(max-width:760px){.shell{padding:0 16px}.topbar-inner{padding-top:12px;padding-bottom:12px;align-items:flex-start}.top-links{display:none}.hero{padding-top:38px}.hero-grid{grid-template-columns:1fr}.hero-note{max-width:none}.overview{grid-template-columns:repeat(2,1fr)}.stat{padding:15px}.stat-value{font-size:24px}.section-head{align-items:flex-start;flex-direction:column}.mile-head{grid-template-columns:38px 1fr auto;padding:15px;gap:10px}.mile-number{width:36px;height:36px}.mile-side{gap:7px}.mile-count{display:none}.mile-body{padding:0 15px 17px}.planning-grid{grid-template-columns:1fr}.task{grid-template-columns:18px 1fr}.task-meta{grid-column:2;text-align:left}.status{display:none}.brand-name{font-size:25px}.brand-mark{width:58px;height:58px}}
+    @media print{.topbar{background:white;color:var(--green);border-bottom:1px solid #ccc}.top-links,.toolbar,.button{display:none!important}.hero{padding:25px 0}.milestone,.panel,.stat{break-inside:avoid;box-shadow:none}.mile-body{display:block!important}.milestone .chevron{display:none}body{background:white}.shell{max-width:none;padding:0 10px}}
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="shell topbar-inner">
+      <a class="brand" href="#">
+        <img class="brand-mark" src="./imagens/logo_semFundo.svg" alt="Logo Tangerina" onerror="this.onerror=null;this.src='https://mosiah-andrade.github.io/tangerina/imagens/logo_semFundo.svg'">
+        <span><span class="brand-sub">Product roadmap · v1.0</span><br><span class="brand-sub">Planejamento do MVP</span></span>
+      </a>
+      <nav class="top-links" aria-label="Navegação principal">
+        <a href="#roadmap">Milestones</a><a href="#planejamento">Planejamento</a><a href="#riscos">Riscos</a>
+        <a href="https://github.com/mosiah-andrade/tangerina" target="_blank" rel="noreferrer">Repositório ↗</a>
+      </nav>
+    </div>
+  </header>
+  <section class="hero">
+    <div class="shell hero-grid">
+      <div>
+        <div class="eyebrow">Plano de execução · Solo developer</div>
+        <h1>Do primeiro commit<br>ao primeiro saldo confiável.</h1>
+        <p>Um plano incremental para construir o MVP do Tangerina com foco em segurança dos dados, regras financeiras consistentes e entregas pequenas que possam ser testadas a cada etapa.</p>
+        <div class="meta"><span class="pill">◈ 1 desenvolvedor</span><span class="pill">◷ 10–14 semanas estimadas</span><span class="pill">◇ MVP offline-first</span><span class="pill">R$ · pt-BR</span></div>
+      </div>
+      <aside class="hero-note">
+        <strong>Princípio do projeto</strong>
+        <p>Primeiro garantir que cada lançamento, transferência e saldo esteja correto. Depois ampliar relatórios, conveniência e acabamento. O prazo é uma estimativa para trabalho parcial/solo, não uma promessa; ajuste conforme sua disponibilidade e aprendizado.</p>
+      </aside>
+    </div>
+  </section>
+  <main class="shell">
+    <section class="overview" aria-label="Resumo do progresso">
+      <div class="stat"><div class="stat-label">Progresso geral</div><div class="stat-value" id="progressPercent">0%</div><div class="stat-note" id="progressCaption">0 de 0 tasks concluídas</div><div class="progress-track"><div class="progress-fill" id="progressBar"></div></div></div>
+      <div class="stat"><div class="stat-label">Milestones</div><div class="stat-value" id="mileDone">0/8</div><div class="stat-note">Etapas concluídas</div></div>
+      <div class="stat"><div class="stat-label">Esforço planejado</div><div class="stat-value" id="totalHours">~180h</div><div class="stat-note">Estimativa inicial, pode variar</div></div>
+      <div class="stat"><div class="stat-label">Próxima ação</div><div class="stat-value" style="font-size:19px" id="nextTask">M1 · T1</div><div class="stat-note" id="nextTaskName">Validar escopo e prioridades</div></div>
+    </section>
+
+    <section id="roadmap">
+      <div class="section-head">
+        <div><h2>Milestones & tasks</h2><p>Marque as tarefas conforme concluir. O progresso fica salvo neste navegador.</p></div>
+        <div class="toolbar">
+          <select class="control" id="filterStatus" aria-label="Filtrar tarefas"><option value="all">Todas as tasks</option><option value="pending">Pendentes</option><option value="done">Concluídas</option></select>
+          <button class="button secondary" id="expandAll">Expandir etapas</button>
+          <button class="button secondary" id="resetProgress">Zerar progresso</button>
+        </div>
+      </div>
+      <div class="milestones" id="milestones"></div>
+      <p class="small-note">Estimativas incluem desenvolvimento e testes básicos, não incluem tempo de espera, pesquisa extensa, suporte ou funcionalidades fora do MVP. Status e progresso são armazenados no localStorage deste navegador.</p>
+    </section>
+
+    <section id="planejamento">
+      <div class="section-head"><div><h2>Como executar sozinho</h2><p>Trabalhe em fatias verticais: uma funcionalidade utilizável por vez.</p></div></div>
+      <div class="planning-grid">
+        <article class="panel">
+          <h3>Sequência sugerida</h3>
+          <div class="weeks">
+            <div class="week"><div class="week-label">Semanas 1–2</div><div class="week-text"><strong>Descoberta e fundação</strong>Fechar escopo, mapear regras monetárias, definir arquitetura, configurar projeto, Git e testes.</div></div>
+            <div class="week"><div class="week-label">Semanas 3–4</div><div class="week-text"><strong>Base financeira</strong>Modelos, persistência local, contas bancárias, caixinhas e cálculos de saldo.</div></div>
+            <div class="week"><div class="week-label">Semanas 5–7</div><div class="week-text"><strong>Fluxo principal</strong>Receitas, regras de distribuição, despesas, transferências e validações.</div></div>
+            <div class="week"><div class="week-label">Semanas 8–9</div><div class="week-text"><strong>Rotina financeira</strong>Contas a pagar, recorrência, metas e histórico.</div></div>
+            <div class="week"><div class="week-label">Semanas 10–11</div><div class="week-text"><strong>Confiança e visibilidade</strong>Conciliação, relatórios, importação/exportação e recuperação.</div></div>
+            <div class="week"><div class="week-label">Semanas 12–14</div><div class="week-text"><strong>Polimento e release</strong>Acessibilidade, responsividade, testes reais, PWA, documentação e publicação.</div></div>
+          </div>
+          <p class="small-note">Premissa: cerca de 12–16 horas focadas por semana. Com dedicação integral, algumas etapas podem encurtar; com poucas horas livres, estenda o calendário sem comprimir os testes.</p>
+        </article>
+        <article class="panel">
+          <h3>Definição de pronto</h3>
+          <ul>
+            <li>Fluxo principal testado manualmente e com testes automatizados nas regras críticas.</li>
+            <li>Valores monetários armazenados em centavos inteiros; nenhum arredondamento silencioso.</li>
+            <li>Estados vazios, erros, confirmações e cancelamentos tratados.</li>
+            <li>Dados persistem após recarregar e há exportação/backup testado antes do release.</li>
+            <li>Layout funcional em celular e desktop, com teclado e foco visível.</li>
+            <li>README atualizado com instalação, limitações, decisões e instruções de recuperação.</li>
+            <li>Uma task só é concluída quando o critério de aceite dela for atendido, não apenas quando o código compilar.</li>
+          </ul>
+        </article>
+        <article class="panel" id="riscos">
+          <h3>Riscos a controlar cedo</h3>
+          <div class="risk-list">
+            <div class="risk"><div><strong>Perda de dados locais</strong><span>Deixar claro que não há sincronização na nuvem; implementar exportação/importação e testar restauração antes de lançar.</span></div></div>
+            <div class="risk"><div><strong>Dupla contagem de saldo</strong><span>Caixinhas são divisões virtuais do dinheiro bancário, não ativos adicionais. Transferências internas não são receitas/despesas.</span></div></div>
+            <div class="risk"><div><strong>Escopo crescendo</strong><span>Não incluir login, multiusuário, Open Finance ou sincronização no MVP sem replanejar prazo e arquitetura.</span></div></div>
+            <div class="risk"><div><strong>Recorrências e arredondamento</strong><span>Definir previamente datas como dia 31, base e ordem de regras percentuais, centavos e saldos insuficientes.</span></div></div>
+            <div class="risk"><div><strong>Dependência de dispositivo</strong><span>Offline/PWA deve ser testado em navegador e celular reais; cache não substitui backup e restauração.</span></div></div>
+          </div>
+        </article>
+        <article class="panel">
+          <h3>Fora do MVP</h3>
+          <p>Para manter o projeto viável para uma pessoa, deixar explicitamente para depois:</p>
+          <ul>
+            <li>Login, contas de usuário e sincronização entre dispositivos.</li>
+            <li>Integração bancária/Open Finance e importação automática de extratos.</li>
+            <li>Notificações push e automações em segundo plano.</li>
+            <li>Contabilidade avançada, impostos e funcionalidades fiscais.</li>
+            <li>Planos pagos, assinaturas, múltiplos usuários e painel administrativo.</li>
+          </ul>
+          <p class="small-note">Reavalie esses itens após usar o MVP com dados fictícios e validar a experiência básica.</p>
+        </article>
+      </div>
+    </section>
+  </main>
+  <footer class="footer"><div class="shell footer-inner"><span><strong>Tangerina</strong> · Planejamento de produto v1.0</span><span>Documento vivo · estimativas revisáveis · desenvolvido por uma pessoa</span></div></footer>
+<script>
+const milestones = [
+ {id:"M1",title:"Escopo e decisões do produto",desc:"Transformar o briefing em requisitos verificáveis antes de codificar.",weeks:"Semana 1",hours:12,outcome:"Saída: escopo do MVP fechado, regras financeiras documentadas e backlog priorizado.",tasks:[
+  ["T1","Validar escopo do MVP","Confirmar funcionalidades essenciais, exclusões e público inicial.","Produto",2],
+  ["T2","Definir regras de negócio financeiras","Documentar saldo bancário, caixinhas, saldo não alocado, transferências, despesas e insuficiência de saldo.","Produto",3],
+  ["T3","Definir critérios de aceitação e casos-limite","Incluir centavos, percentuais, recorrência no dia 31, cancelamentos e dados vazios.","Qualidade",3],
+  ["T4","Desenhar mapa de navegação e fluxos","Mapear Home, Receitas, Caixinhas, Despesas, Contas, Metas, Histórico e Configurações.","UX",2],
+  ["T5","Priorizar backlog e registrar decisões","Criar README inicial, decisões arquiteturais e lista explícita do que não será feito.","Documentação",2]
+ ]},
+ {id:"M2",title:"Fundação técnica e interface",desc:"Preparar o projeto para crescer sem complicar a manutenção solo.",weeks:"Semanas 1–2",hours:20,outcome:"Saída: aplicação executando, estrutura consistente, identidade aplicada e validação básica automatizada.",tasks:[
+  ["T6","Escolher e registrar a stack","Confirmar framework, linguagem, estratégia de armazenamento e compatibilidade com GitHub Pages/hosting pretendido.","Arquitetura",3],
+  ["T7","Configurar repositório e ambiente","Scripts, lint/format, variáveis de ambiente se necessárias, branch principal e commits pequenos.","Infra",3],
+  ["T8","Criar estrutura de pastas e rotas","Separar componentes, páginas, domínio financeiro, persistência e utilitários.","Arquitetura",3],
+  ["T9","Implementar tokens da identidade Tangerina","Cores, tipografia, espaçamentos, botões, inputs, cards e estados de foco.","UI",4],
+  ["T10","Construir layout responsivo base","Navegação, cabeçalho/sidebar conforme dispositivo, área de conteúdo e estados vazios.","UI",4],
+  ["T11","Configurar testes e checagens","Teste de unidade inicial, build, lint e checklist de verificação manual.","Qualidade",3]
+ ]},
+ {id:"M3",title:"Modelo de dados e persistência local",desc:"Construir a base confiável para todo lançamento financeiro.",weeks:"Semanas 3–4",hours:25,outcome:"Saída: dados estruturados, salvos localmente e recuperados após recarregar.",tasks:[
+  ["T12","Modelar entidades e identificadores","Contas bancárias, caixinhas, receitas, despesas, transferências, regras, contas a pagar e metas.","Dados",4],
+  ["T13","Criar utilitários monetários","Armazenar valores em centavos inteiros; validar entradas e formatar BRL sem cálculos com ponto flutuante.","Financeiro",4],
+  ["T14","Implementar camada de persistência","CRUD, versionamento do schema e tratamento de dados ausentes/corrompidos.","Dados",5],
+  ["T15","Criar dados de demonstração e reset seguro","Permitir iniciar com dados fictícios e limpar ambiente de demonstração com confirmação.","DevEx",2],
+  ["T16","Implementar contas bancárias","Cadastro, edição, saldo inicial e visualização do saldo registrado por conta.","Funcionalidade",4],
+  ["T17","Implementar caixinhas","Criar, editar, arquivar e definir saldo inicial sem duplicar o patrimônio total.","Funcionalidade",4],
+  ["T18","Testar persistência e cálculos-base","Recarregar, editar e excluir dados; conferir saldo consolidado e saldo não alocado.","Qualidade",2]
+ ]},
+ {id:"M4",title:"Receitas e distribuição por caixinhas",desc:"Entregar o fluxo central que diferencia o Tangerina.",weeks:"Semanas 5–6",hours:28,outcome:"Saída: registrar uma receita, sugerir distribuição, revisar e confirmar sem perda de valores.",tasks:[
+  ["T19","Criar cadastro de regras de distribuição","Regras fixas e percentuais, ordem, ativação e base de cálculo explícita.","Financeiro",5],
+  ["T20","Implementar motor de distribuição","Calcular sugestões em centavos, respeitar ordem/base e sinalizar excesso ou saldo restante.","Financeiro",6],
+  ["T21","Criar formulário de receita","Valor, descrição, data, conta bancária e validações amigáveis.","UI",4],
+  ["T22","Construir etapa de revisão da distribuição","Editar sugestões, mostrar distribuído e não alocado e impedir confirmação inconsistente.","UI",4],
+  ["T23","Confirmar e persistir receita e alocações","Salvar operação de forma consistente; evitar duplicidade em duplo clique/retentativa.","Funcionalidade",3],
+  ["T24","Permitir alocação manual e exceção pontual","Alteração de uma receita não modifica as regras padrão salvas.","Funcionalidade",2],
+  ["T25","Testar cenários de distribuição","100%, menos de 100%, mais de 100%, valores pequenos, regra fixa, alteração e cancelamento.","Qualidade",4]
+ ]},
+ {id:"M5",title:"Despesas e transferências",desc:"Manter o histórico e os saldos coerentes em todos os movimentos.",weeks:"Semanas 6–7",hours:24,outcome:"Saída: despesas e transferências afetam os saldos corretos e não contam como receita indevida.",tasks:[
+  ["T26","Criar fluxo de registro de despesa","Valor, categoria/descrição, data, conta bancária e caixinha de origem.","Funcionalidade",4],
+  ["T27","Definir tratamento de saldo insuficiente","Solicitar decisão explícita: permitir negativo ou registrar diferença pendente; nunca ajustar silenciosamente.","Financeiro",3],
+  ["T28","Implementar transferências entre caixinhas","Alterar apenas alocações virtuais; não gerar receita ou despesa consolidada.","Financeiro",4],
+  ["T29","Implementar transferências entre contas bancárias","Reduzir origem e aumentar destino sem alterar receita/despesa consolidada.","Financeiro",4],
+  ["T30","Criar histórico unificado de movimentos","Tipos, datas, valores, descrições, detalhes e ações permitidas com confirmação.","UI",4],
+  ["T31","Testar invariantes de saldo","Comparar saldos antes/depois de despesas, transferências, edição e cancelamento.","Qualidade",5]
+ ]},
+ {id:"M6",title:"Contas a pagar, recorrências e metas",desc:"Apoiar planejamento financeiro sem automatizações arriscadas.",weeks:"Semanas 8–9",hours:24,outcome:"Saída: compromissos futuros e metas visíveis, com baixa manual e histórico preservado.",tasks:[
+  ["T32","Criar cadastro de contas a pagar","Valor, descrição, vencimento, categoria e status pendente/pago/cancelado.","Funcionalidade",4],
+  ["T33","Implementar recorrência","Semanal, mensal, anual e personalizada; definir regra para meses sem o dia escolhido.","Financeiro",5],
+  ["T34","Criar visão de vencimentos","Próximas contas, vencidas e próximas; lembretes visuais, sem push no MVP.","UI",3],
+  ["T35","Implementar confirmação manual de pagamento","Pagamento só altera estado e saldos quando confirmado; evitar duplicar despesa.","Financeiro",4],
+  ["T36","Implementar metas financeiras","Valor-alvo, prazo opcional, caixinha associada e progresso baseado em saldo ou aportes — escolha explícita.","Funcionalidade",4],
+  ["T37","Testar recorrência, metas e histórico","Dia 29/30/31, ano bissexto, pagamento cancelado e cálculo de progresso.","Qualidade",4]
+ ]},
+ {id:"M7",title:"Conciliação, relatórios e portabilidade",desc:"Ajudar a conferir números e proteger o usuário contra perda de dados.",weeks:"Semanas 10–11",hours:25,outcome:"Saída: conferir saldos, entender movimentações e exportar/importar dados com segurança.",tasks:[
+  ["T38","Criar conciliação manual","Informar saldo observado, comparar com saldo registrado e registrar ajuste com justificativa.","Financeiro",4],
+  ["T39","Criar painel e indicadores essenciais","Entradas, saídas, saldo bancário, valor alocado e não alocado sem dupla contagem.","Relatórios",4],
+  ["T40","Implementar filtros e consultas","Período, conta, caixinha, tipo de movimento e busca textual.","Funcionalidade",4],
+  ["T41","Criar relatórios simples","Resumo por período, categorias e movimentação por caixinha; sem prometer contabilidade formal.","Relatórios",4],
+  ["T42","Implementar exportação de dados","Formato documentado, data/hora, versão do schema e aviso sobre dados sensíveis.","Dados",3],
+  ["T43","Implementar importação validada","Validar formato, mostrar prévia, evitar duplicidade e oferecer cancelamento antes de substituir dados.","Dados",4],
+  ["T44","Testar restauração de backup","Exportar, limpar ambiente de teste e restaurar; verificar contagens e saldos.","Qualidade",2]
+ ]},
+ {id:"M8",title:"Qualidade, PWA e lançamento do MVP",desc:"Preparar uma versão que possa ser usada e avaliada com segurança.",weeks:"Semanas 12–14",hours:22,outcome:"Saída: MVP publicado, documentado, testado em dispositivos reais e com limitações transparentes.",tasks:[
+  ["T45","Revisar acessibilidade e responsividade","Teclado, foco visível, labels, contraste, mensagens de erro e telas pequenas.","Qualidade",3],
+  ["T46","Implementar e validar comportamento offline/PWA","Manifest, ícones, estratégia de cache e atualização; verificar limites do navegador escolhido.","PWA",4],
+  ["T47","Revisar privacidade e proteção local","Aviso claro sobre dados locais, exportação, uso em dispositivo compartilhado e ausência de sincronização.","Segurança",2],
+  ["T48","Executar testes ponta a ponta do MVP","Fluxo: configurar conta → receber → distribuir → gastar → transferir → conciliar → exportar/importar.","Qualidade",4],
+  ["T49","Corrigir bugs e revisar experiência","Priorizar bloqueadores, inconsistências financeiras, erros de persistência e problemas móveis.","Qualidade",4],
+  ["T50","Documentar instalação, uso e limitações","README, decisões conhecidas, backup/restauração e funcionalidades fora do MVP.","Documentação",2],
+  ["T51","Publicar e validar release","Build de produção, smoke test no link publicado e checklist final de lançamento.","Release",3]
+ ]}
+];
+const STORAGE_KEY="tangerina-roadmap-v1";
+let completed = {};
+try { completed = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}") || {}; } catch(e) { completed = {}; }
+const allTasks = () => milestones.flatMap(m => m.tasks.map(t => ({m,t})));
+function save(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(completed));}catch(e){}}
+function render(){
+ const filter=document.getElementById("filterStatus").value;
+ const root=document.getElementById("milestones");
+ root.innerHTML="";
+ milestones.forEach((m,index)=>{
+  const tasks=m.tasks.filter(t=>filter==="all"||(filter==="done"?!!completed[t[0]]:!completed[t[0]]));
+  if(!tasks.length && filter!=="all") return;
+  const done=m.tasks.filter(t=>completed[t[0]]).length;
+  const isDone=done===m.tasks.length;
+  const el=document.createElement("article");el.className="milestone"+(index===0||m.tasks.some(t=>!completed[t[0]])&&index===milestones.findIndex(x=>x.tasks.some(t=>!completed[t[0]]))?" open":"");el.id=m.id;
+  const status=isDone?"Concluído":done?"Em andamento":"Pendente";
+  const statusClass=isDone?"done":done?"in-progress":"";
+  el.innerHTML=`<div class="mile-head" role="button" tabindex="0" aria-expanded="${el.classList.contains("open")}">
+    <div class="mile-number">${m.id}</div><div><div class="mile-title">${m.title}</div><p class="mile-desc">${m.desc}</p><div class="progress-track"><div class="progress-fill" style="width:${done/m.tasks.length*100}%"></div></div></div>
+    <div class="mile-side"><span class="status ${statusClass}">${status}</span><span class="mile-count">${done}/${m.tasks.length} · ${m.hours}h</span><span class="chevron">⌄</span></div></div>
+    <div class="mile-body"><div class="mile-outcome"><strong>Entrega:</strong> ${m.outcome}<br><strong>Janela:</strong> ${m.weeks}</div><div class="task-list"></div></div>`;
+  const head=el.querySelector(".mile-head");const toggle=()=>{el.classList.toggle("open");head.setAttribute("aria-expanded",el.classList.contains("open"));};head.addEventListener("click",toggle);head.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();toggle();}});
+  const list=el.querySelector(".task-list");
+  tasks.forEach(t=>{
+   const task=document.createElement("label");task.className="task"+(completed[t[0]]?" done":"");
+   task.innerHTML=`<input type="checkbox" ${completed[t[0]]?"checked":""} aria-label="Concluir ${t[1]}"><span><span class="task-title">${t[0]} · ${t[1]}</span><div class="task-detail">${t[2]}</div><span class="tag">${t[3]}</span></span><span class="task-meta">${t[4]}h estimadas</span>`;
+   task.querySelector("input").addEventListener("change",e=>{completed[t[0]]=e.target.checked;save();render();});
+   list.appendChild(task);
+  });
+  root.appendChild(el);
+ });
+ updateStats();
+}
+function updateStats(){
+ const tasks=allTasks();const done=tasks.filter(x=>completed[x.t[0]]).length;const percent=Math.round(done/tasks.length*100);
+ document.getElementById("progressPercent").textContent=percent+"%";document.getElementById("progressCaption").textContent=`${done} de ${tasks.length} tasks concluídas`;document.getElementById("progressBar").style.width=percent+"%";
+ const doneM=milestones.filter(m=>m.tasks.every(t=>completed[t[0]])).length;document.getElementById("mileDone").textContent=`${doneM}/${milestones.length}`;
+ const hours=tasks.reduce((s,x)=>s+x.t[4],0);document.getElementById("totalHours").textContent="~"+hours+"h";
+ const next=tasks.find(x=>!completed[x.t[0]]);document.getElementById("nextTask").textContent=next?`${next.m.id} · ${next.t[0]}`:"Tudo concluído";document.getElementById("nextTaskName").textContent=next?next.t[1]:"MVP planejado concluído";
+}
+document.getElementById("filterStatus").addEventListener("change",render);
+document.getElementById("expandAll").addEventListener("click",()=>{const items=[...document.querySelectorAll(".milestone")];const expand=items.some(x=>!x.classList.contains("open"));items.forEach(x=>{x.classList.toggle("open",expand);x.querySelector(".mile-head").setAttribute("aria-expanded",expand);});document.getElementById("expandAll").textContent=expand?"Recolher etapas":"Expandir etapas";});
+document.getElementById("resetProgress").addEventListener("click",()=>{if(confirm("Tem certeza de que deseja zerar todas as tarefas concluídas neste navegador?")){completed={};save();render();}});
+render();
+</script>
+</body>
+</html>
