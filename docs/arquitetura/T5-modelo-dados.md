@@ -4,7 +4,7 @@
 **Etapa:** M1 — Escopo e decisões do produto  
 **Tarefa:** T5 — Definir o modelo de dados (DER)  
 **Versão:** 1.0  
-**Status:** Proposta técnica documentada; decisões explicitamente pendentes permanecem abertas  
+**Status:** Modelo de dados aprovado documentalmente; implementação e testes ainda pendentes  
 **Base:** T1, T2, T3, T4 e ADR-001 aprovado
 
 > Este documento define uma proposta de estrutura de dados para orientar a implementação. Não significa que o banco ou as funcionalidades já estejam implementados. Regras já aprovadas em T2 são requisitos; pontos marcados como pendentes precisam de decisão antes de serem tratados como comportamento definitivo.
@@ -133,7 +133,7 @@ Exemplos:
 - Transferência entre caixinhas: −valor na caixinha de origem e +valor na de destino, sem efeito em contas.
 - Ajustes de conciliação precisam de justificativa e de efeitos explícitos; não reescrevem movimentos antigos.
 
-**Atenção:** antes de implementar, confirmar se o modelo de efeitos explícitos será adotado ou se os efeitos serão derivados diretamente do tipo de movimento. Não manter simultaneamente duas fontes independentes de saldo.
+**Decisão aprovada na revisão da T5:** adotar um movimento canônico com efeitos de saldo explícitos. Os efeitos serão a representação persistida dos impactos financeiros; os saldos exibidos serão derivados deles e dos saldos iniciais, sem uma segunda fonte independente de verdade.
 
 ### 3.5. Alocacao
 
@@ -205,9 +205,9 @@ Separar a regra de recorrência das ocorrências individuais evita que uma alter
 | movimentoPagamentoId | string opcional | Referência ao movimento se pagamento gerar um |
 | createdAt, updatedAt | timestamp | Datas técnicas |
 
-O CA08 de T3 diz que confirmar manualmente o pagamento não deve lançar automaticamente uma segunda despesa nem descontar a conta novamente. Portanto, o modelo deve guardar a referência ao movimento, se houver, e a implementação deve evitar efeitos duplicados. A ligação exata entre “marcar paga” e “registrar despesa” requer definição de fluxo antes da codificação.
+O CA08 de T3 diz que confirmar manualmente o pagamento não deve lançar automaticamente uma segunda despesa nem descontar a conta novamente. **Decisão aprovada:** marcar a ocorrência como paga deve permitir associar um movimento de despesa existente ou registrar explicitamente uma nova despesa pelo fluxo de pagamento. A simples mudança de status nunca cria efeitos financeiros por conta própria. A associação deve impedir que o mesmo pagamento seja contabilizado duas vezes.
 
-**Dia 31:** T3 exige recorrência no dia 31, mas não define de forma explícita como tratar meses mais curtos. Não assumir silenciosamente uma regra. Proposta a confirmar: gerar a ocorrência no último dia do mês quando o dia 31 não existir, mantendo a regra original com diaVencimento=31 e chave de ocorrência por mês. Até confirmação, registrar isso como decisão pendente.
+**Dia 31 — decisão aprovada:** quando o mês não possuir o dia de vencimento solicitado, gerar a ocorrência no último dia desse mês. A regra original mantém diaVencimento=31; a chave de ocorrência é única por regra e período, impedindo geração duplicada.
 
 ### 3.8. Meta e AporteMeta
 
@@ -234,7 +234,7 @@ O CA08 de T3 diz que confirmar manualmente o pagamento não deve lançar automat
 | valorCentavos | integer não negativo | Valor do aporte |
 | data | data | Data do aporte |
 
-T3 permite progresso por saldo atual ou por aportes acumulados. A origem do aporte e a prevenção de dupla contagem devem ser especificadas no fluxo de metas antes da implementação.
+T3 permite progresso por saldo atual ou por aportes acumulados. **Decisão aprovada:** cada aporte acumulado deve ter origem identificável e ser associado a um movimento quando derivar de uma movimentação financeira. O mesmo valor não pode ser contado simultaneamente como aporte manual e aporte originado do movimento. No modo saldo atual, o progresso é derivado do saldo da caixinha vinculada, quando houver.
 
 ### 3.9. Auditoria
 
@@ -298,7 +298,7 @@ A restauração precisa validar:
 - coerência dos efeitos financeiros;
 - compatibilidade de migração.
 
-**Decisão pendente:** definir se a restauração do MVP sempre substitui todos os dados locais ou se haverá opção de mesclar. Não implementar mesclagem sem regra explícita de conflito e deduplicação. Qualquer substituição deve exigir confirmação clara e ocorrer de forma atômica.
+**Decisão aprovada:** no MVP, restaurar um backup substitui integralmente os dados locais atuais, após confirmação clara do usuário e validação completa do arquivo. A substituição deve ser atômica: se a validação ou gravação falhar, os dados atuais devem permanecer intactos. Mesclagem de backups fica fora do escopo do MVP.
 
 ## 7. Estrutura sugerida de tipos TypeScript
 
@@ -358,24 +358,26 @@ As propostas abaixo não alteram decisões aprovadas de T2; elas detalham como i
 
 | ID | Questão | Proposta técnica | Estado |
 |---|---|---|---|
-| T5-D01 | Como representar os efeitos dos movimentos? | Movimento canônico + efeitos de saldo explícitos, sem segunda fonte de verdade | Proposta; confirmar antes da implementação |
-| T5-D02 | Regra de vencimento no dia 31 em meses curtos | Ocorrência no último dia do mês, mantendo dia 31 na regra | Pendente de confirmação |
-| T5-D03 | Marcar conta a pagar como paga | Definir se a ação exige criar/selecionar movimento ou apenas altera status | Pendente de definição do fluxo |
-| T5-D04 | Restauração de backup | Substituição total como comportamento inicial mais simples, com confirmação e transação atômica | Proposta; confirmar |
-| T5-D05 | Progresso de meta por aportes | Definir origem dos aportes e como evitar dupla contagem | Pendente de definição do fluxo |
-| T5-D06 | Várias carteiras físicas | Manter uma carteira padrão no MVP, salvo necessidade aprovada | Proposta |
+| T5-D01 | Como representar os efeitos dos movimentos? | Movimento canônico + efeitos de saldo explícitos; saldos derivados sem segunda fonte de verdade | **Aprovada** |
+| T5-D02 | Regra de vencimento no dia 31 em meses curtos | Gerar no último dia do mês quando o dia 31 não existir; preservar dia 31 na regra | **Aprovada** |
+| T5-D03 | Marcar conta a pagar como paga | Associar despesa existente ou registrar despesa explicitamente; mudar status sozinho não cria efeito financeiro | **Aprovada** |
+| T5-D04 | Restauração de backup | Substituir todos os dados locais após confirmação e validação, com operação atômica; sem mesclagem no MVP | **Aprovada** |
+| T5-D05 | Progresso de meta por aportes | Associar aporte a movimento quando aplicável e impedir contagem dupla; modo saldo atual deriva da caixinha vinculada | **Aprovada** |
+| T5-D06 | Várias carteiras físicas | Uma carteira física padrão no MVP | **Aprovada** |
 
 ## 9. Critérios de conclusão do T5
 
-- [ ] Entidades principais, atributos e relações estão documentados.
-- [ ] O modelo distingue conta bancária, carteira física e caixinha global.
-- [ ] Transferências e saques não geram receitas/despesas fictícias.
-- [ ] Receita, despesa e alocações não duplicam efeitos financeiros.
-- [ ] Valores monetários são persistidos em centavos inteiros.
-- [ ] Edição, cancelamento, auditoria e idempotência possuem estratégia documentada.
-- [ ] Recorrências preservam ocorrências antigas e impedem duplicidade.
-- [ ] Backup, restauração e migrações são considerados.
-- [ ] Decisões ainda abertas estão claramente identificadas e não são tratadas como aprovadas.
+- [x] Entidades principais, atributos e relações estão documentados.
+- [x] O modelo distingue conta bancária, carteira física e caixinha global.
+- [x] Transferências e saques não geram receitas/despesas fictícias.
+- [x] Receita, despesa e alocações não duplicam efeitos financeiros.
+- [x] Valores monetários são persistidos em centavos inteiros.
+- [x] Edição, cancelamento, auditoria e idempotência possuem estratégia documentada.
+- [x] Recorrências preservam ocorrências antigas e impedem duplicidade.
+- [x] Backup, restauração e migrações são considerados.
+- [x] As seis decisões revisadas foram registradas como aprovadas.
+
+**Limite do status:** T5 está concluída como tarefa de modelagem/documentação. A implementação do banco, migrações, regras de domínio e testes continua pendente e não é declarada concluída por este documento.
 
 ## 10. Referências
 
@@ -391,3 +393,4 @@ As propostas abaixo não alteram decisões aprovadas de T2; elas detalham como i
 | Versão | Alteração |
 |---|---|
 | 1.0 | Proposta inicial de modelo de dados, relações, integridade e decisões pendentes |
+| 1.1 | Registradas as seis decisões aprovadas pelo usuário; critérios documentais concluídos; implementação e testes permanecem pendentes |
