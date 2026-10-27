@@ -22,24 +22,114 @@ O modelo deve suportar o MVP offline-first com Next.js, TypeScript, IndexedDB e 
 7. Não apagar o histórico financeiro ao editar ou cancelar uma operação confirmada.
 8. Versionar o esquema do banco e implementar migrações compatíveis.
 
-## 2. Diagrama entidade-relacionamento (proposta)
+## 2. Diagrama entidade-relacionamento (DER)
 
-Representação conceitual das relações:
+O modelo possui uma versão visual editável no FigJam e uma versão Mermaid incorporada a este documento para visualização direta no GitHub.
 
-    CONTA 1 --- N MOVIMENTO (como origem ou destino)
-    MOVIMENTO 1 --- N EFEITO_SALDO
-    CONTA 1 --- N EFEITO_SALDO
-    CAIXINHA 1 --- N EFEITO_SALDO
-    MOVIMENTO 1 --- N ALOCACAO
-    CAIXINHA 1 --- N ALOCACAO
-    CAIXINHA 1 --- N REGRA_DISTRIBUICAO
-    RECORRENCIA 1 --- N CONTA_PAGAR (ocorrências)
-    CONTA 1 --- N CONTA_PAGAR (conta prevista, opcional)
-    META 1 --- N APORTE_META
-    MOVIMENTO 1 --- N APORTE_META (associação opcional)
-    MOVIMENTO 1 --- N AUDITORIA
+- **[Abrir o DER visual no Figma / FigJam](https://www.figma.com/online-whiteboard/create-diagram/a2323a68-7d19-4dbc-b716-1a9247cff77e?utm_source=chatgpt&utm_content=edit_in_figjam&oai_id=v1%2FCgc7tEH7jqMMlBu7xr6Gou6KmhwHjoCDclZMzX42Rjye5IukyHpOkw&request_id=fd3464be-fc07-493b-a8a0-cb964002d61e)** — diagrama editável gerado a partir do modelo documentado.
+- A representação abaixo é renderizada pelo GitHub em plataformas compatíveis com Mermaid.
 
-O diagrama é conceitual. Em IndexedDB/Dexie, os relacionamentos serão mantidos por IDs e índices; não há chaves estrangeiras relacionais automáticas. A aplicação deve validar referências antes de gravar e ao importar backups.
+```mermaid
+erDiagram
+    direction LR
+    CONTA ||--o{ MOVIMENTO : "origem ou destino"
+    MOVIMENTO ||--o{ EFEITO_SALDO : "gera efeitos"
+    CONTA o|--o{ EFEITO_SALDO : "recebe efeito"
+    CAIXINHA o|--o{ EFEITO_SALDO : "recebe efeito"
+    MOVIMENTO ||--o{ ALOCACAO : "possui alocacoes"
+    CAIXINHA ||--o{ ALOCACAO : "recebe alocacoes"
+    CAIXINHA ||--o{ REGRA_DISTRIBUICAO : "configura regras"
+    RECORRENCIA o|--o{ CONTA_PAGAR : "gera ocorrencias"
+    CONTA o|--o{ RECORRENCIA : "conta prevista"
+    META ||--o{ APORTE_META : "acumula aportes"
+    MOVIMENTO o|--o{ APORTE_META : "origina aporte"
+    CAIXINHA o|--o{ META : "pode vincular"
+    MOVIMENTO ||--o{ AUDITORIA : "tem historico"
+
+    CONTA {
+        string id PK
+        string nome
+        string tipo
+        int saldoInicialCentavos
+        date dataSaldoInicial
+        bool ativa
+    }
+    CAIXINHA {
+        string id PK
+        string nome
+        string tipo
+        int saldoInicialCentavos
+        date dataSaldoInicial
+        bool ativa
+    }
+    MOVIMENTO {
+        string id PK
+        string tipo
+        string status
+        int valorCentavos
+        date dataMovimento
+        string contaOrigemId FK
+        string contaDestinoId FK
+        string idempotencyKey UK
+    }
+    EFEITO_SALDO {
+        string id PK
+        string movimentoId FK
+        string tipoAlvo
+        string alvoId
+        int valorCentavosAssinado
+    }
+    ALOCACAO {
+        string id PK
+        string movimentoId FK
+        string caixinhaId FK
+        int valorCentavos
+        string regraDistribuicaoId FK
+    }
+    REGRA_DISTRIBUICAO {
+        string id PK
+        string caixinhaId FK
+        string tipoCalculo
+        int ordem
+        bool ativa
+    }
+    RECORRENCIA {
+        string id PK
+        int diaVencimento
+        string frequencia
+        bool ativa
+    }
+    CONTA_PAGAR {
+        string id PK
+        string recorrenciaId FK
+        string chaveOcorrencia UK
+        date dataVencimento
+        string status
+        string movimentoPagamentoId FK
+    }
+    META {
+        string id PK
+        int valorAlvoCentavos
+        string modoProgresso
+        string caixinhaId FK
+    }
+    APORTE_META {
+        string id PK
+        string metaId FK
+        string movimentoId FK
+        int valorCentavos
+    }
+    AUDITORIA {
+        string id PK
+        string entidadeTipo
+        string entidadeId
+        string acao
+        datetime createdAt
+    }
+```
+
+**Nota de leitura:** o diagrama resume as entidades e cardinalidades principais; os campos completos, regras de integridade e decisões aprovadas estão descritos nas seções seguintes. Como o banco será IndexedDB/Dexie, os vínculos por ID e as cardinalidades devem ser validados pela aplicação, não por chaves estrangeiras automáticas.
+
 
 ### 2.1. Decisão de modelagem proposta: movimento e efeitos
 
