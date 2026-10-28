@@ -608,53 +608,114 @@ Registro principal da movimentação.
 11. **Proteção local:** decidir se o MVP terá PIN/senha de acesso e criptografia de exportação.
 12. **Tipos de recebimento:** confirmar se descrição livre é suficiente ou se futuramente haverá regras específicas por tipo de entrada.
 
-## 21. Plano de desenvolvimento recomendado
+## 21. UX, prototipação e validação visual
 
-### Fase 1: Base e persistência
+A prototipação visual é uma etapa explícita do projeto e deve ocorrer antes da implementação detalhada das telas. O objetivo é validar navegação, conteúdo, hierarquia e estados principais sem confundir o protótipo com uma interface já implementada.
 
-- Estrutura do PWA.
-- Banco de dados local.
-- Configuração inicial.
-- Contas bancárias.
-- Caixinhas.
-- Saldos iniciais.
-- Exportação básica.
+### Entregas de UX
 
-### Fase 2: Movimentações
+1. Inventário das telas do MVP e dos estados relevantes (carregamento, vazio, erro, confirmação e saldo insuficiente).
+2. Fluxos principais atualizados a partir do mapa de navegação da T4.
+3. Protótipo de baixa fidelidade editável no Figma, com um frame por tela, sem colagens de várias telas.
+4. Frames mobile de referência em 390 × 844 px; priorizar celular e considerar adaptações para computador nas etapas posteriores.
+5. Interface em português do Brasil, com fundo branco, tons de cinza e uso pontual de verde-escuro; componentes simples, bordas discretas e sem gradientes ou sombras complexas.
+6. Uso de Auto Layout e componentes editáveis para campos, botões, cards, listas e ícones básicos.
+7. Fluxos clicáveis para configuração inicial, painel, recebimento e distribuição, despesa, transferência e consulta do histórico.
+8. Revisão do protótipo contra os requisitos funcionais, critérios de aceitação e regras de integridade financeira antes de iniciar a construção das telas.
 
-- Recebimentos.
-- Regras de distribuição.
-- Prévia e confirmação.
-- Despesas e retiradas.
-- Transferências.
-- Cálculo e validação de saldos.
+### Telas mínimas a cobrir
 
-### Fase 3: Obrigações e planejamento
-
-- Contas avulsas e recorrentes.
-- Ocorrências e pagamentos.
-- Contagem regressiva e alertas internos.
+- Boas-vindas e configuração inicial.
+- Painel com contexto selecionado, saldo bancário, caixinhas e valor não alocado.
+- Contas bancárias e caixinhas.
+- Cadastro e revisão de recebimento/distribuição.
+- Cadastro de despesa e retirada para carteira física.
+- Transferências entre caixinhas e entre contas.
+- Contas a pagar, vencimentos e recorrências.
 - Metas financeiras.
+- Histórico e detalhes de movimentação.
+- Conciliação de saldo.
+- Relatórios.
+- Exportação/importação e configurações.
 
-### Fase 4: Controle e relatórios
+### Critério para aprovação do protótipo
 
-- Histórico e filtros.
-- Auditoria.
-- Conciliação.
-- Relatórios básicos.
-- Importação validada.
+O protótipo pode ser considerado aprovado quando os fluxos principais forem navegáveis, os textos e estados estiverem coerentes com o briefing, as regras financeiras críticas forem representadas e não houver dúvidas de navegação que impeçam a implementação. A aprovação do protótipo não substitui testes funcionais nem validação com usuários.
 
-### Fase 5: Qualidade e entrega
+## 22. Plano de desenvolvimento recomendado
 
-- Testes de cálculos.
-- Testes de recorrência.
-- Testes de transferências e prevenção de duplicidade.
-- Testes offline.
-- Testes de exportação/importação.
-- Testes de responsividade e acessibilidade.
-- Documentação de uso e limitações.
+### Fase 1: Requisitos e decisões
 
-## 22. Definição de pronto
+- Concluir requisitos, critérios de aceitação, regras financeiras e modelo conceitual.
+- Manter decisões aprovadas registradas em `docs/decisoes/` e documentos de tarefa.
+- Resolver decisões pendentes que bloqueiem a implementação de cada módulo.
+
+### Fase 2: Fundação técnica
+
+- Configurar Next.js, TypeScript, Tailwind CSS, lint e formatação.
+- Criar estrutura de pastas, rotas e convenções.
+- Configurar checagens e testes básicos.
+- Implementar tokens e layout responsivo depois da validação visual.
+
+### Fase 3: UX e prototipação
+
+- Inventariar telas e estados do MVP.
+- Atualizar fluxos e navegação.
+- Criar o protótipo de baixa fidelidade editável no Figma.
+- Revisar e aprovar os fluxos principais antes de implementar a interface completa.
+
+### Fase 4: Modelo de dados e persistência
+
+- Detalhar entidades e relacionamentos.
+- Implementar persistência local e migrações.
+- Criar utilitários monetários seguros, usando centavos inteiros.
+- Validar saldos iniciais, alocações e recuperação de dados.
+
+### Fase 5: Interface base e sistema visual
+
+- Aplicar tokens da identidade Tangerina.
+- Criar componentes reutilizáveis e estados de interface.
+- Implementar navegação responsiva, painel e estados vazios/erro.
+- Conferir fidelidade ao protótipo aprovado.
+
+### Fase 6: Recebimentos e distribuição
+
+- Regras de distribuição, ordem e bases de cálculo.
+- Prévia, edição pontual, confirmação e persistência.
+- Testes de arredondamento, excesso e valor não alocado.
+
+### Fase 7: Despesas, retiradas e transferências
+
+- Despesas e retiradas para carteira física.
+- Transferências entre caixinhas e contas.
+- Edição, cancelamento, auditoria e invariantes de saldo.
+
+### Fase 8: Contas a pagar, recorrências e metas
+
+- Contas avulsas/recorrentes e ocorrências.
+- Confirmação manual de pagamento.
+- Vencimentos, alertas visuais e metas financeiras.
+
+### Fase 9: Histórico, conciliação e relatórios
+
+- Histórico filtrável e auditoria.
+- Conciliação e ajustes justificados.
+- Painel, relatórios e indicadores sem dupla contagem.
+
+### Fase 10: Portabilidade, qualidade e offline
+
+- Exportação/importação validada e prevenção de duplicidade.
+- Testes automatizados, acessibilidade e responsividade.
+- Implementação e validação de PWA/offline em dispositivos reais.
+- Revisão de privacidade e mensagens sobre armazenamento local.
+
+### Fase 11: Documentação e lançamento
+
+- README, instruções de uso, backup/restauração e limitações.
+- Build de produção, smoke tests e checklist de lançamento.
+- Publicação e validação do MVP.
+
+## 23. Definição de pronto
 
 Uma funcionalidade estará pronta quando:
 
