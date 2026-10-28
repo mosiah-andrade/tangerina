@@ -136,7 +136,7 @@ const milestones = [
  ]},
  {id:"M2",title:"Fundação técnica e interface",desc:"Preparar o projeto para crescer sem complicar a manutenção solo.",weeks:"Semanas 1–2",hours:20,outcome:"Saída: aplicação executando, estrutura consistente, identidade aplicada e validação básica automatizada.",tasks:[
   ["T6","Escolher e registrar a stack","CONCLUÍDA: stack escolhida e aprovada, registrada em docs/decisoes/ADR-001-stack.md. Implementação, testes de funcionamento offline, persistência/migrações e validação da hospedagem permanecem pendentes em tarefas posteriores.","Arquitetura",3],
-  ["T7","Configurar repositório e ambiente","Scripts, lint/format, variáveis de ambiente se necessárias, branch principal e commits pequenos.","Infra",3],
+  ["T7","Configurar repositório e ambiente","CONCLUÍDA: projeto Next.js inicializado em app/ com TypeScript, ESLint, Tailwind CSS e App Router. Scripts de desenvolvimento, build, lint e formatação configurados; Prettier integrado ao Tailwind CSS. Validações npm run format:check, npm run lint e npm run build aprovadas. Sem variáveis de ambiente necessárias nesta etapa. Trabalho isolado na branch feat/t7-setup-ambiente; commit inicial 9a931d6 (chore: configurar ambiente inicial do Next.js). A integração da implementação à branch principal permanece pendente.","Infra",3, true],
   ["T8","Criar estrutura de pastas e rotas","Separar componentes, páginas, domínio financeiro, persistência e utilitários.","Arquitetura",3],
   ["T9","Implementar tokens da identidade Tangerina","Cores, tipografia, espaçamentos, botões, inputs, cards e estados de foco.","UI",4],
   ["T10","Construir layout responsivo base","Navegação, cabeçalho/sidebar conforme dispositivo, área de conteúdo e estados vazios.","UI",4],
@@ -196,8 +196,8 @@ const milestones = [
  ]}
 ];
 const STORAGE_KEY="tangerina-roadmap-v1";
-let completed = {T1:true,T2:true,T3:true,T4:true,T5:true,T6:true};
-try { const saved = localStorage.getItem(STORAGE_KEY); completed = saved ? {...{T1:true,T2:true,T3:true,T4:true,T5:true,T6:true}, ...(JSON.parse(saved) || {})} : {T1:true,T2:true,T3:true,T4:true,T5:true,T6:true}; } catch(e) { completed = {T1:true,T2:true,T3:true,T4:true,T5:true,T6:true}; }
+let completed = {T1:true,T2:true,T3:true,T4:true,T5:true,T6:true,T7:true};
+try { const saved = localStorage.getItem(STORAGE_KEY); completed = saved ? {...{T1:true,T2:true,T3:true,T4:true,T5:true,T6:true,T7:true}, ...(JSON.parse(saved) || {})} : {T1:true,T2:true,T3:true,T4:true,T5:true,T6:true,T7:true}; } catch(e) { completed = {T1:true,T2:true,T3:true,T4:true,T5:true,T6:true,T7:true}; }
 const allTasks = () => milestones.flatMap(m => m.tasks.map(t => ({m,t})));
 function save(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(completed));}catch(e){}}
 function render(){
