@@ -213,8 +213,9 @@
       <a href="#rnf">8. Requisitos não funcionais</a>
       <a href="#aceitacao">9. Critérios de aceitação</a>
       <a href="#premissas">10. Premissas a validar</a>
-      <a href="#plano">11. Plano de desenvolvimento</a>
-      <a href="#pronto">12. Definição de pronto</a>
+      <a href="#prototipo">11. UX e prototipação</a>
+      <a href="#plano">12. Plano de desenvolvimento</a>
+      <a href="#pronto">13. Definição de pronto</a>
     </div>
   </nav>
 
@@ -528,19 +529,35 @@
       <div class="callout important"><strong>Ponto crítico:</strong> saldo negativo significa que a caixinha representa um saldo devedor. Diferença pendente significa que parte da despesa ainda precisa ser atribuída ou regularizada. Cada valor deve ser representado uma única vez, para evitar dupla contagem.</div>
     </section>
 
-    <section id="plano">
-      <h2>11. Ordem recomendada de desenvolvimento</h2>
+    <section id="prototipo">
+      <h2>11. UX, prototipação e validação visual</h2>
+      <p>Antes de implementar a interface completa, criar e revisar um protótipo editável de baixa fidelidade no Figma. O protótipo é uma entrega planejada, ainda não considerada concluída.</p>
       <div class="grid">
-        <div class="card"><span class="tag">Fase 1</span><h3>Fundação</h3><p>Estrutura do projeto, PWA, persistência local, migrações, navegação, configuração inicial e testes básicos.</p></div>
-        <div class="card"><span class="tag">Fase 2</span><h3>Motor financeiro</h3><p>Contas, caixinhas, recebimentos, regras de distribuição, despesas e transferências. Priorizar cálculos e testes unitários.</p></div>
-        <div class="card"><span class="tag">Fase 3</span><h3>Compromissos e metas</h3><p>Boletos, recorrências, contagem regressiva, status de pagamento, metas e avisos internos.</p></div>
-        <div class="card"><span class="tag">Fase 4</span><h3>Histórico e controle</h3><p>Auditoria, conciliação manual, filtros, categorias e relatórios básicos.</p></div>
-        <div class="card"><span class="tag">Fase 5</span><h3>Confiabilidade</h3><p>Exportação/importação, testes offline, acessibilidade, tratamento de erros e validação em celular e computador.</p></div>
+        <div class="card"><span class="tag">Entrega 1</span><h3>Inventário e fluxos</h3><p>Listar telas, estados vazios, erros, confirmações e fluxos principais a partir dos requisitos e do mapa de navegação existente.</p></div>
+        <div class="card"><span class="tag">Entrega 2</span><h3>Protótipo mobile</h3><p>Frames de 390 × 844 px, uma tela por frame, português do Brasil, tons de cinza e pequenos acentos em verde-escuro.</p></div>
+        <div class="card"><span class="tag">Entrega 3</span><h3>Componentes editáveis</h3><p>Auto Layout, campos, botões, cards, listas e ícones simples; sem colagens, gradientes ou sombras complexas.</p></div>
+        <div class="card"><span class="tag">Entrega 4</span><h3>Validação antes do código</h3><p>Revisar configuração inicial, painel, recebimentos, despesas, transferências e histórico contra o briefing e as regras financeiras.</p></div>
+      </div>
+      <h3>Telas mínimas</h3>
+      <p>Boas-vindas/configuração inicial, painel, contas bancárias, caixinhas, recebimento e distribuição, despesa/retirada, transferências, contas a pagar, metas, histórico, conciliação, relatórios e configurações de dados.</p>
+      <div class="callout"><strong>Critério de aprovação:</strong> fluxos principais navegáveis, textos e estados coerentes com os requisitos e regras financeiras críticas representadas. A aprovação visual não substitui testes funcionais.</div>
+    </section>
+
+    <section id="plano">
+      <h2>12. Ordem recomendada de desenvolvimento</h2>
+      <div class="grid">
+        <div class="card"><span class="tag">Fase 1</span><h3>Requisitos e decisões</h3><p>Escopo, regras financeiras, critérios de aceitação, modelo conceitual e decisões registradas.</p></div>
+        <div class="card"><span class="tag">Fase 2</span><h3>Fundação técnica</h3><p>Next.js, TypeScript, Tailwind CSS, estrutura de pastas, rotas, lint, formatação e testes básicos.</p></div>
+        <div class="card"><span class="tag">Fase 3</span><h3>UX e prototipação</h3><p>Inventário de telas, fluxos atualizados, protótipo editável no Figma e revisão antes da implementação visual completa.</p></div>
+        <div class="card"><span class="tag">Fase 4</span><h3>Dados e interface base</h3><p>Modelo detalhado, persistência local, utilitários monetários, tokens visuais, componentes reutilizáveis e layout responsivo.</p></div>
+        <div class="card"><span class="tag">Fase 5</span><h3>Fluxos financeiros</h3><p>Recebimentos, distribuição, despesas, retiradas, transferências, contas a pagar, recorrências e metas.</p></div>
+        <div class="card"><span class="tag">Fase 6</span><h3>Controle e relatórios</h3><p>Histórico, auditoria, conciliação, indicadores, exportação e importação validadas.</p></div>
+        <div class="card"><span class="tag">Fase 7</span><h3>Qualidade e lançamento</h3><p>Testes, acessibilidade, responsividade, PWA/offline, documentação e validação em dispositivos reais.</p></div>
       </div>
     </section>
 
     <section id="pronto">
-      <h2>12. Definição de pronto do MVP</h2>
+      <h2>13. Definição de pronto do MVP</h2>
       <ul class="checklist">
         <li>Todos os critérios de aceitação obrigatórios foram aprovados.</li>
         <li>Saldos bancários e das caixinhas permanecem consistentes em operações, transferências, ajustes e correções.</li>
@@ -553,7 +570,7 @@
         <li>As premissas que impactam cálculos financeiros foram resolvidas antes da publicação.</li>
       </ul>
       <h3>Próximo artefato recomendado</h3>
-      <p>A próxima entrega técnica deverá detalhar o modelo de dados e relacionamentos, fórmulas definitivas, fluxos e estados das telas, contratos dos serviços internos, plano de testes e estrutura inicial do projeto PWA.</p>
+      <p>Concluir o protótipo de baixa fidelidade no Figma e validar os fluxos principais antes de detalhar e implementar a interface. Em paralelo, manter a arquitetura, o modelo de dados e o plano de testes alinhados às decisões aprovadas.</p>
       <div class="callout"><strong>Recomendação:</strong> construir e testar o motor financeiro antes de finalizar toda a interface. O principal risco do produto é uma distribuição, transferência, edição ou confirmação de pagamento alterar incorretamente o dinheiro disponível.</div>
     </section>
   </main>
