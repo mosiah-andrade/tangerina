@@ -716,7 +716,6 @@ O protótipo pode ser considerado aprovado quando os fluxos principais forem nav
 - Publicação e validação do MVP.
 
 ## 23. Definição de pronto
-## 22. Definição de pronto
 
 Uma funcionalidade estará pronta quando:
 
