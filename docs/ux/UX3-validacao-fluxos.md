@@ -723,3 +723,44 @@ O registro acima documenta o resultado informado pelo responsável. Não foram f
 - [ ] Obter aprovação explícita do responsável.
 
 **Conclusão:** os cinco grupos da revisão visual foram marcados como verificados pelo responsável. O registro não afirma ausência absoluta de defeitos nem certifica a execução funcional do aplicativo. **UX3 permanece EM ANDAMENTO** e não foi feito merge para `main`.
+
+## 25. Ajuste de escopo — UX3 limitada à prototipação no Figma
+
+**Data:** 29/10/2026  
+**Status:** EM ANDAMENTO — aprovação final pendente.
+
+### 25.1. Escopo desta etapa
+
+A UX3 trata exclusivamente da validação do protótipo navegável no Figma. Não exigir nem executar testes que dependam do código do aplicativo nesta etapa.
+
+**Incluído na UX3:**
+- Navegação em Present: links, destinos, voltar, cancelar e confirmar.
+- Revisão dos estados representados: sucesso, erro, vazio, bloqueio, prévia e cancelamento.
+- Conferência visual dos valores e das bases de cálculo exibidos nas telas, usando exemplos numéricos estáticos.
+- Conferência de que as regras RN, casos CT e critérios CA estão representados adequadamente nos fluxos e nas telas.
+- Consistência visual, conteúdo, hierarquia, espaçamento e coerência entre telas.
+- Revisão dos caminhos de exportação/importação e pagamento apenas como fluxos visuais de protótipo.
+
+**Fora do escopo da UX3:**
+- Testes automatizados ou unitários.
+- Execução de cálculos pelo aplicativo.
+- Persistência real de dados e auditoria funcional.
+- Processamento real de pagamentos.
+- Exportação/restauração efetiva de arquivos.
+- Testes de banco de dados ou de integração.
+
+Esses itens pertencem a uma etapa posterior de implementação e não devem bloquear a conclusão da prototipação UX3. Na UX3, verifica-se se os estados e caminhos estão adequadamente representados; não se afirma que o sistema executa a lógica real.
+
+### 25.2. Interpretação dos testes já informados
+
+O responsável informou que os cinco grupos de revisão visual/navegação foram verificados no protótipo: receita e distribuição; despesas e caixinhas; transferências e conciliação; pagamentos e backup; estados gerais. Esse resultado permanece registrado como informado pelo responsável. Não foram fornecidas falhas específicas nesta atualização.
+
+### 25.3. Pendências corretas para encerrar a UX3
+
+- [ ] Fazer a conferência final de consistência entre RN-001–RN-044, CT-001–CT-018 e CA01–CA27, verificando sua representação no protótipo — sem exigir execução de código.
+- [ ] Confirmar no Figma Present os destinos interativos dos fluxos críticos, registrando apenas o que for efetivamente clicado e observado.
+- [ ] Concluir a revisão visual dos frames relevantes e registrar defeitos concretos, se encontrados.
+- [ ] Verificar se o mapa/checklist da página UX3 corresponde à estrutura atual do protótipo.
+- [ ] Apresentar o resumo final e aguardar aprovação explícita do responsável.
+
+**Conclusão:** o bloqueio anterior relacionado à ausência de implementação/código não é uma pendência da UX3 e fica retirado do checklist desta etapa. A validação do comportamento real do aplicativo será planejada para a fase de implementação. **UX3 permanece EM ANDAMENTO até a revisão final do protótipo e a aprovação explícita.**
