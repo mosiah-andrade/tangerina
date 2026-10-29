@@ -53,6 +53,9 @@ jobs:
       - name: Run ESLint
         run: npm run lint
 
+      - name: Print Prettier-formatted unit test for diagnosis
+        run: npx prettier tests/format-money.test.mjs
+
       - name: Check formatting of new test utilities
         run: npx prettier --check lib/format-money.ts tests/format-money.test.mjs package.json
 
