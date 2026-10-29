@@ -3,7 +3,7 @@ import test from "node:test";
 import { formatMoneyFromCents } from "../lib/format-money.ts";
 
 function normalizeWhitespace(value) {
-  return value.replace(/\\s+/g, " ");
+  return value.split("\u00a0").join(" ").split("\u202f").join(" ");
 }
 
 test("formats positive cents as Brazilian Real", () => {
