@@ -450,7 +450,7 @@ A matriz abaixo relaciona os casos de teste essenciais CT-001–CT-018 às regra
 
 ### 19.2. Cobertura T3 que ainda precisa ser ampliada
 
-O documento T3 contém CA01–CA11. Além das lacunas assinaladas na matriz, os seguintes temas não têm critério dedicado identificável no conjunto atual:
+O documento T3 agora contém CA01–CA19. Os critérios adicionais CA12–CA19 foram incluídos para cobrir as lacunas identificadas. A matriz inicial acima precisa ser lida junto à relação atualizada de CA12–CA19 na seção 3 do documento T3. A cobertura documental foi ampliada, mas a revisão de correspondência integral de todas as RN ainda não foi certificada.
 
 - Conciliação de saldos e ajuste com justificativa.
 - Saque e carteira física, incluindo saldo insuficiente.
@@ -472,10 +472,10 @@ A amostra confirma o uso consistente do frame mobile 390 × 844 nas telas seleci
 
 ### 19.4. Próximas ações para encerrar a UX3
 
-- [ ] Ampliar T3 com critérios para todas as lacunas da matriz, preservando as decisões aprovadas em T2.
+- [ ] Revisar a matriz após inclusão de CA12–CA19 e certificar a correspondência de RN-001–RN-044, CT-001–CT-018 e CA01–CA19.
 - [ ] Organizar ou renomear a página vazia `UX3 — Fluxos e validação` após decidir a organização desejada; não mover frames sem revisão.
 - [ ] Concluir a inspeção visual de todos os frames relevantes e registrar achados concretos.
 - [ ] Validar regras financeiras no aplicativo executável após sua implementação; o template atual em `app/app/page.tsx` não permite comprovar essa funcionalidade.
 - [ ] Submeter relatório, matriz e revisão visual ao responsável para aprovação explícita.
 
-**Resultado:** matriz inicial criada e revisão visual amostral registrada. A cobertura integral T2/T3, a revisão visual completa e a validação da implementação permanecem pendentes. **UX3 permanece EM ANDAMENTO.**
+**Resultado:** matriz inicial criada, critérios adicionais CA12–CA19 incluídos em T3 e revisão visual amostral registrada. A certificação integral da rastreabilidade T2/T3, a revisão visual completa e a validação da implementação permanecem pendentes. **UX3 permanece EM ANDAMENTO.**
