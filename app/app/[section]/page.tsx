@@ -1,6 +1,6 @@
 import Link from "next/link";
-import Image from "next/image";
 import { notFound } from "next/navigation";
+import { AppBrand } from "@/components/app-brand";
 
 const sections: Record<string, { title: string; description: string }> = {
   receitas: { title: "Receitas", description: "O registro e a distribuição de receitas serão implementados na próxima etapa." },
@@ -17,17 +17,13 @@ export default async function SectionPage({
   params: Promise<{ section: string }>;
 }) {
   const { section } = await params;
-  const logo = "/favicon.svg";
   const item = sections[section];
   if (!item) notFound();
 
   return (
     <main className="app-shell">
       <header className="app-header">
-        <Link className="brand-lockup" href="/dashboard">
-          <Image src={logo} alt="" width={44} height={44} className="dashboard-logo" unoptimized />
-          <span className="brand-name">Tangerina</span>
-        </Link>
+        <AppBrand />
         <Link className="context-label" href="/dashboard">Voltar ao início</Link>
       </header>
       <section className="dashboard-greeting">
