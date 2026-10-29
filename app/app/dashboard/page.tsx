@@ -1,9 +1,10 @@
 import Link from "next/link";
 import Image from "next/image";
-import { FiArrowDownLeft, FiArrowUpRight, FiArrowLeftRight, FiChevronDown, FiHome, FiList, FiTarget, FiGrid, FiEye, FiCalendarDays, FiPlus } from "react-icons/fi";
+import { FiArrowDownLeft, FiArrowUpRight, FiChevronDown, FiHome, FiList, FiTarget, FiGrid, FiEye, FiPlus } from "react-icons/fi";
+import { LuArrowLeftRight, LuCalendarDays, LuArrowRight } from "react-icons/lu";
 
 const money = new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" });
-const logo = "https://raw.githubusercontent.com/mosiah-andrade/tangerina/main/imagens/Principal_icon_semFundo.png";
+const logo = "/favicon.svg";
 
 export default function DashboardPage() {
   // Valores de demonstração do protótipo; ainda não são dados persistidos.
@@ -60,12 +61,12 @@ export default function DashboardPage() {
         <nav className="quick-actions" aria-label="Acesso rápido">
           <Link className="quick-action" href="/receitas"><span className="action-icon"><FiArrowDownLeft size={19} /></span><span>Receita</span></Link>
           <Link className="quick-action" href="/despesas"><span className="action-icon"><FiArrowUpRight size={19} /></span><span>Despesa</span></Link>
-          <Link className="quick-action" href="/transferencias"><span className="action-icon"><FiArrowLeftRight size={19} /></span><span>Transferir</span></Link>
+          <Link className="quick-action" href="/transferencias"><span className="action-icon"><LuArrowLeftRight size={19} /></span><span>Transferir</span></Link>
         </nav>
 
-        <div className="section-title"><span>Próximos vencimentos</span><Link href="/mais">Ver agenda <FiArrowRight size={13} /></Link></div>
+        <div className="section-title"><span>Próximos vencimentos</span><Link href="/mais">Ver agenda <LuArrowRight size={13} /></Link></div>
         <section className="upcoming-card">
-          <span className="upcoming-icon"><FiCalendarDays size={19} /></span>
+          <span className="upcoming-icon"><LuCalendarDays size={19} /></span>
           <div><strong>Nenhuma conta cadastrada</strong><p>Seus próximos vencimentos aparecerão aqui.</p></div>
           <span className="upcoming-plus" aria-hidden="true"><FiPlus size={17} /></span>
         </section>

@@ -1,8 +1,8 @@
 import Link from "next/link";
 import Image from "next/image";
-import { FiArrowRight, FiShieldCheck } from "react-icons/fi";
+import { FiArrowRight, FiShield } from "react-icons/fi";
 
-const logo = "https://raw.githubusercontent.com/mosiah-andrade/tangerina/main/imagens/logo_semFundo.svg";
+const logo = "/favicon.svg";
 
 export default function Home() {
   return (
@@ -20,7 +20,7 @@ export default function Home() {
         </div>
         <div className="welcome-actions">
           <Link className="button-primary" href="/dashboard">Começar <FiArrowRight aria-hidden="true" size={19} /></Link>
-          <p className="privacy-note"><FiShieldCheck aria-hidden="true" size={16} /> Seus dados financeiros ficam neste dispositivo.</p>
+          <p className="privacy-note"><FiShield aria-hidden="true" size={16} /> Seus dados financeiros ficam neste dispositivo.</p>
         </div>
       </section>
       <footer className="welcome-footer">TANGERINA FINANCEIRO <span>•</span> CLAREZA PARA FLORESCER</footer>

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { notFound } from "next/navigation";
 
 const sections: Record<string, { title: string; description: string }> = {
@@ -16,6 +17,7 @@ export default async function SectionPage({
   params: Promise<{ section: string }>;
 }) {
   const { section } = await params;
+  const logo = "/favicon.svg";
   const item = sections[section];
   if (!item) notFound();
 
@@ -23,7 +25,7 @@ export default async function SectionPage({
     <main className="app-shell">
       <header className="app-header">
         <Link className="brand-lockup" href="/dashboard">
-          <span className="brand-flower" aria-hidden="true">✳</span>
+          <Image src={logo} alt="" width={44} height={44} className="dashboard-logo" unoptimized />
           <span className="brand-name">Tangerina</span>
         </Link>
         <Link className="context-label" href="/dashboard">Voltar ao início</Link>
