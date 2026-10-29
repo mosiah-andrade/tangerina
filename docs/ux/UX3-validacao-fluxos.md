@@ -165,3 +165,58 @@ Foram criadas ou substituídas 14 reações nesta iteração. Isso é uma verifi
 - [ ] Receber aprovação explícita do usuário.
 
 **Status: em andamento.** A auditoria estrutural ajudou a corrigir conexões e a completar jornadas, mas não substitui teste manual de interação, conferência integral dos requisitos nem aprovação final.
+
+
+## 13. Quinta iteração — auditoria de exportação/importação, estados e critérios T2/T3
+
+**Data:** 29/10/2026  
+**Status:** em andamento; não aprovada.
+
+### 13.1 Correções no Figma
+
+- Criado o frame **UX3 — Exportação concluída**, com retorno às opções de exportação e atalho para configurações.
+- Criado o frame **UX3 — Restauração concluída**, separado da exportação, com retorno ao dashboard ou configurações.
+- O botão **Gerar arquivo** agora navega para o estado de exportação concluída, e não para a tela de importação.
+- O botão **Validar arquivo** leva à prévia de restauração; a confirmação leva ao estado de restauração concluída; cancelar mantém o usuário na importação e preserva os dados atuais no fluxo demonstrativo.
+- O estado **Transferência bloqueada por saldo** agora permite editar a transferência ou cancelar, sem caminho de confirmação.
+- Revalidei o estado de confirmação de saldo negativo: confirmar continua para o dashboard no protótipo e voltar retorna ao formulário da despesa.
+
+Essas telas representam navegação demonstrativa. Os cliques não geram downloads reais, não validam arquivos nem modificam dados financeiros.
+
+### 13.2 Auditoria estrutural e visual
+
+A página examinada é UX2 — Wireframes mobile e contém 262 frames. Na leitura estrutural foram identificados 51 nós com reações e 51 conexões, sem destinos inexistentes entre as conexões contabilizadas. Isso confirma a existência dos destinos, mas não prova que os percursos foram executados corretamente no modo Present.
+
+As novas telas de exportação e restauração mantêm dimensões de 390 × 844 px e usam Auto Layout. Foram identificadas as dimensões e hierarquias dos frames-chave. **A revisão visual completa de todos os frames não está certificada:** não foi possível executar uma sessão interativa completa no modo Present nem concluir uma inspeção visual tela a tela nesta iteração.
+
+### 13.3 Matriz de verificação contra T2 e T3
+
+| Regra / critério | Evidência no protótipo | Situação |
+|---|---|---|
+| T2 RN-013/RN-014, bases e ordem de distribuição; T3 CA01/CA02 | Revisão de receita apresenta ordem e exemplo de cálculo com saldo restante; formulário permite editar regras | Representação parcial; testar bases fixa/percentual e alteração pontual |
+| T2 RN-015/RN-016/RN-036 a RN-038; T3 CA03 | Textos indicam bloqueio de excesso e arredondamento ao centavo | Falta percorrer casos de excesso, empate de arredondamento e soma dos centavos |
+| T2 RN-021 a RN-025; T3 CA04/CA05 | Formulário de despesa, revisão de saldo projetado e confirmação explícita | Caminho visual representado; testar cancelamento e bloqueio bancário |
+| T2 RN-026 a RN-032; T3 CA06/CA07 | Tela de transferência, prévia de saldo e estado de bloqueio | Testar transferência entre caixinhas, entre contas e para carteira física |
+| T2 RN-033 a RN-035 | Conciliação apresenta diferença e prévia do efeito antes de confirmar | Testar diferença positiva/negativa, cancelamento e preservação do histórico |
+| T2 RN-039 a RN-044; T3 auditoria/histórico | Detalhe do movimento mostra valor anterior e novo | Testar edição, recálculo sem duplicidade, cancelamento rastreável e idempotência |
+| T3 CA08/CA09 | Tela de confirmação de pagamento e lista de contas | Revisar o requisito: T3 diz que confirmar boleto não deve lançar segunda despesa nem descontar novamente a conta; a jornada deve demonstrar isso explicitamente |
+| T3 CA10/CA11 e demais critérios | Inventário de telas inclui recorrência e metas | Não coberto suficientemente por esta rodada; revisar cada critério T3 individualmente |
+
+### 13.4 Riscos e decisões pendentes
+
+1. **O protótipo não é a implementação:** reações de clique apenas navegam entre frames; não calculam valores, persistem movimentos, fazem download, validam JSON nem restauram dados.
+2. **Pagamento de conta:** o protótipo deve deixar claro como a confirmação atualiza o status sem duplicar a despesa nem descontar a conta duas vezes, conforme T3 CA08.
+3. **Bases da distribuição:** os textos da tela devem distinguir regra por valor fixo, percentual da receita total e percentual do saldo restante. Ainda falta testar casos com múltiplas regras e arredondamento acumulado.
+4. **Revisão visual:** é necessário abrir o arquivo no editor/Present, conferir todos os caminhos e verificar textos cortados, sobreposição, áreas de clique e retorno/cancelamento.
+5. **Aprovação:** nenhum aceite final foi presumido. A UX3 só poderá ser concluída após a validação manual e aprovação explícita do usuário.
+
+### 13.5 Checklist restante
+
+- [ ] Executar todos os fluxos no modo Present: configuração, receita, despesa, transferência, pagamento, conciliação, exportação e restauração.
+- [ ] Testar casos T2/T3 de bases, ordem, arredondamento, excesso, saldo insuficiente, movimentos duplicados, auditoria e conciliação.
+- [ ] Ajustar o fluxo de pagamento para evidenciar a regra T3 CA08.
+- [ ] Inspecionar visualmente todos os frames e corrigir eventuais cortes/sobreposições.
+- [ ] Registrar resultados observados dos testes, incluindo falhas e correções.
+- [ ] Obter aprovação explícita do usuário.
+
+**Conclusão desta iteração:** exportação e importação agora têm caminhos semanticamente separados e estados de sucesso distintos; o estado de transferência bloqueada tem ações coerentes. A validação manual e a aprovação permanecem pendentes. UX3 continua **EM ANDAMENTO**.
