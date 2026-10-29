@@ -106,24 +106,20 @@ button { font:inherit; }
 }
 
 
-/* Loading inspirado em sementes: verde-esmeralda, dourado e seda. */
-.seed-loading { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:24px; padding:36px 20px; color:var(--emerald); text-align:center; }
+/* Loading interno: indicador simples com sementes em órbita. */
+.seed-loading { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:20px; padding:36px 20px; color:var(--emerald); text-align:center; }
 .seed-loading--screen { min-height:100svh; gap:22px; background:radial-gradient(ellipse at center,rgba(197,155,39,.07),transparent 48%),var(--silk); }
-.seed-loader { position:relative; width:104px; height:104px; display:grid; place-items:center; animation:seed-orbit 9s linear infinite; }
+.seed-loader { position:relative; width:104px; height:104px; display:grid; place-items:center; }
 .seed-loader__seed { position:absolute; left:calc(50% - 7px); top:calc(50% - 18px); width:14px; height:28px; border:1px solid rgba(249,248,243,.9); border-radius:90% 12% 90% 12%; transform-origin:7px 18px; box-shadow:0 2px 8px rgba(6,38,26,.12); animation:seed-breathe 1.6s ease-in-out infinite; }
 .seed-loader__seed--green { background:var(--emerald); }
 .seed-loader__seed--gold { background:var(--gold); }
 .seed-loader__seed--cream { background:#D9E5DE; border-color:var(--emerald); }
 .seed-loader__core { width:12px; height:12px; border:1px solid var(--gold); border-radius:50%; background:var(--silk); box-shadow:0 0 0 5px rgba(197,155,39,.08); }
-.seed-loading .brand-lockup { justify-content:center; }
-.seed-loading .brand-name { font-family:'Cormorant Garamond',Georgia,serif; font-size:34px; font-weight:600; letter-spacing:-.8px; }
 .seed-loading__label { display:flex; align-items:baseline; justify-content:center; margin:0; color:var(--gold-dark); font-size:9px; font-weight:700; letter-spacing:1.8px; text-transform:uppercase; }
 .seed-loading__dots { display:inline-block; width:18px; overflow:hidden; text-align:left; animation:seed-dots 1.4s steps(4,end) infinite; }
-@keyframes seed-orbit { to { transform:rotate(360deg); } }
 @keyframes seed-breathe { 0%,100% { opacity:.65; scale:.86; } 50% { opacity:1; scale:1.08; } }
 @keyframes seed-dots { 0% { width:0; } 100% { width:18px; } }
-@media (prefers-reduced-motion: reduce) { .seed-loader, .seed-loader__seed, .seed-loading__dots { animation:none; } }
-
+@media (prefers-reduced-motion: reduce) { .seed-loader__seed, .seed-loading__dots { animation:none; } }
 
 /* Abertura do app: splash por cima da primeira renderização. */
 .app-startup { position:fixed; z-index:1000; inset:0; display:grid; place-items:center; background:var(--silk); animation:startup-appear .25s ease-out both; }
@@ -135,25 +131,6 @@ button { font:inherit; }
 .loading-preview__back { position:fixed; z-index:2; left:50%; bottom:28px; transform:translateX(-50%); padding:12px 18px; border:1px solid var(--line); background:rgba(249,248,243,.92); color:var(--emerald); font-size:11px; font-weight:700; white-space:nowrap; }
 @keyframes startup-appear { from { opacity:0; } to { opacity:1; } }
 @media (prefers-reduced-motion: reduce) { .app-startup { animation:none; } }
-
-
-/* Flor de tangerina desabrochando na abertura. */
-.citrus-bloom { display:block; width:clamp(150px,42vw,190px); height:auto; overflow:visible; filter:drop-shadow(0 12px 14px rgba(6,38,26,.09)); }
-.citrus-bloom__petal { transform-box:view-box; transform-origin:100px 103px; transform:rotate(var(--petal-angle)) scale(.08); opacity:0; animation:petal-bloom .85s cubic-bezier(.18,.75,.2,1.12) var(--petal-delay) forwards; }
-.citrus-bloom__leaf { transform-box:view-box; transform-origin:100px 116px; transform:rotate(var(--petal-angle)) scale(.15); opacity:0; animation:leaf-bloom .65s ease-out .12s forwards; }
-.citrus-bloom__stamen { transform-box:view-box; transform-origin:100px 103px; transform:rotate(var(--stamen-angle)) scaleY(.05); opacity:0; animation:stamen-grow .45s ease-out var(--stamen-delay) forwards; }
-.seed-loading { gap:17px; }
-.seed-loading .brand-lockup { margin-top:0; }
-.seed-loading__label { margin-top:1px; }
-.app-startup .seed-loading { gap:16px; }
-.app-startup .citrus-bloom { width:clamp(168px,48vw,220px); }
-.app-startup .seed-loading__label { max-width:290px; }
-@keyframes petal-bloom { 0% { transform:rotate(var(--petal-angle)) scale(.08); opacity:0; } 72% { transform:rotate(var(--petal-angle)) scale(1.07); opacity:1; } 100% { transform:rotate(var(--petal-angle)) scale(1); opacity:1; } }
-@keyframes leaf-bloom { 0% { transform:rotate(var(--petal-angle)) scale(.15); opacity:0; } 100% { transform:rotate(var(--petal-angle)) scale(1); opacity:1; } }
-@keyframes stamen-grow { 0% { transform:rotate(var(--stamen-angle)) scaleY(.05); opacity:0; } 100% { transform:rotate(var(--stamen-angle)) scaleY(1); opacity:1; } }
-@media (prefers-reduced-motion: reduce) {
-  .citrus-bloom__petal, .citrus-bloom__leaf, .citrus-bloom__stamen { animation:none; opacity:1; transform:rotate(var(--petal-angle, var(--stamen-angle))) scale(1); }
-}
 
 
 /* Loading interno: uma semente que pulsa e orbita, sem a flor de abertura. */
