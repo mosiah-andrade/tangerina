@@ -1,10 +1,10 @@
 import Link from "next/link";
-import Image from "next/image";
-import { FiArrowDownLeft, FiArrowUpRight, FiChevronDown, FiHome, FiList, FiTarget, FiGrid, FiEye, FiPlus } from "react-icons/fi";
+import { FiArrowDownLeft, FiArrowUpRight, FiChevronDown, FiTarget, FiGrid, FiEye, FiPlus } from "react-icons/fi";
 import { LuArrowLeftRight, LuCalendarDays, LuArrowRight } from "react-icons/lu";
+import { AppBrand } from "@/components/app-brand";
+import { BottomNavigation } from "@/components/bottom-navigation";
 
 const money = new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" });
-const logo = "/favicon.svg";
 
 export default function DashboardPage() {
   // Valores de demonstração do protótipo; ainda não são dados persistidos.
@@ -16,10 +16,7 @@ export default function DashboardPage() {
     <>
       <main className="app-shell">
         <header className="app-header">
-          <Link href="/dashboard" className="brand-lockup" aria-label="Tangerina, início">
-            <Image src={logo} alt="" width={44} height={44} className="dashboard-logo" unoptimized />
-            <span className="brand-name">Tangerina</span>
-          </Link>
+          <AppBrand />
           <button className="profile-switch" type="button" aria-label="Contexto pessoal">
             Pessoal <FiChevronDown size={14} aria-hidden="true" />
           </button>
@@ -72,14 +69,7 @@ export default function DashboardPage() {
         </section>
         <p className="demo-note">Demonstração visual: valores e dados ainda não vêm de uma base financeira.</p>
       </main>
-      <nav className="bottom-nav" aria-label="Navegação principal">
-        <div className="bottom-nav-inner">
-          <Link href="/dashboard" aria-current="page"><FiHome size={19} /><span>Início</span></Link>
-          <Link href="/movimentacoes"><FiList size={19} /><span>Movimentos</span></Link>
-          <Link href="/caixinhas"><FiTarget size={19} /><span>Caixinhas</span></Link>
-          <Link href="/mais"><FiGrid size={19} /><span>Mais</span></Link>
-        </div>
-      </nav>
+      <BottomNavigation active="/dashboard" />
     </>
   );
 }
