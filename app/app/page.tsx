@@ -1,27 +1,29 @@
 import Link from "next/link";
+import Image from "next/image";
+import { FiArrowRight, FiShieldCheck } from "react-icons/fi";
+
+const logo = "https://raw.githubusercontent.com/mosiah-andrade/tangerina/main/imagens/logo_semFundo.svg";
 
 export default function Home() {
   return (
     <main className="welcome-shell">
       <section className="welcome-card" aria-labelledby="welcome-title">
-        <div className="brand-lockup" aria-label="Tangerina Financeiro">
-          <span className="brand-flower" aria-hidden="true">✳</span>
-          <span className="brand-name">Tangerina</span>
-        </div>
+        <header className="brand-lockup" aria-label="Tangerina Financeiro">
+          <Image src={logo} alt="Tangerina" width={190} height={78} priority className="welcome-logo" unoptimized />
+        </header>
         <div className="welcome-copy">
-          <p className="eyebrow">Sua vida financeira, com clareza</p>
-          <h1 id="welcome-title">Suas finanças mais organizadas.</h1>
+          <p className="eyebrow"><span className="eyebrow-line" /> Organização que floresce</p>
+          <h1 id="welcome-title">Suas finanças <em>mais organizadas.</em></h1>
           <p className="welcome-description">
-            Organize seu dinheiro, acompanhe suas caixinhas e tenha mais clareza
-            para decidir o que fazer com cada valor.
+            Um jeito mais sereno e elegante de acompanhar seu dinheiro, cuidar dos seus objetivos e decidir com clareza.
           </p>
         </div>
         <div className="welcome-actions">
-          <Link className="button-primary" href="/dashboard">Começar <span aria-hidden="true">→</span></Link>
-          <p className="privacy-note"><span aria-hidden="true">◈</span> Seus dados financeiros ficam neste dispositivo.</p>
+          <Link className="button-primary" href="/dashboard">Começar <FiArrowRight aria-hidden="true" size={19} /></Link>
+          <p className="privacy-note"><FiShieldCheck aria-hidden="true" size={16} /> Seus dados financeiros ficam neste dispositivo.</p>
         </div>
       </section>
-      <footer className="welcome-footer">Tangerina Financeiro <span>•</span> Organização que floresce.</footer>
+      <footer className="welcome-footer">TANGERINA FINANCEIRO <span>•</span> CLAREZA PARA FLORESCER</footer>
     </main>
   );
 }
