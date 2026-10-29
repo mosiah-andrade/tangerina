@@ -154,10 +154,10 @@ button { font:inherit; }
 .app-startup { position:fixed; z-index:1000; inset:0; display:grid; place-items:center; overflow:hidden; background:radial-gradient(ellipse at 50% 42%,rgba(197,155,39,.11),transparent 38%),var(--silk); animation:startup-appear .35s ease-out both; }
 .startup-scene { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:12px; width:100%; min-height:100svh; padding:24px; animation:startup-scene-in .6s ease-out both; }
 .startup-flower { width:clamp(180px,52vw,240px); height:auto; overflow:visible; filter:drop-shadow(0 14px 16px rgba(6,38,26,.09)); }
-.startup-flower__leaf { transform-box:fill-box; transform-origin:center; scale:.05; opacity:0; animation:startup-leaf-open .6s ease-out .2s forwards; }
+.startup-flower__leaf { transform-box:view-box; transform-origin:100px 132px; scale:.05; opacity:0; animation:startup-leaf-open .6s ease-out .2s forwards; }
 .startup-bud { transform-box:view-box; transform-origin:100px 134px; animation:startup-bud-grow .8s cubic-bezier(.2,.8,.2,1) both; }
-.startup-flower__petal { transform-box:fill-box; transform-origin:center; scale:.06; opacity:0; animation:startup-petal-open .8s cubic-bezier(.18,.75,.2,1.12) var(--delay) forwards; }
-.startup-flower__stamen { transform-box:fill-box; transform-origin:center; scale:1 .05; opacity:0; animation:startup-stamen-grow .4s ease-out var(--delay) forwards; }
+.startup-flower__petal { transform-box:view-box; transform-origin:100px 105px; scale:.06; opacity:0; animation:startup-petal-open .8s cubic-bezier(.18,.75,.2,1.12) var(--delay) forwards; }
+.startup-flower__stamen { transform-box:view-box; transform-origin:100px 105px; scale:1 .05; opacity:0; animation:startup-stamen-grow .4s ease-out var(--delay) forwards; }
 .startup-brand { display:flex; flex-direction:column; align-items:center; gap:8px; opacity:0; transform:translateY(8px); animation:startup-brand-reveal .7s ease-out 1.8s forwards; }
 .startup-brand .brand-lockup { justify-content:center; gap:10px; }
 .startup-brand .brand-name { font-family:'Cormorant Garamond',Georgia,serif; font-size:clamp(38px,10vw,48px); font-weight:600; letter-spacing:-1px; }
