@@ -200,7 +200,7 @@ const milestones = [
 ];
 const STORAGE_KEY="tangerina-roadmap-v1";
 let completed = {T1:true,T2:true,T3:true,T4:true,T5:true,T6:true,T7:true,UX1:true,UX2:true};
-try { const saved = localStorage.getItem(STORAGE_KEY); completed = saved ? {...{T1:true,T2:true,T3:true,T4:true,T5:true,T6:true,T7:true,UX1:true}, ...(JSON.parse(saved) || {})} : {T1:true,T2:true,T3:true,T4:true,T5:true,T6:true,T7:true,UX1:true}; } catch(e) { completed = {T1:true,T2:true,T3:true,T4:true,T5:true,T6:true,T7:true,UX1:true}; }
+try { const saved = localStorage.getItem(STORAGE_KEY); completed = saved ? {...{T1:true,T2:true,T3:true,T4:true,T5:true,T6:true,T7:true,UX1:true,UX2:true}, ...(JSON.parse(saved) || {})} : {T1:true,T2:true,T3:true,T4:true,T5:true,T6:true,T7:true,UX1:true,UX2:true}; } catch(e) { completed = {T1:true,T2:true,T3:true,T4:true,T5:true,T6:true,T7:true,UX1:true,UX2:true}; }
 const allTasks = () => milestones.flatMap(m => m.tasks.map(t => ({m,t})));
 function save(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(completed));}catch(e){}}
 function render(){
