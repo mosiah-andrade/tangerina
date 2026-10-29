@@ -12,7 +12,7 @@ export function AppStartup({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const timeout = window.setTimeout(() => setShowIntro(false), reducedMotion ? 500 : 3200);
+    const timeout = window.setTimeout(() => setShowIntro(false), reducedMotion ? 0 : 3200);
     return () => window.clearTimeout(timeout);
   }, []);
 
