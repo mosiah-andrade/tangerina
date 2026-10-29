@@ -560,3 +560,55 @@ A rastreabilidade documental foi preenchida, mas a cobertura não deve ser decla
 **Resultado: rastreabilidade documental individualizada concluída nesta revisão; certificação integral de cobertura ainda não aprovada.** A matriz liga cada RN a casos e critérios quando aplicável e explicita as lacunas restantes. Não foi executada uma suíte de testes contra o aplicativo, pois a página consultada app/app/page.tsx ainda corresponde ao template padrão do Next.js. Os testes manuais relatados anteriormente continuam válidos apenas como resultado informado do protótipo Figma.
 
 Próximo passo: decidir se as lacunas listadas devem ser adicionadas ao documento T3 como novos casos de aceitação, e depois prosseguir com a revisão visual e a organização do Figma. **UX3 permanece EM ANDAMENTO.**
+
+## 21. Décima terceira iteração — revisão visual de fluxos críticos e prontidão técnica
+
+**Data:** 29/10/2026  
+**Status:** EM ANDAMENTO — aprovação final pendente.
+
+### 21.1. Escopo visual inspecionado
+
+Foram capturadas e inspecionadas visualmente as telas de Boas-vindas, Dashboard, Formulário de receita, Revisão da distribuição, Revisão da despesa, Falha ao salvar movimento, Estado vazio do histórico, Erro de validação e Prévia de restauração. Também foram selecionadas para inspeção as telas de Revisão da transferência, Conciliação registrada e Receita registrada. As telas inspecionadas têm frame de 390 × 844 px.
+
+### 21.2. Achado visual — inconsistência aritmética no Dashboard
+
+Na tela `06 — Início / Dashboard` (node `1:120`), os valores ilustrativos visíveis são:
+
+- Saldo total: R$ 4.250,00.
+- Caixinhas: R$ 2.100,00.
+- Não alocado: R$ 350,00.
+
+Esses números não fecham com a fórmula definida em T2: R$ 4.250,00 − R$ 2.100,00 = R$ 2.150,00, e não R$ 350,00. Registrar como **inconsistência de dados ilustrativos a corrigir**. Não é possível concluir pela captura se a causa está no texto do card, no valor total ou no total das caixinhas. Corrigir os valores do exemplo para que saldo bancário consolidado − total das caixinhas = saldo não alocado, sem alterar as regras aprovadas.
+
+### 21.3. Outros achados da amostra
+
+- A tela de Revisão da distribuição apresenta receita de R$ 2.500,00, reserva de R$ 250,00, despesas do mês de R$ 450,00 e não alocado de R$ 1.800,00. Os valores somam R$ 2.500,00; a segunda regra usa 20% de R$ 2.250,00 após a primeira destinação, coerente com o exemplo de base restante.
+- A tela de Falha ao salvar movimento informa que a movimentação não foi confirmada e oferece tentar novamente, voltar ao formulário ou cancelar; a mensagem deixa claro que os dados anteriores permanecem disponíveis.
+- O Estado vazio do histórico explica a ausência de movimentos e oferece ações para registrar uma movimentação ou voltar ao início.
+- O Erro de validação mostra o campo de valor inválido e oferece corrigir ou cancelar. A prévia de restauração avisa sobre a substituição dos dados e oferece confirmar ou manter os dados atuais.
+- A hierarquia visual amostrada mantém títulos, blocos de informação e ações principais em sequência vertical. Esta observação não certifica todos os frames ou todos os estados.
+
+### 21.4. Organização da página UX3 no Figma
+
+A página `UX2 — Wireframes mobile` deve continuar sendo a fonte dos frames/telas. A página `UX3 — Fluxos e validação` deve ser usada como área de documentação visual da etapa: mapa de jornadas, checklist de validação, referências aos frames existentes e resumo de achados, sem duplicar nem mover as telas de origem. A página estava vazia na inspeção. **Nenhuma alteração foi feita no Figma nesta iteração**; criar esse conteúdo exige uma edição separada e verificável.
+
+### 21.5. Validação do aplicativo executável
+
+A inspeção anterior de `app/app/page.tsx` encontrou o template padrão do Next.js. Não há base nessa página para executar testes de cálculo financeiro, persistência, auditoria, pagamento ou backup. Portanto:
+
+- **Protótipo Figma:** resultados manuais foram informados pelo responsável como satisfatórios.
+- **Implementação executável:** não validada; não declarar aprovada nem reprovada funcionalmente com base apenas na página inicial.
+- **Próxima ação técnica:** localizar os módulos implementados e testes existentes no repositório; se não existirem, a validação funcional fica bloqueada até implementar o MVP.
+
+### 21.6. Situação após a revisão
+
+- [x] Inspeção visual amostral dos fluxos principais e estados críticos.
+- [x] Inconsistência aritmética do Dashboard documentada.
+- [x] Definida recomendação de organização para a página UX3, sem alterar o Figma.
+- [ ] Corrigir e validar os valores ilustrativos do Dashboard.
+- [ ] Revisar visualmente todos os frames relevantes restantes; a inspeção completa dos 286 frames não está concluída.
+- [ ] Criar o mapa/checklist na página UX3, após a edição visual ser autorizada/executada.
+- [ ] Localizar e validar a implementação financeira real e os testes automatizados.
+- [ ] Obter aprovação explícita do responsável.
+
+**Conclusão:** revisão visual amostral avançou e identificou uma inconsistência concreta no Dashboard. A organização recomendada para UX3 está definida, mas não aplicada. A validação técnica real continua bloqueada pela ausência de funcionalidades financeiras verificadas no arquivo inicial. **UX3 permanece EM ANDAMENTO.**
