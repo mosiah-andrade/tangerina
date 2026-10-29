@@ -16,12 +16,14 @@ Abra http://localhost:3000.
 ## Checagens disponíveis
 
 ```bash
+npm run test
+npm run typecheck
 npm run lint
 npm run format:check
 npm run build
 ```
 
-Estes comandos estão configurados, mas só devem ser considerados validados quando executados no ambiente de trabalho.
+A CI executa testes unitários, verificação de tipos, ESLint, checagem de formatação e build. Considere a validação aprovada somente quando todos os comandos terminarem com sucesso. O checklist manual está em `../docs/infra/T11-checklist-validacao.md`.
 
 ## Estrutura arquitetural
 
