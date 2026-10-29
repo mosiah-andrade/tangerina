@@ -687,3 +687,39 @@ Assim, a validação do aplicativo executável permanece **bloqueada**: o reposi
 - [ ] Aprovação explícita do responsável.
 
 **Conclusão:** a documentação está mais completa, mas não certifico a implementação nem a UX3 como concluídas. A validação técnica está bloqueada por ausência de código/testes financeiros identificáveis no repositório; revisão visual integral e aprovação seguem pendentes. **UX3 permanece EM ANDAMENTO.**
+
+## 24. Décima sexta iteração — resultado informado da revisão visual por jornada
+
+**Data:** 29/10/2026  
+**Status da etapa:** EM ANDAMENTO — aprovação final pendente.
+
+### 24.1. Resultado informado pelo responsável
+
+O responsável informou que concluiu a revisão visual dos cinco grupos abaixo e marcou todos como verificados:
+
+- [x] **Receita e distribuição:** revisão, confirmação, cancelamento, arredondamento e limites.
+- [x] **Despesas e caixinhas:** saldo negativo, confirmação, erro ao salvar e auditoria.
+- [x] **Transferências e conciliação:** saldo insuficiente, prévia, diferença e confirmação.
+- [x] **Pagamentos e backup:** prevenção de despesa duplicada, arquivo inválido, cancelamento e restauração.
+- [x] **Estados gerais:** telas vazias, campos inválidos, voltar e retornar ao início.
+
+O registro acima documenta o resultado informado pelo responsável. Não foram fornecidas nesta atualização capturas, lista de defeitos encontrados, identificadores de frames, nem detalhes de casos individuais que falharam; portanto, não inferir que nenhum defeito foi encontrado ou que todos os destinos interativos foram verificados independentemente.
+
+### 24.2. Falhas observadas e limitações técnicas
+
+- **Falhas visuais relatadas nesta rodada:** nenhuma foi detalhada na mensagem de resultado. Isso significa “nenhuma falha especificada no registro”, e não comprova que não existam falhas.
+- **Limitação técnica persistente:** o protótipo Figma não executa nem comprova cálculos financeiros reais, persistência, trilha de auditoria, idempotência de pagamentos ou restauração real de backup.
+- **Validação do aplicativo executável:** continua bloqueada até localizar ou implementar os módulos financeiros executáveis e os testes correspondentes no repositório.
+- **Matriz T2/T3:** RN-001–RN-044, CT-001–CT-018 e CA01–CA27 estão documentados; a revisão final de consistência da rastreabilidade e a execução dos testes ainda não foram certificadas.
+
+### 24.3. Situação atualizada
+
+- [x] Resultado da revisão visual por cinco grupos registrado conforme informado pelo responsável.
+- [x] Inconsistência ilustrativa anterior do Dashboard corrigida para saldo não alocado de R$ 2.150,00.
+- [x] Mapa e checklist mantidos na página `UX3 — Fluxos e validação` do Figma, com telas de origem em UX2.
+- [ ] Registrar defeitos encontrados, se houver, com frame e evidência específica.
+- [ ] Finalizar a revisão de consistência da matriz RN/CT/CA.
+- [ ] Validar a implementação executável e os testes reais após a implementação financeira.
+- [ ] Obter aprovação explícita do responsável.
+
+**Conclusão:** os cinco grupos da revisão visual foram marcados como verificados pelo responsável. O registro não afirma ausência absoluta de defeitos nem certifica a execução funcional do aplicativo. **UX3 permanece EM ANDAMENTO** e não foi feito merge para `main`.
