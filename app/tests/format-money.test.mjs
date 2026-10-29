@@ -3,11 +3,11 @@ import test from "node:test";
 import { formatMoneyFromCents } from "../lib/format-money.ts";
 
 test("formats positive cents as Brazilian Real", () => {
-  assert.equal(formatMoneyFromCents(425000), "R$ 4.250,00");
+  assert.equal(formatMoneyFromCents(425000), "R$\u00a04.250,00");
 });
 
 test("formats zero cents", () => {
-  assert.equal(formatMoneyFromCents(0), "R$ 0,00");
+  assert.equal(formatMoneyFromCents(0), "R$\u00a00,00");
 });
 
 test("formats negative cents", () => {
