@@ -18,10 +18,7 @@ test("formats zero cents", () => {
 });
 
 test("formats negative cents", () => {
-  assert.equal(
-    normalizeWhitespace(formatMoneyFromCents(-125)),
-    "-R$ 1,25",
-  );
+  assert.equal(normalizeWhitespace(formatMoneyFromCents(-125)), "-R$ 1,25");
 });
 
 test("rejects non-integer cents", () => {
