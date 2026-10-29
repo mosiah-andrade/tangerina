@@ -296,3 +296,83 @@ A página de wireframes mobile contém agora 274 frames. A inspeção das telas 
 - [ ] Obter aprovação explícita do usuário.
 
 **Conclusão:** a jornada de receita tem agora um estado de sucesso próprio e o card foi corrigido após inspeção visual. A UX3 permanece EM ANDAMENTO. O teste manual e a aprovação não foram simulados nem presumidos.
+
+## 17. Nona iteração — registro dos testes manuais no protótipo
+
+**Data do registro:** 29/10/2026  
+**Status da UX3:** EM ANDAMENTO — aprovação final pendente  
+**Ambiente:** Protótipo do Figma  
+**Resultado informado pelo responsável:** Todos os fluxos se comportaram como esperado no protótipo.
+
+### 17.1. Resultado por jornada
+
+O responsável informou que todos os cenários abaixo foram executados e se comportaram como esperado no protótipo.
+
+#### Receitas e distribuição — T2
+- [x] Registrar receita e conferir a tela de sucesso.
+- [x] Conferir a ordem das regras e a base de cálculo de cada percentual.
+- [x] Testar arredondamento para centavos e bloqueio de distribuição acima do limite.
+- [x] Cancelar a operação e confirmar que não se chega à tela de sucesso.
+
+#### Despesas e caixinhas — T2/T3
+- [x] Tentar uma despesa acima do saldo da caixinha e verificar a confirmação de saldo negativo.
+- [x] Cancelar a confirmação e conferir o retorno ao fluxo de revisão.
+- [x] Confirmar a despesa e verificar o caminho para o histórico/detalhe.
+- [x] Editar um movimento e conferir se o histórico de auditoria é apresentado.
+
+#### Transferência e conciliação
+- [x] Tentar transferir mais que o saldo bancário disponível.
+- [x] Cancelar e editar uma transferência bloqueada.
+- [x] Conferir a prévia da conciliação antes de confirmar.
+- [x] Conferir o estado de sucesso e o tratamento da diferença de saldo.
+
+#### Exportação e restauração
+- [x] Gerar um arquivo de exportação e verificar o caminho de retorno.
+- [x] Validar um arquivo para restauração e conferir a prévia.
+- [x] Cancelar a restauração e conferir o retorno.
+- [x] Confirmar a restauração e conferir o estado final.
+
+#### Pagamentos e navegação
+- [x] Confirmar pagamento e verificar se não há duplicação da despesa.
+- [x] Testar voltar, cancelar e confirmar nos fluxos principais.
+- [x] Verificar se os botões levam à tela correspondente, sem atalhos para jornadas diferentes.
+
+### 17.2. Falhas observadas
+
+Nenhuma falha específica foi relatada pelo responsável durante o registro dos resultados. Isso significa que não há ocorrências documentadas até o momento; não constitui comprovação de ausência absoluta de defeitos.
+
+Caso uma falha seja identificada posteriormente, registrar o fluxo afetado, comportamento esperado e observado, passos para reprodução e evidência disponível.
+
+### 17.3. Limitações técnicas e pendências
+
+Os testes ocorreram no protótipo do Figma. Permanecem pendentes de validação na implementação:
+
+- [ ] Cálculo dinâmico da distribuição para diferentes valores, regras e bases de cálculo.
+- [ ] Ordem de execução, arredondamento a centavos e bloqueio de distribuição excedente.
+- [ ] Persistência e atualização de saldos após receitas, despesas e transferências.
+- [ ] Persistência da auditoria com valores anteriores e novos.
+- [ ] Conciliação com diferenças positivas e negativas, cancelamento e preservação do histórico.
+- [ ] Geração de arquivos reais de exportação e validação da integridade dos dados.
+- [ ] Restauração efetiva de backup e tratamento de arquivos inválidos.
+- [ ] Pagamentos sem lançamento de despesa duplicado ou desconto indevido.
+- [ ] Testes automatizados ou manuais sobre a implementação das regras críticas de T2/T3.
+
+Essas são limitações de validação técnica, não falhas comprovadas no protótipo.
+
+### 17.4. Situação e próximos passos
+
+- **Testes manuais no protótipo:** execução informada como satisfatória.
+- **Falhas específicas relatadas:** nenhuma.
+- **Validação técnica da implementação:** pendente.
+- **Revisão integral dos critérios T2/T3:** pendente.
+- **Revisão visual completa de todos os frames:** pendente.
+- **Aprovação explícita da UX3:** pendente.
+
+Próximos passos:
+1. Preservar o resultado informado dos testes manuais.
+2. Conferir a cobertura individual dos critérios T2/T3 e registrar eventuais lacunas.
+3. Manter as limitações técnicas como pendências para a implementação.
+4. Realizar a revisão visual completa e consolidar a documentação.
+5. Solicitar aprovação explícita antes de concluir a UX3 ou iniciar formalmente a próxima etapa.
+
+**Status final desta iteração: EM ANDAMENTO.** A execução manual informada não implica aprovação final nem comprovação funcional do aplicativo.
