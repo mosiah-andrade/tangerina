@@ -105,7 +105,7 @@ button { font:inherit; }
 .welcome-copy h1 em { color:var(--gold-dark); font-weight:400; }
 .welcome-description { max-width:310px; margin:24px 0 0; color:#60665f; font-size:13px; line-height:1.9; }
 .welcome-actions { display:grid; gap:18px; }
-.button-primary { display:flex; align-items:center; justify-content:space-between; min-height:56px; padding:0 20px; border:1px solid rgba(197,155,39,.55); border-radius:3px; background:linear-gradient(120deg,var(--emerald),var(--emerald-dark)); color:var(--silk); font-size:12px; font-weight:700; letter-spacing:.5px; transition:background .15s ease,transform .15s ease; }
+.button-primary { display:flex; align-items:center; justify-content:space-between; min-height:56px; padding:0 20px; border:1px solid rgba(197,155,39,.55); border-radius:var(--radius-sm); background:linear-gradient(120deg,var(--emerald),var(--emerald-dark)); color:var(--silk); font-size:12px; font-weight:700; letter-spacing:.5px; transition:background .15s ease,transform .15s ease; }
 .button-primary:hover { background:var(--emerald-soft); }
 .button-primary:active { transform:translateY(1px); }
 .privacy-note { display:flex; align-items:center; justify-content:center; gap:8px; margin:0; color:#777a73; font-size:10px; text-align:center; }
@@ -113,7 +113,7 @@ button { font:inherit; }
 .welcome-footer { padding-top:18px; color:#85877f; font-size:8px; font-weight:600; letter-spacing:1.8px; text-align:center; }
 .welcome-footer span { padding:0 7px; color:var(--gold); }
 
-.app-shell { width:100%; max-width:520px; min-height:100svh; margin:0 auto; padding:25px 21px 108px; background:var(--silk); border-inline:1px solid rgba(197,155,39,.12); }
+.app-shell { width:100%; max-width:var(--content-width); min-height:100svh; margin:0 auto; padding:25px 21px 108px; background:var(--silk); border-inline:1px solid rgba(197,155,39,.12); }
 .app-header { display:flex; align-items:center; justify-content:space-between; gap:16px; }
 .dashboard-logo { width:42px; height:42px; object-fit:contain; }
 .app-header .brand-lockup { gap:7px; }
@@ -158,6 +158,46 @@ button { font:inherit; }
 .bottom-nav a { display:grid; justify-items:center; gap:5px; padding:5px 2px; color:#777a73; font-size:9px; }
 .bottom-nav a[aria-current="page"] { color:var(--emerald); font-weight:700; }
 .bottom-nav a[aria-current="page"]::after { content:""; width:17px; height:2px; margin-top:1px; background:var(--gold); }
+
+/* T9 — componentes-base reutilizáveis para formulários e superfícies */
+.surface-card {
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-silk);
+  box-shadow: var(--shadow-card);
+}
+.field-group { display:grid; gap:var(--space-2); min-width:0; }
+.field-label { color:var(--color-emerald); font-size:var(--text-sm); font-weight:600; }
+.text-input, .text-select, .text-area {
+  display:block; width:100%; min-height:44px; padding:var(--space-3) var(--space-4);
+  border:var(--border-width) solid rgba(11,60,42,.22); border-radius:var(--radius-sm);
+  background:#fff; color:var(--color-charcoal); font:400 var(--text-sm)/var(--leading-body) var(--font-body);
+  transition:border-color var(--motion-fast) var(--motion-easing), box-shadow var(--motion-fast) var(--motion-easing);
+}
+.text-area { min-height:104px; resize:vertical; }
+.text-input::placeholder, .text-area::placeholder { color:#85877f; opacity:1; }
+.text-input:hover, .text-select:hover, .text-area:hover { border-color:rgba(11,60,42,.48); }
+.text-input:focus-visible, .text-select:focus-visible, .text-area:focus-visible {
+  border-color:var(--color-emerald); outline:var(--border-focus) solid var(--color-focus); outline-offset:2px;
+  box-shadow:0 0 0 4px rgba(229,192,91,.16);
+}
+.field-hint { color:var(--color-muted); font-size:var(--text-xs); line-height:1.5; }
+.field-error { color:var(--color-danger); font-size:var(--text-xs); line-height:1.5; }
+.button-secondary, .button-danger {
+  display:inline-flex; align-items:center; justify-content:center; gap:var(--space-2);
+  min-height:44px; padding:var(--space-3) var(--space-4); border:var(--border-width) solid transparent;
+  border-radius:var(--radius-sm); font-size:var(--text-sm); font-weight:700;
+  transition:background var(--motion-fast) var(--motion-easing), color var(--motion-fast) var(--motion-easing), border-color var(--motion-fast) var(--motion-easing);
+  cursor:pointer;
+}
+.button-secondary { border-color:var(--color-border); background:transparent; color:var(--color-emerald); }
+.button-secondary:hover { border-color:var(--color-gold); background:var(--color-cream); }
+.button-danger { background:var(--color-danger); color:#fff; }
+.button-danger:hover { background:#862E27; }
+.button-secondary:disabled, .button-danger:disabled, .text-input:disabled, .text-select:disabled, .text-area:disabled {
+  cursor:not-allowed; opacity:.55;
+}
+
 @media (min-width:700px) {
  .welcome-card { min-height:650px; }
  .app-shell { margin:24px auto; min-height:calc(100svh - 48px); border:1px solid var(--line); }
