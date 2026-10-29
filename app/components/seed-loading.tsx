@@ -26,7 +26,7 @@ export function SeedLoading({
             className={`seed-loader__seed seed-loader__seed--${seed.color}`}
             key={seed.angle}
             style={{
-              transform: `rotate(${seed.angle}deg) translateY(-29px)`,
+              transform: `rotate(${seed.angle}deg) translateY(-32px)`,
               animationDelay: `${index * -0.14}s`,
             }}
           />
