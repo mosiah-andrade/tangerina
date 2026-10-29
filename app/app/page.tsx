@@ -2,14 +2,21 @@ import Link from "next/link";
 import Image from "next/image";
 import { FiArrowRight, FiShield } from "react-icons/fi";
 
-const logo = "/favicon.svg";
-
 export default function Home() {
   return (
     <main className="welcome-shell">
       <section className="welcome-card" aria-labelledby="welcome-title">
-        <header className="brand-lockup" aria-label="Tangerina Financeiro">
-          <Image src={logo} alt="Tangerina" width={190} height={78} priority className="welcome-logo" unoptimized />
+        <header className="welcome-brand" aria-label="Tangerina Financeiro">
+          <Image
+            src="/favicon.svg"
+            alt=""
+            width={56}
+            height={56}
+            priority
+            className="welcome-brand__icon"
+            unoptimized
+          />
+          <span className="welcome-brand__name">Tangerina</span>
         </header>
         <div className="welcome-copy">
           <p className="eyebrow"><span className="eyebrow-line" /> Organização que floresce</p>
