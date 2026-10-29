@@ -35,7 +35,7 @@ export function AppStartup({ children }: { children: React.ReactNode }) {
                 </linearGradient>
               </defs>
               {leaves.map((angle) => (
-                <path key={angle} className="startup-flower__leaf" style={{ "--angle": `${angle}deg` } as React.CSSProperties}
+                <path key={angle} className="startup-flower__leaf" transform={`rotate(${angle} 100 132)`}
                   d="M100 132 C67 128 52 100 61 78 C84 84 101 105 100 132Z" fill="#0B3C2A" />
               ))}
               <g className="startup-bud">
@@ -44,7 +44,7 @@ export function AppStartup({ children }: { children: React.ReactNode }) {
               </g>
               {petals.map((index) => (
                 <g key={index} className="startup-flower__petal"
-                  style={{ "--angle": `${index * 45}deg`, "--delay": `${0.45 + index * 0.11}s` } as React.CSSProperties}>
+                  transform={`rotate(${index * 45} 100 105)`} style={{ "--delay": `${0.45 + index * 0.11}s` } as React.CSSProperties>
                   <path d="M100 108 C78 91 76 62 100 31 C124 62 122 91 100 108Z"
                     fill="url(#startup-petal)" stroke="#D8C99E" strokeWidth=".8" />
                   <path d="M100 101 L100 42" stroke="#D6C69B" strokeWidth=".8" opacity=".8" />
@@ -52,7 +52,7 @@ export function AppStartup({ children }: { children: React.ReactNode }) {
               ))}
               {stamens.map((index) => (
                 <g key={index} className="startup-flower__stamen"
-                  style={{ "--angle": `${index * 30}deg`, "--delay": `${1.5 + index * 0.035}s` } as React.CSSProperties}>
+                  transform={`rotate(${index * 30} 100 105)`} style={{ "--delay": `${1.5 + index * 0.035}s` } as React.CSSProperties>
                   <path d="M100 106 L100 82" stroke="#C59B27" strokeWidth="1.7" strokeLinecap="round" />
                   <circle cx="100" cy="80" r="2.6" fill="url(#startup-gold)" />
                 </g>
