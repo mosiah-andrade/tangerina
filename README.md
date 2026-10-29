@@ -27,6 +27,7 @@ Aplicativo de organização financeira com foco em uso mobile, controle de conta
 | [T5 — Modelo de dados](docs/arquitetura/T5-modelo-dados.md) | Entidades, relacionamentos e DER |
 | [ADR-001 — Stack tecnológica](docs/decisoes/ADR-001-stack.md) | Tecnologias aprovadas e premissas |
 | [T7 — Configuração do ambiente](docs/infra/T7-configuracao-ambiente.md) | Fundação técnica e validações registradas |
+| [T8 — Estrutura da aplicação](docs/infra/T8-estrutura-aplicacao.md) | Separação entre rotas, componentes, domínio, persistência e utilitários |
 | [Briefing funcional](briefing_app_financeiro.md) | Requisitos detalhados |
 | [Roadmap](tangerina_roadmap.html) | Etapas, tarefas e progresso |
 
