@@ -63,3 +63,30 @@ A conexão clicável entre frames precisa ser concluída e testada no editor do 
 ## 6. Critério de conclusão da UX3
 
 UX3 só deve ser marcada como concluída após as pendências acima serem tratadas, os principais fluxos serem testados e o usuário aprovar o protótipo. Esta entrega registra a primeira revisão e não representa aprovação final.
+
+
+## 7. Segunda iteração — estados críticos e dashboard
+
+Em 29/10/2026, foi feita uma segunda iteração visual no arquivo Figma:
+
+- Dashboard: adicionados os blocos **Próximos vencimentos** e **Navegação principal**.
+- Estado vazio do histórico: explica o que aparecerá na lista e oferece ação para registrar a primeira movimentação.
+- Erro de validação: informa como corrigir o campo inválido sem apagar o formulário.
+- Confirmação de saldo negativo na caixinha: mostra saldo atual, despesa e saldo projetado negativo, com confirmação explícita.
+- Prévia de restauração: mostra resumo do backup e alerta para exportar os dados atuais antes de substituir.
+- Falha ao salvar: esclarece que a operação não foi confirmada e oferece nova tentativa.
+- Armazenamento indisponível: impede que a interface sugira que os dados foram salvos.
+- Transferência bloqueada por saldo: mostra saldo disponível, valor solicitado e diferença, sem permitir confirmar.
+
+Esses frames são especificações visuais de estados; não comprovam comportamento implementado no aplicativo.
+
+## 8. Estado atualizado das pendências
+
+- [x] Ajustar o dashboard com próximos vencimentos e navegação principal — representação visual adicionada.
+- [x] Criar representações visuais de erro, vazio, falha de gravação, armazenamento indisponível e operação bloqueada.
+- [x] Detalhar a confirmação de caixinha negativa e a prévia de restauração.
+- [ ] Revisar as telas de receita, despesa, conciliação e importação com todos os critérios T2/T3.
+- [ ] Configurar e testar conexões clicáveis no Figma.
+- [ ] Fazer revisão final com o usuário e registrar aprovação.
+
+**Status permanece: em andamento.** A UX3 só deve ser concluída após as jornadas clicáveis e a revisão final.
