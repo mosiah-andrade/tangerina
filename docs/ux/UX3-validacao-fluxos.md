@@ -90,3 +90,48 @@ Esses frames são especificações visuais de estados; não comprovam comportame
 - [ ] Fazer revisão final com o usuário e registrar aprovação.
 
 **Status permanece: em andamento.** A UX3 só deve ser concluída após as jornadas clicáveis e a revisão final.
+
+## 9. Terceira iteração — revisão financeira e navegação clicável
+
+Em 29/10/2026, o protótipo recebeu novos detalhes e ligações de navegação:
+
+### Receita e distribuição
+
+A tela de revisão agora explicita a ordem das regras e a base restante. Exemplo ilustrativo com receita de R$ 2.500,00:
+- Regra 1: 10% da receita total = R$ 250,00.
+- Regra 2: 20% do saldo restante de R$ 2.250,00 = R$ 450,00.
+- Não alocado: R$ 1.800,00.
+
+A distribuição é arredondada ao centavo e não pode exceder o valor disponível. Os valores são dados de exemplo, não entradas reais.
+
+### Despesa e transferência
+
+- A tela de despesa explicita que uma caixinha pode ficar negativa apenas após confirmação explícita e que saldo bancário insuficiente bloqueia a operação por padrão.
+- Foi criada uma tela de revisão da despesa com resumo da origem, caixinha, valor e saldo projetado.
+- Foi criada uma tela de revisão da transferência com origem, destino, valor e efeito previsto no saldo. A transferência não deve ser contabilizada como receita ou despesa.
+
+### Conciliação e restauração
+
+- A tela de conciliação inclui um exemplo de diferença entre saldo do app e saldo real.
+- Foi criada uma prévia da conciliação com a diferença e o efeito proposto; nenhuma alteração deve ocorrer antes da confirmação.
+- A jornada de importação agora aponta para a prévia de restauração existente, que mostra o resumo do arquivo e alerta sobre substituição dos dados.
+
+### Interações do protótipo
+
+Foram adicionadas 38 conexões de navegação por clique, cobrindo configuração inicial, atalhos do dashboard, receita e revisão da distribuição, despesa e sua revisão, transferência e revisão, conciliação e prévia, importação/restauração, pagamento e retorno do detalhe ao histórico.
+
+O frame de boas-vindas foi identificado como início pretendido do fluxo. A configuração de início do protótipo no arquivo pode depender de ajuste no editor do Figma, pois a propriedade da página não é gravável pela API usada.
+
+## 10. Resultado da revisão e pendências restantes
+
+- [x] Conferir e explicitar ordem das regras e base de cálculo restante em exemplo de distribuição.
+- [x] Representar revisão da despesa com saldo projetado e confirmação.
+- [x] Representar revisão da transferência com validação de saldo.
+- [x] Criar prévia da conciliação com diferença e confirmação.
+- [x] Ligar jornadas principais por cliques entre frames.
+- [ ] Testar manualmente todos os caminhos no modo Present do Figma.
+- [ ] Conferir se todas as telas e estados refletem integralmente os critérios T2/T3, incluindo regras fixas, percentuais da receita bruta e percentuais do saldo restante, casos de arredondamento e limites.
+- [ ] Ajustar visualmente eventuais problemas identificados no teste.
+- [ ] Revisão final com o usuário e aprovação explícita.
+
+**Status permanece: em andamento.** As conexões foram criadas via API e contadas estruturalmente, mas não foi possível concluir um teste interativo completo no modo Present nesta sessão. A UX3 não deve ser considerada aprovada até o teste manual e a aprovação do usuário.
