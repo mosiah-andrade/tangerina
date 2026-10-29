@@ -376,3 +376,44 @@ Próximos passos:
 5. Solicitar aprovação explícita antes de concluir a UX3 ou iniciar formalmente a próxima etapa.
 
 **Status final desta iteração: EM ANDAMENTO.** A execução manual informada não implica aprovação final nem comprovação funcional do aplicativo.
+
+## 18. Décima iteração — revisão de cobertura T2/T3 e auditoria estrutural
+
+**Data:** 29/10/2026  
+**Status:** EM ANDAMENTO — sem aprovação final.
+
+### 18.1. Revisão técnica da documentação
+
+Foi feita leitura dos documentos `docs/requisitos/T2-regras-financeiras.md` e `docs/requisitos/T3-criterio-aceitacao.md` na branch de trabalho.
+
+**T2 — regras financeiras:** o documento especifica invariantes RN-001 a RN-044 e inclui casos de teste essenciais CT-001 a CT-018. Os grupos cobrem representação monetária em centavos, consistência de saldos, configuração inicial, tipos e ordem das regras de distribuição, limites, despesas, transferências, carteira física, conciliação, arredondamento, edição, auditoria, idempotência e relatórios sem dupla contagem. A existência dessas regras e casos não comprova implementação nem execução dos testes contra código.
+
+**T3 — critérios de aceitação:** o arquivo atual contém os critérios CA01 a CA11, cobrindo distribuição de recebimento, regra pontual, excesso de distribuição, despesa vinculada, saldo insuficiente, transferências, boleto pago/vencido, recorrência e metas. A revisão identificou que o documento termina no CA11 e não apresenta, no conteúdo atual, uma matriz de rastreabilidade para todos os casos CT-001 a CT-018 do T2. Portanto, a cobertura integral T2/T3 ainda não pode ser declarada concluída.
+
+### 18.2. Estado da implementação
+
+O arquivo `app/app/page.tsx` consultado na branch contém a página inicial padrão do Next.js, com conteúdo de boas-vindas e links de template. Não foram encontradas nessa página implementações das regras financeiras do Tangerina. Isso confirma que a validação funcional real das regras não pode ser feita a partir dessa página; não equivale a uma auditoria de todos os arquivos da aplicação.
+
+### 18.3. Auditoria estrutural do Figma
+
+A leitura estrutural do arquivo Figma retornou:
+
+- `UX2 — Wireframes mobile`: 39 elementos de nível superior e 286 frames descendentes.
+- `UX3 — Fluxos e validação`: 0 elementos filhos.
+- Foram identificados frames de tela com dimensões de 390 × 844 px, incluindo boas-vindas, configuração, dashboard e formulário de receita.
+
+**Achado de organização:** a página chamada `UX3 — Fluxos e validação` está vazia no estado atual consultado. Isso não invalida automaticamente os frames e conexões que estão na página UX2, mas contradiz a expectativa de que o mapa de fluxos esteja organizado dentro da página UX3. É necessário decidir se os artefatos devem ser movidos/organizados nessa página ou se o nome/descrição da página deve ser ajustado. Nenhuma alteração visual foi feita nesta auditoria.
+
+A contagem e os nomes dos frames permitem auditoria estrutural inicial, mas não certificam a inspeção visual tela a tela de todos os 286 frames, nem substituem o modo Present.
+
+### 18.4. Pendências atualizadas
+
+- [ ] Criar matriz de rastreabilidade entre RN-001–RN-044, CT-001–CT-018, CA01–CA11 e telas/fluxos relevantes.
+- [ ] Identificar explicitamente critérios T3 ausentes para os casos do T2 que não possuem critério de aceitação correspondente.
+- [ ] Validar as regras financeiras em código executável após a implementação; a página inicial atual ainda é o template padrão do Next.js.
+- [ ] Resolver a organização da página vazia `UX3 — Fluxos e validação` no Figma, sem mover ou apagar frames sem revisão.
+- [ ] Executar revisão visual completa de todos os frames relevantes, incluindo cortes, hierarquia, espaçamento, consistência e estados de erro/vazio.
+- [ ] Manter os testes manuais previamente relatados como satisfatórios no protótipo, sem convertê-los em evidência de funcionamento do código.
+- [ ] Solicitar aprovação explícita do responsável antes de encerrar a UX3.
+
+**Resultado desta iteração:** revisão documental e estrutural parcial realizada; cobertura integral T2/T3 e revisão visual completa ainda pendentes. **UX3 permanece EM ANDAMENTO.**
