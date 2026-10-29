@@ -1,6 +1,8 @@
+import { Suspense } from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { AppBrand } from "@/components/app-brand";
+import { SeedLoading } from "@/components/seed-loading";
 
 const sections: Record<string, { title: string; description: string }> = {
   receitas: { title: "Receitas", description: "O registro e a distribuição de receitas serão implementados na próxima etapa." },
@@ -11,7 +13,7 @@ const sections: Record<string, { title: string; description: string }> = {
   mais: { title: "Mais opções", description: "Contas, regras de distribuição, backup e configurações serão adicionados gradualmente." },
 };
 
-export default async function SectionPage({
+async function SectionContent({
   params,
 }: {
   params: Promise<{ section: string }>;
@@ -38,5 +40,17 @@ export default async function SectionPage({
         Voltar ao painel <span aria-hidden="true">→</span>
       </Link>
     </main>
+  );
+}
+
+export default function SectionPage({
+  params,
+}: {
+  params: Promise<{ section: string }>;
+}) {
+  return (
+    <Suspense fallback={<SeedLoading fullScreen label="Abrindo seção" />}>
+      <SectionContent params={params} />
+    </Suspense>
   );
 }
