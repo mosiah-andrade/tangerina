@@ -220,3 +220,31 @@ As novas telas de exportação e restauração mantêm dimensões de 390 × 844 
 - [ ] Obter aprovação explícita do usuário.
 
 **Conclusão desta iteração:** exportação e importação agora têm caminhos semanticamente separados e estados de sucesso distintos; o estado de transferência bloqueada tem ações coerentes. A validação manual e a aprovação permanecem pendentes. UX3 continua **EM ANDAMENTO**.
+
+
+## 14. Sexta iteração — confirmação de pagamento sem duplicidade
+
+**Data:** 29/10/2026  
+**Status:** em andamento; não aprovada.
+
+### Correção no protótipo
+
+- A tela **15 — Confirmar pagamento** agora explica que a confirmação marca a conta como paga e vincula o movimento correspondente.
+- O texto explicita que não deve ser criada uma segunda despesa nem descontado novamente o saldo bancário.
+- O botão **Confirmar pagamento** navega para um novo frame **UX3 — Pagamento registrado**.
+- O novo estado mostra o status Pago, a vinculação ao movimento e a ausência de novo desconto; oferece retorno ao dashboard ou à lista de contas a pagar.
+- O screenshot do novo frame foi inspecionado: tamanho original 390 × 844 px, hierarquia simples, texto visível sem corte aparente e botões separados.
+
+### Limite da validação
+
+Esta é uma validação visual e estrutural do protótipo. Os cliques apenas mudam de frame: não alteram o estado de uma conta, não atualizam saldo nem garantem idempotência real. Isso deve ser implementado e testado no código posteriormente, conforme T3 CA08/CA09.
+
+### Pendências de UX3
+
+- [ ] Executar manualmente os fluxos no modo Present, incluindo voltar, cancelar, confirmar e retornos.
+- [ ] Conferir todos os critérios T2/T3, especialmente bases de cálculo, ordem de regras, arredondamento, limites, saldo insuficiente, conciliação e auditoria.
+- [ ] Inspecionar visualmente todos os frames, não apenas os estados atualizados nesta iteração.
+- [ ] Registrar os resultados dos testes reais no modo Present.
+- [ ] Receber aprovação explícita do usuário antes de marcar UX3 concluída.
+
+**Resultado:** a ambiguidade de conteúdo no fluxo de pagamento foi corrigida no protótipo e o estado de sucesso foi acrescentado. A tarefa permanece **EM ANDAMENTO**.
