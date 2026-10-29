@@ -2,6 +2,7 @@ import { Suspense } from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { AppBrand } from "@/components/app-brand";
+import { BottomNavigation } from "@/components/bottom-navigation";
 import { SeedLoading } from "@/components/seed-loading";
 
 const sections: Record<string, { title: string; description: string }> = {
@@ -22,24 +23,35 @@ async function SectionContent({
   const item = sections[section];
   if (!item) notFound();
 
+  const activeNavigation = section === "movimentacoes"
+    ? "/movimentacoes"
+    : section === "caixinhas"
+      ? "/caixinhas"
+      : section === "mais"
+        ? "/mais"
+        : "";
+
   return (
-    <main className="app-shell">
-      <header className="app-header">
-        <AppBrand />
-        <Link className="context-label" href="/dashboard">Voltar ao início</Link>
-      </header>
-      <section className="dashboard-greeting">
-        <p>Em construção</p>
-        <h1>{item.title}</h1>
-      </section>
-      <section className="notice-card">
-        <strong>Esta etapa ainda não está implementada.</strong>
-        <p>{item.description}</p>
-      </section>
-      <Link className="button-primary" style={{ marginTop: 22 }} href="/dashboard">
-        Voltar ao painel <span aria-hidden="true">→</span>
-      </Link>
-    </main>
+    <>
+      <main className="app-shell">
+        <header className="app-header">
+          <AppBrand />
+          <Link className="context-label" href="/dashboard">Voltar ao início</Link>
+        </header>
+        <section className="dashboard-greeting">
+          <p>Em construção</p>
+          <h1>{item.title}</h1>
+        </section>
+        <section className="notice-card">
+          <strong>Esta etapa ainda não está implementada.</strong>
+          <p>{item.description}</p>
+        </section>
+        <Link className="button-primary" style={{ marginTop: 22 }} href="/dashboard">
+          Voltar ao painel <span aria-hidden="true">→</span>
+        </Link>
+      </main>
+      <BottomNavigation active={activeNavigation} />
+    </>
   );
 }
 
