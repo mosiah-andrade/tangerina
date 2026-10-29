@@ -54,10 +54,10 @@ app/
 
 ## 6. Critérios de conclusão
 
-- [ ] Pastas-base criadas e com responsabilidades documentadas.
-- [ ] Convenções compatíveis com a estrutura Next.js existente.
-- [ ] Nenhuma regra financeira duplicada em componentes.
-- [ ] Lint, formatação e build validados após as alterações.
+- [x] Pastas-base criadas e com responsabilidades documentadas.
+- [x] Convenções compatíveis com a estrutura Next.js existente.
+- [x] As telas criadas usam valores demonstrativos; regras financeiras ainda não foram implementadas nos componentes.
+- [ ] Lint, formatação e build validados após as alterações (pendente de execução no ambiente local).
 - [ ] Roadmap atualizado somente depois de executar as validações.
 
 ## 7. Referências
@@ -66,3 +66,20 @@ app/
 - `docs/decisoes/ADR-001-stack.md`
 - `docs/requisitos/T2-regras-financeiras.md`
 - `docs/requisitos/T3-criterio-aceitacao.md`
+
+
+## 8. Progresso da implementação
+
+Implementado nesta branch:
+- Tela inicial em `app/app/page.tsx`, com navegação para o dashboard.
+- Dashboard ilustrativo em `app/app/dashboard/page.tsx`.
+- Rotas provisórias para receitas, despesas, transferências, movimentações, caixinhas e opções em `app/app/[section]/page.tsx`.
+- Página de rota não encontrada em `app/app/not-found.tsx`.
+- Componentes compartilhados `app/components/app-brand.tsx` e `app/components/bottom-navigation.tsx`.
+- Identidade visual e uso de ícones React Icons nas telas iniciais.
+
+### Limitações conhecidas
+- Os valores do dashboard são fixos e ilustrativos; não vêm de uma base de dados.
+- As rotas provisórias informam que as funcionalidades ainda não foram implementadas.
+- A marca está referenciada por `/favicon.svg`; confirmar visualmente no navegador se o arquivo é o recurso de marca pretendido.
+- A instalação de dependências, lint, verificação de tipos e build ainda precisam ser executados localmente. Até essa validação, a T8 permanece **EM ANDAMENTO**.
