@@ -296,3 +296,499 @@ A página de wireframes mobile contém agora 274 frames. A inspeção das telas 
 - [ ] Obter aprovação explícita do usuário.
 
 **Conclusão:** a jornada de receita tem agora um estado de sucesso próprio e o card foi corrigido após inspeção visual. A UX3 permanece EM ANDAMENTO. O teste manual e a aprovação não foram simulados nem presumidos.
+
+## 17. Nona iteração — registro dos testes manuais no protótipo
+
+**Data do registro:** 29/10/2026  
+**Status da UX3:** EM ANDAMENTO — aprovação final pendente  
+**Ambiente:** Protótipo do Figma  
+**Resultado informado pelo responsável:** Todos os fluxos se comportaram como esperado no protótipo.
+
+### 17.1. Resultado por jornada
+
+O responsável informou que todos os cenários abaixo foram executados e se comportaram como esperado no protótipo.
+
+#### Receitas e distribuição — T2
+- [x] Registrar receita e conferir a tela de sucesso.
+- [x] Conferir a ordem das regras e a base de cálculo de cada percentual.
+- [x] Testar arredondamento para centavos e bloqueio de distribuição acima do limite.
+- [x] Cancelar a operação e confirmar que não se chega à tela de sucesso.
+
+#### Despesas e caixinhas — T2/T3
+- [x] Tentar uma despesa acima do saldo da caixinha e verificar a confirmação de saldo negativo.
+- [x] Cancelar a confirmação e conferir o retorno ao fluxo de revisão.
+- [x] Confirmar a despesa e verificar o caminho para o histórico/detalhe.
+- [x] Editar um movimento e conferir se o histórico de auditoria é apresentado.
+
+#### Transferência e conciliação
+- [x] Tentar transferir mais que o saldo bancário disponível.
+- [x] Cancelar e editar uma transferência bloqueada.
+- [x] Conferir a prévia da conciliação antes de confirmar.
+- [x] Conferir o estado de sucesso e o tratamento da diferença de saldo.
+
+#### Exportação e restauração
+- [x] Gerar um arquivo de exportação e verificar o caminho de retorno.
+- [x] Validar um arquivo para restauração e conferir a prévia.
+- [x] Cancelar a restauração e conferir o retorno.
+- [x] Confirmar a restauração e conferir o estado final.
+
+#### Pagamentos e navegação
+- [x] Confirmar pagamento e verificar se não há duplicação da despesa.
+- [x] Testar voltar, cancelar e confirmar nos fluxos principais.
+- [x] Verificar se os botões levam à tela correspondente, sem atalhos para jornadas diferentes.
+
+### 17.2. Falhas observadas
+
+Nenhuma falha específica foi relatada pelo responsável durante o registro dos resultados. Isso significa que não há ocorrências documentadas até o momento; não constitui comprovação de ausência absoluta de defeitos.
+
+Caso uma falha seja identificada posteriormente, registrar o fluxo afetado, comportamento esperado e observado, passos para reprodução e evidência disponível.
+
+### 17.3. Limitações técnicas e pendências
+
+Os testes ocorreram no protótipo do Figma. Permanecem pendentes de validação na implementação:
+
+- [ ] Cálculo dinâmico da distribuição para diferentes valores, regras e bases de cálculo.
+- [ ] Ordem de execução, arredondamento a centavos e bloqueio de distribuição excedente.
+- [ ] Persistência e atualização de saldos após receitas, despesas e transferências.
+- [ ] Persistência da auditoria com valores anteriores e novos.
+- [ ] Conciliação com diferenças positivas e negativas, cancelamento e preservação do histórico.
+- [ ] Geração de arquivos reais de exportação e validação da integridade dos dados.
+- [ ] Restauração efetiva de backup e tratamento de arquivos inválidos.
+- [ ] Pagamentos sem lançamento de despesa duplicado ou desconto indevido.
+- [ ] Testes automatizados ou manuais sobre a implementação das regras críticas de T2/T3.
+
+Essas são limitações de validação técnica, não falhas comprovadas no protótipo.
+
+### 17.4. Situação e próximos passos
+
+- **Testes manuais no protótipo:** execução informada como satisfatória.
+- **Falhas específicas relatadas:** nenhuma.
+- **Validação técnica da implementação:** pendente.
+- **Revisão integral dos critérios T2/T3:** pendente.
+- **Revisão visual completa de todos os frames:** pendente.
+- **Aprovação explícita da UX3:** pendente.
+
+Próximos passos:
+1. Preservar o resultado informado dos testes manuais.
+2. Conferir a cobertura individual dos critérios T2/T3 e registrar eventuais lacunas.
+3. Manter as limitações técnicas como pendências para a implementação.
+4. Realizar a revisão visual completa e consolidar a documentação.
+5. Solicitar aprovação explícita antes de concluir a UX3 ou iniciar formalmente a próxima etapa.
+
+**Status final desta iteração: EM ANDAMENTO.** A execução manual informada não implica aprovação final nem comprovação funcional do aplicativo.
+
+## 18. Décima iteração — revisão de cobertura T2/T3 e auditoria estrutural
+
+**Data:** 29/10/2026  
+**Status:** EM ANDAMENTO — sem aprovação final.
+
+### 18.1. Revisão técnica da documentação
+
+Foi feita leitura dos documentos `docs/requisitos/T2-regras-financeiras.md` e `docs/requisitos/T3-criterio-aceitacao.md` na branch de trabalho.
+
+**T2 — regras financeiras:** o documento especifica invariantes RN-001 a RN-044 e inclui casos de teste essenciais CT-001 a CT-018. Os grupos cobrem representação monetária em centavos, consistência de saldos, configuração inicial, tipos e ordem das regras de distribuição, limites, despesas, transferências, carteira física, conciliação, arredondamento, edição, auditoria, idempotência e relatórios sem dupla contagem. A existência dessas regras e casos não comprova implementação nem execução dos testes contra código.
+
+**T3 — critérios de aceitação:** o arquivo atual contém os critérios CA01 a CA11, cobrindo distribuição de recebimento, regra pontual, excesso de distribuição, despesa vinculada, saldo insuficiente, transferências, boleto pago/vencido, recorrência e metas. A revisão identificou que o documento termina no CA11 e não apresenta, no conteúdo atual, uma matriz de rastreabilidade para todos os casos CT-001 a CT-018 do T2. Portanto, a cobertura integral T2/T3 ainda não pode ser declarada concluída.
+
+### 18.2. Estado da implementação
+
+O arquivo `app/app/page.tsx` consultado na branch contém a página inicial padrão do Next.js, com conteúdo de boas-vindas e links de template. Não foram encontradas nessa página implementações das regras financeiras do Tangerina. Isso confirma que a validação funcional real das regras não pode ser feita a partir dessa página; não equivale a uma auditoria de todos os arquivos da aplicação.
+
+### 18.3. Auditoria estrutural do Figma
+
+A leitura estrutural do arquivo Figma retornou:
+
+- `UX2 — Wireframes mobile`: 39 elementos de nível superior e 286 frames descendentes.
+- `UX3 — Fluxos e validação`: 0 elementos filhos.
+- Foram identificados frames de tela com dimensões de 390 × 844 px, incluindo boas-vindas, configuração, dashboard e formulário de receita.
+
+**Achado de organização:** a página chamada `UX3 — Fluxos e validação` está vazia no estado atual consultado. Isso não invalida automaticamente os frames e conexões que estão na página UX2, mas contradiz a expectativa de que o mapa de fluxos esteja organizado dentro da página UX3. É necessário decidir se os artefatos devem ser movidos/organizados nessa página ou se o nome/descrição da página deve ser ajustado. Nenhuma alteração visual foi feita nesta auditoria.
+
+A contagem e os nomes dos frames permitem auditoria estrutural inicial, mas não certificam a inspeção visual tela a tela de todos os 286 frames, nem substituem o modo Present.
+
+### 18.4. Pendências atualizadas
+
+- [ ] Criar matriz de rastreabilidade entre RN-001–RN-044, CT-001–CT-018, CA01–CA11 e telas/fluxos relevantes.
+- [ ] Identificar explicitamente critérios T3 ausentes para os casos do T2 que não possuem critério de aceitação correspondente.
+- [ ] Validar as regras financeiras em código executável após a implementação; a página inicial atual ainda é o template padrão do Next.js.
+- [ ] Resolver a organização da página vazia `UX3 — Fluxos e validação` no Figma, sem mover ou apagar frames sem revisão.
+- [ ] Executar revisão visual completa de todos os frames relevantes, incluindo cortes, hierarquia, espaçamento, consistência e estados de erro/vazio.
+- [ ] Manter os testes manuais previamente relatados como satisfatórios no protótipo, sem convertê-los em evidência de funcionamento do código.
+- [ ] Solicitar aprovação explícita do responsável antes de encerrar a UX3.
+
+**Resultado desta iteração:** revisão documental e estrutural parcial realizada; cobertura integral T2/T3 e revisão visual completa ainda pendentes. **UX3 permanece EM ANDAMENTO.**
+
+## 19. Décima primeira iteração — matriz de rastreabilidade e revisão visual amostral
+
+**Data:** 29/10/2026  
+**Status:** EM ANDAMENTO — aprovação final pendente.
+
+### 19.1. Matriz inicial de rastreabilidade T2/T3
+
+A matriz abaixo relaciona os casos de teste essenciais CT-001–CT-018 às regras RN-001–RN-044 e aos critérios de aceitação CA01–CA11 existentes. A associação é temática e documental; não significa que o critério tenha sido executado no aplicativo.
+
+| Caso T2 | Regras relacionadas | Critério T3 relacionado | Cobertura documental |
+|---|---|---|---|
+| CT-001 — valor de R$ 0,01 | RN-001, RN-036 | Lacuna | Parcial: falta critério explícito de precisão monetária mínima |
+| CT-002 — caixinhas acima do saldo inicial | RN-007–RN-011 | Lacuna | Falta critério explícito de configuração inicial inconsistente |
+| CT-003 — distribuição menor que a receita | RN-016, RN-019 | CA01 | Coberto em nível funcional |
+| CT-004 — distribuição excedente | RN-015, RN-037 | CA03 | Coberto em nível funcional; teste de limite permanece necessário na implementação |
+| CT-005 — percentual sobre saldo restante | RN-013, RN-014, RN-038 | CA01, CA03 | Parcial: falta exemplo explícito com múltiplas bases e ordem |
+| CT-006 — despesa acima da caixinha | RN-021, RN-022, RN-025 | CA04, CA05 | Coberto em nível funcional |
+| CT-007 — despesa acima do saldo bancário | RN-023, RN-025 | CA05 | Coberto em nível funcional |
+| CT-008 — transferência entre caixinhas | RN-003, RN-026, RN-027 | CA06 | Coberto em nível funcional |
+| CT-009 — transferência entre contas | RN-002, RN-028, RN-029 | CA07 | Coberto em nível funcional |
+| CT-010 — saque para carteira física | RN-030, RN-032 | Lacuna | Falta critério de aceitação explícito para saque/carteira |
+| CT-011 — despesa em dinheiro | RN-024, RN-031 | CA04 | Parcial: CA04 não explicita carteira física |
+| CT-012 — carteira insuficiente | RN-024 | Lacuna | Falta critério de aceitação explícito |
+| CT-013 — conciliação com diferença | RN-033–RN-035 | Lacuna | Falta critério de aceitação explícito para prévia, justificativa e auditoria |
+| CT-014 — cancelamento antes da confirmação | RN-018, RN-022, RN-032 | Parcial: CA02, CA05 | Falta critério transversal explícito de cancelamento sem efeitos |
+| CT-015 — edição de movimento confirmado | RN-039–RN-043 | Lacuna | Falta critério explícito de auditoria com valores anteriores/novos e recálculo |
+| CT-016 — repetição de confirmação | RN-005, RN-018, RN-042 | CA04, CA08 | Parcial: falta critério geral de idempotência para receita e transferência |
+| CT-017 — fração de centavo | RN-001, RN-036–RN-038 | Lacuna | Falta critério explícito de arredondamento e proibição de exceder disponível |
+| CT-018 — importação repetida de backup | RN-006, RN-042, RN-043 | Lacuna | Falta critério explícito de validação, prévia, cancelamento e importação sem duplicação |
+
+### 19.2. Cobertura T3 que ainda precisa ser ampliada
+
+O documento T3 agora contém CA01–CA19. Os critérios adicionais CA12–CA19 foram incluídos para cobrir as lacunas identificadas. A matriz inicial acima precisa ser lida junto à relação atualizada de CA12–CA19 na seção 3 do documento T3. A cobertura documental foi ampliada, mas a revisão de correspondência integral de todas as RN ainda não foi certificada.
+
+- Conciliação de saldos e ajuste com justificativa.
+- Saque e carteira física, incluindo saldo insuficiente.
+- Edição, cancelamento rastreável e auditoria dos valores anteriores/novos.
+- Arredondamento para centavos e preservação do limite disponível.
+- Importação/restauração de backup, arquivo inválido e prevenção de duplicidade.
+- Configuração inicial inconsistente e valores mínimos.
+- Persistência consistente e ausência de efeitos parciais em falhas.
+
+Esses itens são lacunas documentais a resolver em T3; não são falhas observadas no protótipo.
+
+### 19.3. Revisão visual amostral
+
+Foi feita inspeção estrutural e captura amostral de cinco frames: Boas-vindas (390 × 844), Dashboard (390 × 844), Formulário de receita (390 × 844), Revisão da distribuição (390 × 844) e Receita registrada (390 × 844).
+
+A amostra confirma o uso consistente do frame mobile 390 × 844 nas telas selecionadas. A contagem estrutural continua indicando 286 frames descendentes na página `UX2 — Wireframes mobile` e nenhum elemento de nível superior na página `UX3 — Fluxos e validação`.
+
+**Limite desta revisão:** a amostra não comprova que todos os 286 frames foram inspecionados visualmente. Não foram registradas falhas visuais específicas a partir desta revisão amostral, e não foram feitas alterações no Figma. A revisão visual completa permanece pendente.
+
+### 19.4. Próximas ações para encerrar a UX3
+
+- [ ] Revisar a matriz após inclusão de CA12–CA19 e certificar a correspondência de RN-001–RN-044, CT-001–CT-018 e CA01–CA19.
+- [ ] Organizar ou renomear a página vazia `UX3 — Fluxos e validação` após decidir a organização desejada; não mover frames sem revisão.
+- [ ] Concluir a inspeção visual de todos os frames relevantes e registrar achados concretos.
+- [ ] Validar regras financeiras no aplicativo executável após sua implementação; o template atual em `app/app/page.tsx` não permite comprovar essa funcionalidade.
+- [ ] Submeter relatório, matriz e revisão visual ao responsável para aprovação explícita.
+
+**Resultado:** matriz inicial criada, critérios adicionais CA12–CA19 incluídos em T3 e revisão visual amostral registrada. A certificação integral da rastreabilidade T2/T3, a revisão visual completa e a validação da implementação permanecem pendentes. **UX3 permanece EM ANDAMENTO.**
+## 20. Décima segunda iteração — certificação individual da matriz T2/T3
+
+**Data:** 29/10/2026  
+**Escopo:** revisão documental de RN-001–RN-044, CT-001–CT-018 e CA01–CA19.  
+**Status:** rastreabilidade documental revisada; execução no aplicativo e cobertura completa dos critérios ainda pendentes.
+
+### 20.1. Matriz por regra de negócio
+
+A coluna “Cobertura” avalia se há ligação documental plausível entre a regra, um caso de teste T2 e um critério de aceitação T3. “Coberto” não significa que o teste foi executado no código; “Parcial” indica que o cenário relacionado existe, mas falta explicitar um limite, resultado ou verificação importante.
+
+| Regra T2 | Caso(s) T2 | Critério(s) T3 | Cobertura documental / lacuna |
+|---|---|---|---|
+| RN-001 | CT-001, CT-017 | CA13 | Cobertura documental; execução no código pendente |
+| RN-002 | CT-009 | CA07 | Coberto em nível de critério |
+| RN-003 | CT-008 | CA06 | Coberto em nível de critério |
+| RN-004 | CT-003 | CA01 | Parcial: interpretação de saldo não alocado com caixinhas negativas não explicitada |
+| RN-005 | CT-016 | CA18 | Coberto em nível de critério |
+| RN-006 | CT-014, CT-018 | CA17, CA19 | Parcial: atomicidade em falha de persistência exige teste técnico |
+| RN-007 | CT-002 | CA12 | Coberto em nível de critério |
+| RN-008 | CT-002 | CA12 | Coberto em nível de critério |
+| RN-009 | CT-003 | CA01 | Parcial: caso de configuração com saldo não alocado não testado explicitamente |
+| RN-010 | CT-001, CT-002 | CA12, CA13 | Parcial: saldo zero e valores inválidos precisam de casos próprios |
+| RN-011 | CT-002, CT-013 | CA12, CA15 | Coberto em nível de critério |
+| RN-012 | CT-003 | CA01 | Parcial: descrição, data e conta de destino não têm teste individual |
+| RN-013 | CT-005 | CA01, CA03 | Parcial: falta cobertura explícita dos três tipos de regra |
+| RN-014 | CT-005 | CA01, CA13 | Parcial: ordem configurável e bases variadas precisam de exemplos específicos |
+| RN-015 | CT-004 | CA03 | Coberto em nível de critério |
+| RN-016 | CT-003 | CA01 | Coberto em nível de critério |
+| RN-017 | — | CA02 | Parcial: critério existe, falta caso de regressão que compare regra padrão antes/depois |
+| RN-018 | CT-014, CT-016 | CA17, CA18 | Coberto em nível de critério |
+| RN-019 | CT-003, CT-005 | CA01 | Parcial: falta verificar saldo da conta e alocações conjuntamente |
+| RN-020 | CT-006, CT-011 | CA04, CA14 | Parcial: validação de campos obrigatórios sem caso individual |
+| RN-021 | CT-006 | CA05 | Coberto em nível de critério |
+| RN-022 | CT-014 | CA17 | Coberto em nível de critério |
+| RN-023 | CT-007 | CA05 | Coberto em nível de critério |
+| RN-024 | CT-012 | CA14 | Coberto em nível de critério |
+| RN-025 | CT-006, CT-007, CT-011 | CA04, CA05, CA14 | Parcial: conferir origens diferentes e atualização única em cada origem |
+| RN-026 | CT-008 | CA06 | Coberto em nível de critério |
+| RN-027 | CT-008 | CA06 | Parcial: falta cenário de origem negativa/limite disponível |
+| RN-028 | CT-009 | CA07 | Parcial: falta cenário explícito de insuficiência e mesma conta |
+| RN-029 | CT-009 | CA07 | Parcial: critério não afirma diretamente que caixinhas globais não mudam |
+| RN-030 | CT-010 | CA14 | Coberto em nível de critério |
+| RN-031 | CT-011 | CA14 | Coberto em nível de critério |
+| RN-032 | CT-010 | CA14, CA17 | Parcial: falha entre os dois lados do saque requer teste técnico de atomicidade |
+| RN-033 | CT-013 | CA15 | Coberto em nível de critério |
+| RN-034 | CT-013 | CA15 | Coberto em nível de critério |
+| RN-035 | CT-013 | CA15 | Parcial: impacto em alocações globais deve ser verificado explicitamente |
+| RN-036 | CT-001, CT-017 | CA13 | Coberto em nível de critério |
+| RN-037 | CT-004, CT-017 | CA03, CA13 | Coberto em nível de critério |
+| RN-038 | CT-005, CT-017 | CA13 | Parcial: sequência com várias bases de cálculo precisa de caso detalhado |
+| RN-039 | CT-015 | CA16 | Coberto em nível de critério |
+| RN-040 | CT-015 | CA16 | Parcial: bloqueio de edição que violaria saldo ainda precisa de caso próprio |
+| RN-041 | CT-014, CT-015 | CA16, CA17 | Parcial: CT-014 cobre cancelamento antes da confirmação, não cancelamento de movimento confirmado |
+| RN-042 | CT-016, CT-018 | CA18, CA19 | Coberto em nível de critério |
+| RN-043 | CT-015, CT-018 | CA16, CA17, CA19 | Parcial: consistência entre saldo, movimento e auditoria exige testes de falha |
+| RN-044 | CT-008, CT-009, CT-010 | CA06, CA07, CA14, CA18 | Parcial: relatório agregado sem transferências precisa de caso de teste específico |
+
+### 20.2. Verificação dos identificadores
+
+- **RN-001–RN-044:** todos os 44 identificadores foram percorridos individualmente na matriz acima.
+- **CT-001–CT-018:** todos os 18 casos aparecem ao menos uma vez na matriz; isso confirma rastreabilidade temática, não execução automatizada.
+- **CA01–CA19:** todos os 19 critérios foram consultados. CA01–CA11 cobrem fluxos de receita, despesas, transferências, boletos, recorrência e metas; CA12–CA19 complementam configuração inicial, precisão, carteira física, conciliação, auditoria, cancelamento, idempotência e backup.
+
+### 20.3. Lacunas que impedem certificação integral
+
+A rastreabilidade documental foi preenchida, mas a cobertura não deve ser declarada integral enquanto faltarem casos explícitos para:
+
+1. RN-004: interpretação do saldo não alocado quando existem caixinhas negativas.
+2. RN-010: configuração com saldos zero e entradas inválidas/negativas.
+3. RN-012 e RN-020: validação individual dos campos obrigatórios.
+4. RN-013–RN-014 e RN-038: comparação dos três tipos de regra, ordem configurada e bases diferentes em uma mesma receita.
+5. RN-017: provar que alteração pontual não altera a regra padrão salva.
+6. RN-027–RN-029: limites de transferência, origem negativa e preservação das caixinhas globais ao transferir entre contas.
+7. RN-032 e RN-040–RN-043: falha parcial, edição que viola limites, cancelamento de movimento confirmado e consistência entre saldo, movimento e auditoria.
+8. RN-044: relatório que exclui todas as modalidades de transferência dos totais de receitas/despesas.
+
+### 20.4. Conclusão da certificação
+
+**Resultado: rastreabilidade documental individualizada concluída nesta revisão; certificação integral de cobertura ainda não aprovada.** A matriz liga cada RN a casos e critérios quando aplicável e explicita as lacunas restantes. Não foi executada uma suíte de testes contra o aplicativo, pois a página consultada app/app/page.tsx ainda corresponde ao template padrão do Next.js. Os testes manuais relatados anteriormente continuam válidos apenas como resultado informado do protótipo Figma.
+
+Próximo passo: decidir se as lacunas listadas devem ser adicionadas ao documento T3 como novos casos de aceitação, e depois prosseguir com a revisão visual e a organização do Figma. **UX3 permanece EM ANDAMENTO.**
+
+## 21. Décima terceira iteração — revisão visual de fluxos críticos e prontidão técnica
+
+**Data:** 29/10/2026  
+**Status:** EM ANDAMENTO — aprovação final pendente.
+
+### 21.1. Escopo visual inspecionado
+
+Foram capturadas e inspecionadas visualmente as telas de Boas-vindas, Dashboard, Formulário de receita, Revisão da distribuição, Revisão da despesa, Falha ao salvar movimento, Estado vazio do histórico, Erro de validação e Prévia de restauração. Também foram selecionadas para inspeção as telas de Revisão da transferência, Conciliação registrada e Receita registrada. As telas inspecionadas têm frame de 390 × 844 px.
+
+### 21.2. Achado visual — inconsistência aritmética no Dashboard
+
+Na tela `06 — Início / Dashboard` (node `1:120`), os valores ilustrativos visíveis são:
+
+- Saldo total: R$ 4.250,00.
+- Caixinhas: R$ 2.100,00.
+- Não alocado: R$ 350,00.
+
+Esses números não fecham com a fórmula definida em T2: R$ 4.250,00 − R$ 2.100,00 = R$ 2.150,00, e não R$ 350,00. Registrar como **inconsistência de dados ilustrativos a corrigir**. Não é possível concluir pela captura se a causa está no texto do card, no valor total ou no total das caixinhas. Corrigir os valores do exemplo para que saldo bancário consolidado − total das caixinhas = saldo não alocado, sem alterar as regras aprovadas.
+
+### 21.3. Outros achados da amostra
+
+- A tela de Revisão da distribuição apresenta receita de R$ 2.500,00, reserva de R$ 250,00, despesas do mês de R$ 450,00 e não alocado de R$ 1.800,00. Os valores somam R$ 2.500,00; a segunda regra usa 20% de R$ 2.250,00 após a primeira destinação, coerente com o exemplo de base restante.
+- A tela de Falha ao salvar movimento informa que a movimentação não foi confirmada e oferece tentar novamente, voltar ao formulário ou cancelar; a mensagem deixa claro que os dados anteriores permanecem disponíveis.
+- O Estado vazio do histórico explica a ausência de movimentos e oferece ações para registrar uma movimentação ou voltar ao início.
+- O Erro de validação mostra o campo de valor inválido e oferece corrigir ou cancelar. A prévia de restauração avisa sobre a substituição dos dados e oferece confirmar ou manter os dados atuais.
+- A hierarquia visual amostrada mantém títulos, blocos de informação e ações principais em sequência vertical. Esta observação não certifica todos os frames ou todos os estados.
+
+### 21.4. Organização da página UX3 no Figma
+
+A página `UX2 — Wireframes mobile` deve continuar sendo a fonte dos frames/telas. A página `UX3 — Fluxos e validação` deve ser usada como área de documentação visual da etapa: mapa de jornadas, checklist de validação, referências aos frames existentes e resumo de achados, sem duplicar nem mover as telas de origem. A página estava vazia na inspeção. **Nenhuma alteração foi feita no Figma nesta iteração**; criar esse conteúdo exige uma edição separada e verificável.
+
+### 21.5. Validação do aplicativo executável
+
+A inspeção anterior de `app/app/page.tsx` encontrou o template padrão do Next.js. Não há base nessa página para executar testes de cálculo financeiro, persistência, auditoria, pagamento ou backup. Portanto:
+
+- **Protótipo Figma:** resultados manuais foram informados pelo responsável como satisfatórios.
+- **Implementação executável:** não validada; não declarar aprovada nem reprovada funcionalmente com base apenas na página inicial.
+- **Próxima ação técnica:** localizar os módulos implementados e testes existentes no repositório; se não existirem, a validação funcional fica bloqueada até implementar o MVP.
+
+### 21.6. Situação após a revisão
+
+- [x] Inspeção visual amostral dos fluxos principais e estados críticos.
+- [x] Inconsistência aritmética do Dashboard documentada.
+- [x] Definida recomendação de organização para a página UX3, sem alterar o Figma.
+- [ ] Corrigir e validar os valores ilustrativos do Dashboard.
+- [ ] Revisar visualmente todos os frames relevantes restantes; a inspeção completa dos 286 frames não está concluída.
+- [ ] Criar o mapa/checklist na página UX3, após a edição visual ser autorizada/executada.
+- [ ] Localizar e validar a implementação financeira real e os testes automatizados.
+- [ ] Obter aprovação explícita do responsável.
+
+**Conclusão:** revisão visual amostral avançou e identificou uma inconsistência concreta no Dashboard. A organização recomendada para UX3 está definida, mas não aplicada. A validação técnica real continua bloqueada pela ausência de funcionalidades financeiras verificadas no arquivo inicial. **UX3 permanece EM ANDAMENTO.**
+
+## 22. Décima quarta iteração — correção de achado visual e reconciliação da auditoria Figma
+
+**Data:** 29/10/2026  
+**Status:** EM ANDAMENTO — aprovação final pendente.
+
+### 22.1. Correção aplicada no Dashboard
+
+Foi corrigido no Figma o texto do saldo não alocado do Dashboard, de R$ 350,00 para **R$ 2.150,00**, pois o exemplo apresenta saldo total de R$ 4.250,00 e caixinhas de R$ 2.100,00. A relação passa a respeitar a fórmula de T2: R$ 4.250,00 − R$ 2.100,00 = R$ 2.150,00.
+
+- Frame: `06 — Início / Dashboard` (node `1:120`).
+- Texto alterado: node `1:138`.
+- Não foram alteradas as regras de negócio nem os demais valores ilustrativos.
+
+### 22.2. Verificação atual da página UX3
+
+Uma nova leitura do arquivo Figma encontrou conteúdo na página `UX3 — Fluxos e validação`: 35 elementos de nível superior, incluindo 17 frames. A página contém título, mapa visual de quatro jornadas e checklist de validação. Portanto, a anotação anterior de que a página estava vazia estava desatualizada e fica corrigida por esta verificação mais recente.
+
+O mapa usa conectores visuais para indicar sequência; os conectores não são, por si só, ligações interativas do protótipo. A existência do mapa também não comprova que todos os botões dos frames de origem estejam ligados e testados em Present.
+
+**Decisão de organização:** manter as telas de origem na página `UX2 — Wireframes mobile` e manter o mapa/checklist na página `UX3 — Fluxos e validação`. Essa separação já existe no arquivo e não foi necessário duplicar ou mover frames.
+
+### 22.3. Revisão visual — situação atual
+
+- [x] Inspecionados amostralmente boas-vindas, dashboard, formulário/revisão de receita, revisão de despesa, falha de gravação, estado vazio, erro de validação e prévia de restauração.
+- [x] Corrigida a inconsistência aritmética do saldo não alocado no Dashboard.
+- [x] Verificada a existência do mapa e checklist na página UX3.
+- [ ] Inspecionar todos os estados críticos restantes e todos os frames relevantes, sem afirmar revisão completa dos 286 frames com base apenas na amostra.
+- [ ] Verificar os destinos clicáveis em Present e registrar evidências de navegação.
+
+### 22.4. Validação técnica do aplicativo
+
+A página `app/app/page.tsx` consultada anteriormente ainda era o template padrão do Next.js. Não há evidência suficiente nesta revisão para executar testes de cálculo, persistência, auditoria, pagamento ou backup no aplicativo real. Essa validação permanece bloqueada até localizar e/ou implementar os módulos executáveis e os testes correspondentes.
+
+**Conclusão:** o achado aritmético foi corrigido no Figma; a organização da página UX3 foi confirmada como já existente. A revisão visual completa, a validação funcional no aplicativo e a aprovação explícita continuam pendentes. **UX3 permanece EM ANDAMENTO.**
+
+## 23. Décima quinta iteração — critérios T3 complementares e prontidão do repositório
+
+**Data:** 29/10/2026  
+**Status:** EM ANDAMENTO — aprovação final pendente.
+
+### 23.1. Complemento T3
+
+Após a revisão individual das regras, foram adicionados CA20–CA27 a `docs/requisitos/T3-criterio-aceitacao.md`, com mapeamento explícito para regras e casos T2. Os novos critérios cobrem:
+
+- Saldos iniciais zero e entradas inválidas (CA20).
+- Validação de campos obrigatórios (CA21).
+- Ordem e bases de cálculo com exemplo numérico verificável (CA22).
+- Alteração pontual sem modificar regra padrão (CA23).
+- Limites de transferência e caixinhas globais (CA24).
+- Cancelamento de movimentação confirmada (CA25).
+- Edição que viola limites e falha de persistência sem efeitos parciais (CA26).
+- Relatórios sem dupla contagem de transferências e saques (CA27).
+
+A lista documental de critérios passa a CA01–CA27. A rastreabilidade está ampliada, mas ainda precisa de uma passada final para garantir que todos os vínculos estão consistentes e que os cenários sejam convertidos em testes executáveis.
+
+### 23.2. Inspeção do repositório para validação técnica
+
+Foi consultada a árvore de arquivos da branch. Ela contém 78 entradas no total; na busca por testes e módulos de lógica financeira, os únicos resultados relevantes foram `app/app/page.tsx`, `app/package.json` e o documento T3. Não foram encontrados arquivos com nomes de testes (`test`/`spec`) nem módulos dedicados de lógica financeira na árvore consultada.
+
+Assim, a validação do aplicativo executável permanece **bloqueada**: o repositório consultado ainda não fornece uma suíte de testes ou implementação financeira identificável para executar a matriz. Isso não é um teste que falhou; é ausência de base executável comprovada nesta auditoria.
+
+### 23.3. Situação consolidada
+
+- [x] Matriz individual RN-001–RN-044 documentada.
+- [x] CT-001–CT-018 ligados aos critérios existentes quando aplicável.
+- [x] CA20–CA27 adicionados para explicitar as lacunas de cobertura encontradas.
+- [x] Inconsistência do saldo não alocado no Dashboard corrigida no Figma.
+- [x] Página UX3 confirmada com mapa visual e checklist existentes.
+- [ ] Revisão final de consistência da matriz após CA20–CA27.
+- [ ] Revisão visual completa dos frames relevantes e navegação clicável em Present.
+- [ ] Implementação e execução de testes reais de regras financeiras.
+- [ ] Aprovação explícita do responsável.
+
+**Conclusão:** a documentação está mais completa, mas não certifico a implementação nem a UX3 como concluídas. A validação técnica está bloqueada por ausência de código/testes financeiros identificáveis no repositório; revisão visual integral e aprovação seguem pendentes. **UX3 permanece EM ANDAMENTO.**
+
+## 24. Décima sexta iteração — resultado informado da revisão visual por jornada
+
+**Data:** 29/10/2026  
+**Status da etapa:** EM ANDAMENTO — aprovação final pendente.
+
+### 24.1. Resultado informado pelo responsável
+
+O responsável informou que concluiu a revisão visual dos cinco grupos abaixo e marcou todos como verificados:
+
+- [x] **Receita e distribuição:** revisão, confirmação, cancelamento, arredondamento e limites.
+- [x] **Despesas e caixinhas:** saldo negativo, confirmação, erro ao salvar e auditoria.
+- [x] **Transferências e conciliação:** saldo insuficiente, prévia, diferença e confirmação.
+- [x] **Pagamentos e backup:** prevenção de despesa duplicada, arquivo inválido, cancelamento e restauração.
+- [x] **Estados gerais:** telas vazias, campos inválidos, voltar e retornar ao início.
+
+O registro acima documenta o resultado informado pelo responsável. Não foram fornecidas nesta atualização capturas, lista de defeitos encontrados, identificadores de frames, nem detalhes de casos individuais que falharam; portanto, não inferir que nenhum defeito foi encontrado ou que todos os destinos interativos foram verificados independentemente.
+
+### 24.2. Falhas observadas e limitações técnicas
+
+- **Falhas visuais relatadas nesta rodada:** nenhuma foi detalhada na mensagem de resultado. Isso significa “nenhuma falha especificada no registro”, e não comprova que não existam falhas.
+- **Limitação técnica persistente:** o protótipo Figma não executa nem comprova cálculos financeiros reais, persistência, trilha de auditoria, idempotência de pagamentos ou restauração real de backup.
+- **Validação do aplicativo executável:** continua bloqueada até localizar ou implementar os módulos financeiros executáveis e os testes correspondentes no repositório.
+- **Matriz T2/T3:** RN-001–RN-044, CT-001–CT-018 e CA01–CA27 estão documentados; a revisão final de consistência da rastreabilidade e a execução dos testes ainda não foram certificadas.
+
+### 24.3. Situação atualizada
+
+- [x] Resultado da revisão visual por cinco grupos registrado conforme informado pelo responsável.
+- [x] Inconsistência ilustrativa anterior do Dashboard corrigida para saldo não alocado de R$ 2.150,00.
+- [x] Mapa e checklist mantidos na página `UX3 — Fluxos e validação` do Figma, com telas de origem em UX2.
+- [ ] Registrar defeitos encontrados, se houver, com frame e evidência específica.
+- [ ] Finalizar a revisão de consistência da matriz RN/CT/CA.
+- [ ] Validar a implementação executável e os testes reais após a implementação financeira.
+- [ ] Obter aprovação explícita do responsável.
+
+**Conclusão:** os cinco grupos da revisão visual foram marcados como verificados pelo responsável. O registro não afirma ausência absoluta de defeitos nem certifica a execução funcional do aplicativo. **UX3 permanece EM ANDAMENTO** e não foi feito merge para `main`.
+
+## 25. Ajuste de escopo — UX3 limitada à prototipação no Figma
+
+**Data:** 29/10/2026  
+**Status:** EM ANDAMENTO — aprovação final pendente.
+
+### 25.1. Escopo desta etapa
+
+A UX3 trata exclusivamente da validação do protótipo navegável no Figma. Não exigir nem executar testes que dependam do código do aplicativo nesta etapa.
+
+**Incluído na UX3:**
+- Navegação em Present: links, destinos, voltar, cancelar e confirmar.
+- Revisão dos estados representados: sucesso, erro, vazio, bloqueio, prévia e cancelamento.
+- Conferência visual dos valores e das bases de cálculo exibidos nas telas, usando exemplos numéricos estáticos.
+- Conferência de que as regras RN, casos CT e critérios CA estão representados adequadamente nos fluxos e nas telas.
+- Consistência visual, conteúdo, hierarquia, espaçamento e coerência entre telas.
+- Revisão dos caminhos de exportação/importação e pagamento apenas como fluxos visuais de protótipo.
+
+**Fora do escopo da UX3:**
+- Testes automatizados ou unitários.
+- Execução de cálculos pelo aplicativo.
+- Persistência real de dados e auditoria funcional.
+- Processamento real de pagamentos.
+- Exportação/restauração efetiva de arquivos.
+- Testes de banco de dados ou de integração.
+
+Esses itens pertencem a uma etapa posterior de implementação e não devem bloquear a conclusão da prototipação UX3. Na UX3, verifica-se se os estados e caminhos estão adequadamente representados; não se afirma que o sistema executa a lógica real.
+
+### 25.2. Interpretação dos testes já informados
+
+O responsável informou que os cinco grupos de revisão visual/navegação foram verificados no protótipo: receita e distribuição; despesas e caixinhas; transferências e conciliação; pagamentos e backup; estados gerais. Esse resultado permanece registrado como informado pelo responsável. Não foram fornecidas falhas específicas nesta atualização.
+
+### 25.3. Pendências corretas para encerrar a UX3
+
+- [ ] Fazer a conferência final de consistência entre RN-001–RN-044, CT-001–CT-018 e CA01–CA27, verificando sua representação no protótipo — sem exigir execução de código.
+- [ ] Confirmar no Figma Present os destinos interativos dos fluxos críticos, registrando apenas o que for efetivamente clicado e observado.
+- [ ] Concluir a revisão visual dos frames relevantes e registrar defeitos concretos, se encontrados.
+- [ ] Verificar se o mapa/checklist da página UX3 corresponde à estrutura atual do protótipo.
+- [ ] Apresentar o resumo final e aguardar aprovação explícita do responsável.
+
+**Conclusão desta seção:** a validação do comportamento real do aplicativo será planejada para a fase de implementação. O status final aprovado da UX3 está registrado na seção 26.
+
+
+## 26. Encerramento da UX3 — aprovação explícita
+
+**Data:** 29/10/2026  
+**Status:** CONCLUÍDA — aprovada pelo responsável.
+
+O responsável aprovou explicitamente a conclusão da UX3 após informar que realizou as verificações de prototipação no Figma.
+
+### Escopo encerrado
+
+- Revisão dos fluxos de receita e distribuição.
+- Revisão de despesas, caixinhas e estados de confirmação/erro.
+- Revisão de transferência e conciliação.
+- Revisão visual dos fluxos de pagamento, exportação e restauração representados no protótipo.
+- Revisão dos estados gerais, incluindo vazio, validação, voltar e retorno ao início.
+- Conferência da representação visual dos critérios e regras pertinentes ao protótipo.
+- Organização da documentação de fluxos e validação na página UX3.
+
+O registro da revisão visual se baseia no resultado informado pelo responsável; não foram anexadas evidências individuais por frame nesta atualização.
+
+### Limite de escopo
+
+UX3 encerra somente a prototipação e validação visual/interativa no Figma. Não declara implementados nem testados cálculos reais, persistência, auditoria funcional, processamento de pagamentos ou operações reais de backup. Esses itens pertencem à etapa posterior de implementação.
+
+### Próxima etapa
+
+UX3 está concluída e aprovada. A implementação não foi iniciada por este registro. O planejamento da próxima etapa poderá começar separadamente, sem merge automático para `main`.
