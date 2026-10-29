@@ -25,7 +25,7 @@ concurrency:
 
 jobs:
   validate:
-    name: Lint and production build
+    name: Test, typecheck, lint and production build
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -44,8 +44,20 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Run unit tests
+        run: npm run test
+
+      - name: Check TypeScript types
+        run: npm run typecheck
+
       - name: Run ESLint
         run: npm run lint
+
+      - name: Print Prettier-formatted unit test for diagnosis
+        run: npx prettier tests/format-money.test.mjs
+
+      - name: Check formatting of new test utilities
+        run: npx prettier --check lib/format-money.ts tests/format-money.test.mjs package.json
 
       - name: Build production app
         run: npm run build
