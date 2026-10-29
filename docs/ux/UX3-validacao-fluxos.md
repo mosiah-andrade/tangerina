@@ -763,4 +763,32 @@ O responsável informou que os cinco grupos de revisão visual/navegação foram
 - [ ] Verificar se o mapa/checklist da página UX3 corresponde à estrutura atual do protótipo.
 - [ ] Apresentar o resumo final e aguardar aprovação explícita do responsável.
 
-**Conclusão:** o bloqueio anterior relacionado à ausência de implementação/código não é uma pendência da UX3 e fica retirado do checklist desta etapa. A validação do comportamento real do aplicativo será planejada para a fase de implementação. **UX3 permanece EM ANDAMENTO até a revisão final do protótipo e a aprovação explícita.**
+**Conclusão desta seção:** a validação do comportamento real do aplicativo será planejada para a fase de implementação. O status final aprovado da UX3 está registrado na seção 26.
+
+
+## 26. Encerramento da UX3 — aprovação explícita
+
+**Data:** 29/10/2026  
+**Status:** CONCLUÍDA — aprovada pelo responsável.
+
+O responsável aprovou explicitamente a conclusão da UX3 após informar que realizou as verificações de prototipação no Figma.
+
+### Escopo encerrado
+
+- Revisão dos fluxos de receita e distribuição.
+- Revisão de despesas, caixinhas e estados de confirmação/erro.
+- Revisão de transferência e conciliação.
+- Revisão visual dos fluxos de pagamento, exportação e restauração representados no protótipo.
+- Revisão dos estados gerais, incluindo vazio, validação, voltar e retorno ao início.
+- Conferência da representação visual dos critérios e regras pertinentes ao protótipo.
+- Organização da documentação de fluxos e validação na página UX3.
+
+O registro da revisão visual se baseia no resultado informado pelo responsável; não foram anexadas evidências individuais por frame nesta atualização.
+
+### Limite de escopo
+
+UX3 encerra somente a prototipação e validação visual/interativa no Figma. Não declara implementados nem testados cálculos reais, persistência, auditoria funcional, processamento de pagamentos ou operações reais de backup. Esses itens pertencem à etapa posterior de implementação.
+
+### Próxima etapa
+
+UX3 está concluída e aprovada. A implementação não foi iniciada por este registro. O planejamento da próxima etapa poderá começar separadamente, sem merge automático para `main`.
