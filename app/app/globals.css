@@ -97,7 +97,9 @@ button { font:inherit; }
 .welcome-card { position:relative; isolation:isolate; overflow:hidden; width:100%; max-width:440px; min-height:min(720px,calc(100svh - 80px)); display:flex; flex-direction:column; justify-content:space-between; padding:clamp(28px,7vw,44px); background:rgba(255,255,255,.68); border:1px solid var(--line); border-radius:4px; box-shadow:0 24px 80px rgba(6,38,26,.07); }
 .welcome-card::before { content:""; position:absolute; z-index:-1; width:240px; height:240px; right:-150px; top:30%; border:1px solid rgba(197,155,39,.15); border-radius:50%; box-shadow:0 0 0 24px rgba(197,155,39,.025),0 0 0 48px rgba(197,155,39,.02); }
 .brand-lockup { display:flex; align-items:center; gap:10px; color:var(--emerald); }
-.welcome-logo { width:clamp(145px,43vw,188px); height:auto; object-fit:contain; object-position:left center; }
+.welcome-brand { display:flex; align-items:center; gap:10px; color:var(--emerald); }
+.welcome-brand__icon { width:54px; height:54px; object-fit:contain; }
+.welcome-brand__name { font-family:var(--font-brand); font-size:clamp(34px,9vw,42px); font-weight:600; letter-spacing:-.8px; line-height:1; }
 .welcome-copy { padding:48px 0 42px; }
 .eyebrow { display:flex; align-items:center; gap:10px; margin:0 0 20px; color:var(--gold-dark); font-size:10px; font-weight:700; letter-spacing:2px; text-transform:uppercase; }
 .eyebrow-line { width:25px; height:1px; background:var(--gold); }
