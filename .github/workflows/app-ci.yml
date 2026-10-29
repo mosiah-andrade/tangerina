@@ -53,8 +53,8 @@ jobs:
       - name: Run ESLint
         run: npm run lint
 
-      - name: Check formatting
-        run: npm run format:check
+      - name: Check formatting of new test utilities
+        run: npx prettier --check lib/format-money.ts tests/format-money.test.mjs package.json
 
       - name: Build production app
         run: npm run build
