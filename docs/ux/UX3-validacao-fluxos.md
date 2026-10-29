@@ -647,3 +647,43 @@ O mapa usa conectores visuais para indicar sequência; os conectores não são, 
 A página `app/app/page.tsx` consultada anteriormente ainda era o template padrão do Next.js. Não há evidência suficiente nesta revisão para executar testes de cálculo, persistência, auditoria, pagamento ou backup no aplicativo real. Essa validação permanece bloqueada até localizar e/ou implementar os módulos executáveis e os testes correspondentes.
 
 **Conclusão:** o achado aritmético foi corrigido no Figma; a organização da página UX3 foi confirmada como já existente. A revisão visual completa, a validação funcional no aplicativo e a aprovação explícita continuam pendentes. **UX3 permanece EM ANDAMENTO.**
+
+## 23. Décima quinta iteração — critérios T3 complementares e prontidão do repositório
+
+**Data:** 29/10/2026  
+**Status:** EM ANDAMENTO — aprovação final pendente.
+
+### 23.1. Complemento T3
+
+Após a revisão individual das regras, foram adicionados CA20–CA27 a `docs/requisitos/T3-criterio-aceitacao.md`, com mapeamento explícito para regras e casos T2. Os novos critérios cobrem:
+
+- Saldos iniciais zero e entradas inválidas (CA20).
+- Validação de campos obrigatórios (CA21).
+- Ordem e bases de cálculo com exemplo numérico verificável (CA22).
+- Alteração pontual sem modificar regra padrão (CA23).
+- Limites de transferência e caixinhas globais (CA24).
+- Cancelamento de movimentação confirmada (CA25).
+- Edição que viola limites e falha de persistência sem efeitos parciais (CA26).
+- Relatórios sem dupla contagem de transferências e saques (CA27).
+
+A lista documental de critérios passa a CA01–CA27. A rastreabilidade está ampliada, mas ainda precisa de uma passada final para garantir que todos os vínculos estão consistentes e que os cenários sejam convertidos em testes executáveis.
+
+### 23.2. Inspeção do repositório para validação técnica
+
+Foi consultada a árvore de arquivos da branch. Ela contém 78 entradas no total; na busca por testes e módulos de lógica financeira, os únicos resultados relevantes foram `app/app/page.tsx`, `app/package.json` e o documento T3. Não foram encontrados arquivos com nomes de testes (`test`/`spec`) nem módulos dedicados de lógica financeira na árvore consultada.
+
+Assim, a validação do aplicativo executável permanece **bloqueada**: o repositório consultado ainda não fornece uma suíte de testes ou implementação financeira identificável para executar a matriz. Isso não é um teste que falhou; é ausência de base executável comprovada nesta auditoria.
+
+### 23.3. Situação consolidada
+
+- [x] Matriz individual RN-001–RN-044 documentada.
+- [x] CT-001–CT-018 ligados aos critérios existentes quando aplicável.
+- [x] CA20–CA27 adicionados para explicitar as lacunas de cobertura encontradas.
+- [x] Inconsistência do saldo não alocado no Dashboard corrigida no Figma.
+- [x] Página UX3 confirmada com mapa visual e checklist existentes.
+- [ ] Revisão final de consistência da matriz após CA20–CA27.
+- [ ] Revisão visual completa dos frames relevantes e navegação clicável em Present.
+- [ ] Implementação e execução de testes reais de regras financeiras.
+- [ ] Aprovação explícita do responsável.
+
+**Conclusão:** a documentação está mais completa, mas não certifico a implementação nem a UX3 como concluídas. A validação técnica está bloqueada por ausência de código/testes financeiros identificáveis no repositório; revisão visual integral e aprovação seguem pendentes. **UX3 permanece EM ANDAMENTO.**
