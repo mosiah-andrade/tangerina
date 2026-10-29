@@ -28,6 +28,7 @@ Aplicativo de organização financeira com foco em uso mobile, controle de conta
 | [ADR-001 — Stack tecnológica](docs/decisoes/ADR-001-stack.md) | Tecnologias aprovadas e premissas |
 | [T7 — Configuração do ambiente](docs/infra/T7-configuracao-ambiente.md) | Fundação técnica e validações registradas |
 | [T8 — Estrutura da aplicação](docs/infra/T8-estrutura-aplicacao.md) | Separação entre rotas, componentes, domínio, persistência e utilitários |
+| [T9 — Tokens da identidade](docs/infra/T9-tokens-identidade.md) | Tokens visuais, componentes-base e catálogo das variações oficiais de logo |
 | [Briefing funcional](briefing_app_financeiro.md) | Requisitos detalhados |
 | [Roadmap](tangerina_roadmap.html) | Etapas, tarefas e progresso |
 
