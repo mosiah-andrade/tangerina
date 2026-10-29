@@ -135,3 +135,22 @@ button { font:inherit; }
 .loading-preview__back { position:fixed; z-index:2; left:50%; bottom:28px; transform:translateX(-50%); padding:12px 18px; border:1px solid var(--line); background:rgba(249,248,243,.92); color:var(--emerald); font-size:11px; font-weight:700; white-space:nowrap; }
 @keyframes startup-appear { from { opacity:0; } to { opacity:1; } }
 @media (prefers-reduced-motion: reduce) { .app-startup { animation:none; } }
+
+
+/* Flor de tangerina desabrochando na abertura. */
+.citrus-bloom { display:block; width:clamp(150px,42vw,190px); height:auto; overflow:visible; filter:drop-shadow(0 12px 14px rgba(6,38,26,.09)); }
+.citrus-bloom__petal { transform-box:view-box; transform-origin:100px 103px; transform:rotate(var(--petal-angle)) scale(.08); opacity:0; animation:petal-bloom .85s cubic-bezier(.18,.75,.2,1.12) var(--petal-delay) forwards; }
+.citrus-bloom__leaf { transform-box:view-box; transform-origin:100px 116px; transform:rotate(var(--petal-angle)) scale(.15); opacity:0; animation:leaf-bloom .65s ease-out .12s forwards; }
+.citrus-bloom__stamen { transform-box:view-box; transform-origin:100px 103px; transform:rotate(var(--stamen-angle)) scaleY(.05); opacity:0; animation:stamen-grow .45s ease-out var(--stamen-delay) forwards; }
+.seed-loading { gap:17px; }
+.seed-loading .brand-lockup { margin-top:0; }
+.seed-loading__label { margin-top:1px; }
+.app-startup .seed-loading { gap:16px; }
+.app-startup .citrus-bloom { width:clamp(168px,48vw,220px); }
+.app-startup .seed-loading__label { max-width:290px; }
+@keyframes petal-bloom { 0% { transform:rotate(var(--petal-angle)) scale(.08); opacity:0; } 72% { transform:rotate(var(--petal-angle)) scale(1.07); opacity:1; } 100% { transform:rotate(var(--petal-angle)) scale(1); opacity:1; } }
+@keyframes leaf-bloom { 0% { transform:rotate(var(--petal-angle)) scale(.15); opacity:0; } 100% { transform:rotate(var(--petal-angle)) scale(1); opacity:1; } }
+@keyframes stamen-grow { 0% { transform:rotate(var(--stamen-angle)) scaleY(.05); opacity:0; } 100% { transform:rotate(var(--stamen-angle)) scaleY(1); opacity:1; } }
+@media (prefers-reduced-motion: reduce) {
+  .citrus-bloom__petal, .citrus-bloom__leaf, .citrus-bloom__stamen { animation:none; opacity:1; transform:rotate(var(--petal-angle, var(--stamen-angle))) scale(1); }
+}
