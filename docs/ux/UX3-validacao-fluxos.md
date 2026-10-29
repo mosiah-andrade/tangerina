@@ -612,3 +612,38 @@ A inspeção anterior de `app/app/page.tsx` encontrou o template padrão do Next
 - [ ] Obter aprovação explícita do responsável.
 
 **Conclusão:** revisão visual amostral avançou e identificou uma inconsistência concreta no Dashboard. A organização recomendada para UX3 está definida, mas não aplicada. A validação técnica real continua bloqueada pela ausência de funcionalidades financeiras verificadas no arquivo inicial. **UX3 permanece EM ANDAMENTO.**
+
+## 22. Décima quarta iteração — correção de achado visual e reconciliação da auditoria Figma
+
+**Data:** 29/10/2026  
+**Status:** EM ANDAMENTO — aprovação final pendente.
+
+### 22.1. Correção aplicada no Dashboard
+
+Foi corrigido no Figma o texto do saldo não alocado do Dashboard, de R$ 350,00 para **R$ 2.150,00**, pois o exemplo apresenta saldo total de R$ 4.250,00 e caixinhas de R$ 2.100,00. A relação passa a respeitar a fórmula de T2: R$ 4.250,00 − R$ 2.100,00 = R$ 2.150,00.
+
+- Frame: `06 — Início / Dashboard` (node `1:120`).
+- Texto alterado: node `1:138`.
+- Não foram alteradas as regras de negócio nem os demais valores ilustrativos.
+
+### 22.2. Verificação atual da página UX3
+
+Uma nova leitura do arquivo Figma encontrou conteúdo na página `UX3 — Fluxos e validação`: 35 elementos de nível superior, incluindo 17 frames. A página contém título, mapa visual de quatro jornadas e checklist de validação. Portanto, a anotação anterior de que a página estava vazia estava desatualizada e fica corrigida por esta verificação mais recente.
+
+O mapa usa conectores visuais para indicar sequência; os conectores não são, por si só, ligações interativas do protótipo. A existência do mapa também não comprova que todos os botões dos frames de origem estejam ligados e testados em Present.
+
+**Decisão de organização:** manter as telas de origem na página `UX2 — Wireframes mobile` e manter o mapa/checklist na página `UX3 — Fluxos e validação`. Essa separação já existe no arquivo e não foi necessário duplicar ou mover frames.
+
+### 22.3. Revisão visual — situação atual
+
+- [x] Inspecionados amostralmente boas-vindas, dashboard, formulário/revisão de receita, revisão de despesa, falha de gravação, estado vazio, erro de validação e prévia de restauração.
+- [x] Corrigida a inconsistência aritmética do saldo não alocado no Dashboard.
+- [x] Verificada a existência do mapa e checklist na página UX3.
+- [ ] Inspecionar todos os estados críticos restantes e todos os frames relevantes, sem afirmar revisão completa dos 286 frames com base apenas na amostra.
+- [ ] Verificar os destinos clicáveis em Present e registrar evidências de navegação.
+
+### 22.4. Validação técnica do aplicativo
+
+A página `app/app/page.tsx` consultada anteriormente ainda era o template padrão do Next.js. Não há evidência suficiente nesta revisão para executar testes de cálculo, persistência, auditoria, pagamento ou backup no aplicativo real. Essa validação permanece bloqueada até localizar e/ou implementar os módulos executáveis e os testes correspondentes.
+
+**Conclusão:** o achado aritmético foi corrigido no Figma; a organização da página UX3 foi confirmada como já existente. A revisão visual completa, a validação funcional no aplicativo e a aprovação explícita continuam pendentes. **UX3 permanece EM ANDAMENTO.**
