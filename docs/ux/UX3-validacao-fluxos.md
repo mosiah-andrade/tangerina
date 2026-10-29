@@ -264,3 +264,35 @@ A página de wireframes mobile contém agora 274 frames. A inspeção das telas 
 - [ ] Obter aprovação explícita do usuário.
 
 **Conclusão:** foram adicionados estados de sucesso e clarificada a semântica de conciliação. A UX3 continua **EM ANDAMENTO** porque o teste manual no modo Present, a revisão integral T2/T3 e a aprovação não foram realizados.
+
+
+## 16. Oitava iteração — fluxo de sucesso de receita e revisão de branches
+
+**Data:** 29/10/2026  
+**Status:** em andamento; não aprovada.
+
+### Correção no Figma
+
+- O botão Confirmar receita agora leva ao novo frame UX3 — Receita registrada, em vez de saltar diretamente ao dashboard.
+- A tela resume a receita de R$ 2.500,00, a distribuição de R$ 250,00 para Reserva (10% da receita), R$ 450,00 para Despesas do mês (20% do saldo restante de R$ 2.250,00) e R$ 1.800,00 não alocados.
+- A tela oferece retorno ao dashboard ou ao formulário de receita.
+- O primeiro screenshot revelou sobreposição entre linhas do resumo. A altura do card e o espaçamento foram corrigidos. A inspeção visual inicial foi realizada; o comportamento clicável ainda requer execução manual no modo Present.
+
+### Revisão do GitHub
+
+- Consulta ao repositório não encontrou pull requests abertos.
+- As PRs recentes de UX3 (#6 a #11) estão integradas à main; as PRs #10 e #11 cobrem, respectivamente, exportação/restauração e transferência/conciliação.
+- Há branches antigas ainda listadas, mas elas correspondem a PRs já integradas ou a entregas históricas. A comparação entre referências aparece como divergente por causa do histórico de squash/merge; isso, isoladamente, não justifica novo merge.
+- Não foi possível excluir branches remotas pela integração disponível nesta sessão, que não expõe uma operação de exclusão de branch. Portanto, nenhuma branch foi apagada nem foi feito merge duplicado. Elas podem ser removidas no GitHub após confirmar que cada uma está associada a PR já integrado e que não contém trabalho posterior exclusivo.
+
+### Checklist
+
+- [x] Verificar PRs abertos: nenhum encontrado.
+- [x] Conferir o estado das PRs recentes de UX3: #6, #7, #8, #9, #10 e #11 integradas.
+- [x] Corrigir o fluxo de sucesso de receita e inspecionar visualmente o resumo.
+- [ ] Executar manualmente no modo Present todos os caminhos, inclusive retorno e cancelamento.
+- [ ] Testar os critérios T2/T3 com casos-limite e registrar resultados.
+- [ ] Inspecionar visualmente todos os frames.
+- [ ] Obter aprovação explícita do usuário.
+
+**Conclusão:** a jornada de receita tem agora um estado de sucesso próprio e o card foi corrigido após inspeção visual. A UX3 permanece EM ANDAMENTO. O teste manual e a aprovação não foram simulados nem presumidos.
