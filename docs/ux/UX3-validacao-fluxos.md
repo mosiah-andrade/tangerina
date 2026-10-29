@@ -135,3 +135,33 @@ O frame de boas-vindas foi identificado como início pretendido do fluxo. A conf
 - [ ] Revisão final com o usuário e aprovação explícita.
 
 **Status permanece: em andamento.** As conexões foram criadas via API e contadas estruturalmente, mas não foi possível concluir um teste interativo completo no modo Present nesta sessão. A UX3 não deve ser considerada aprovada até o teste manual e a aprovação do usuário.
+
+
+## 11. Quarta iteração — correção de jornadas e auditoria estrutural
+
+Em 29/10/2026, foi realizada uma auditoria estrutural dos frames e reações do protótipo. A página contém 262 frames no total, incluindo as telas UX3 adicionadas anteriormente. Foram encontrados destinos existentes para as conexões verificadas.
+
+A auditoria identificou que a revisão de uma despesa com saldo projetado negativo encaminhava diretamente ao dashboard. O caminho foi corrigido para exigir a tela **Confirmar saldo negativo?** antes de retornar ao dashboard. A opção de voltar nessa confirmação retorna ao formulário da despesa.
+
+Também foram conectados:
+- As quatro linhas de movimentação do histórico ao detalhe/auditoria.
+- As contas pendentes Internet e Energia à tela de confirmação de pagamento; a conta já paga retorna ao dashboard.
+- O atalho de backup/restauração nas configurações à exportação.
+- O botão de geração de arquivo à tela de importação como sequência demonstrativa de navegação.
+- O atalho de regras de distribuição nas configurações à tela de regras.
+
+Foram criadas ou substituídas 14 reações nesta iteração. Isso é uma verificação estrutural das conexões, não uma confirmação de que todos os percursos foram executados com sucesso no modo Present.
+
+## 12. Pendências após auditoria
+
+- [x] Garantir que despesa com saldo negativo passe por confirmação explícita antes de concluir o caminho demonstrativo.
+- [x] Conectar linhas do histórico ao detalhe/auditoria.
+- [x] Conectar contas pendentes à tela de pagamento.
+- [x] Conectar atalhos de configurações para backup e regras de distribuição.
+- [ ] Testar manualmente no modo Present todos os caminhos, incluindo voltar/cancelar e cenários de erro.
+- [ ] Revisar o fluxo demonstrativo de exportação/importação para que fique semanticamente claro; gerar arquivo e importar arquivo são ações distintas.
+- [ ] Validar todas as regras T2/T3 contra casos de teste, incluindo distribuição fixa/percentual, bases de cálculo, arredondamento, excesso, saldo bancário insuficiente e auditoria de edição.
+- [ ] Confirmar o início do protótipo no editor do Figma e revisar o layout de cada frame.
+- [ ] Receber aprovação explícita do usuário.
+
+**Status: em andamento.** A auditoria estrutural ajudou a corrigir conexões e a completar jornadas, mas não substitui teste manual de interação, conferência integral dos requisitos nem aprovação final.
