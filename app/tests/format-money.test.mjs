@@ -3,11 +3,7 @@ import test from "node:test";
 import { formatMoneyFromCents } from "../lib/format-money.ts";
 
 function normalizeWhitespace(value) {
-  return value
-    .split("\u00a0")
-    .join(" ")
-    .split("\u202f")
-    .join(" ");
+  return value.split("\u00a0").join(" ").split("\u202f").join(" ");
 }
 
 test("formats positive cents as Brazilian Real", () => {
@@ -18,10 +14,7 @@ test("formats positive cents as Brazilian Real", () => {
 });
 
 test("formats zero cents", () => {
-  assert.equal(
-    normalizeWhitespace(formatMoneyFromCents(0)),
-    "R$ 0,00",
-  );
+  assert.equal(normalizeWhitespace(formatMoneyFromCents(0)), "R$ 0,00");
 });
 
 test("formats negative cents", () => {
@@ -32,10 +25,7 @@ test("formats negative cents", () => {
 });
 
 test("rejects non-integer cents", () => {
-  assert.throws(
-    () => formatMoneyFromCents(12.5),
-    TypeError,
-  );
+  assert.throws(() => formatMoneyFromCents(12.5), TypeError);
 });
 
 test("rejects unsafe integer cents", () => {
