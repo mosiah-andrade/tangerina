@@ -220,3 +220,47 @@ As novas telas de exportação e restauração mantêm dimensões de 390 × 844 
 - [ ] Obter aprovação explícita do usuário.
 
 **Conclusão desta iteração:** exportação e importação agora têm caminhos semanticamente separados e estados de sucesso distintos; o estado de transferência bloqueada tem ações coerentes. A validação manual e a aprovação permanecem pendentes. UX3 continua **EM ANDAMENTO**.
+
+
+## 15. Sétima iteração — validação dos estados de transferência e conciliação
+
+**Data:** 29/10/2026  
+**Status:** em andamento; não aprovada.
+
+### Inspeção e correções no Figma
+
+- A tela de revisão da transferência informa que a movimentação não é receita nem despesa e apresenta saldo disponível e saldo projetado.
+- O botão de confirmar transferência agora leva a um estado de sucesso explícito, com origem, destino, valor e orientação de auditoria; o retorno permite voltar ao formulário.
+- A prévia da conciliação foi ajustada para dizer que a diferença será registrada como ajuste auditável e que o histórico anterior será preservado. A confirmação só navega para o estado de sucesso.
+- Criado o estado **UX3 — Conciliação registrada**, com saldo calculado, saldo real informado, diferença registrada e retorno ao dashboard ou à lista de contas.
+- O novo estado de conciliação foi inspecionado por screenshot em 390 × 844 px após a correção de hierarquia e rótulos. Os campos ficaram legíveis e não foi observado corte no texto dessa tela.
+
+### Evidência de auditoria estrutural
+
+A página de wireframes mobile contém agora 274 frames. A inspeção das telas selecionadas confirmou que os destinos das ações examinadas existem, incluindo revisão de despesa, confirmação de saldo negativo, revisão de transferência, prévia de conciliação, prévia de restauração e confirmação de pagamento.
+
+### Limites e riscos remanescentes
+
+- As ações continuam sendo navegação entre frames; não executam cálculos, persistência, ajuste contábil, transferência real nem restauração.
+- A revisão de receita apresenta um exemplo consistente com as regras descritas (10% de R$ 2.500 = R$ 250; depois 20% de R$ 2.250 = R$ 450; saldo restante R$ 1.800). Isso é apenas um exemplo visual, não teste de todos os tipos de regra.
+- T2 RN-033 a RN-035 exige comparação, confirmação e preservação do histórico; a nova tela representa esses conceitos, mas falta testar diferenças positivas e negativas, cancelamento e registro único do ajuste.
+- T2 RN-021 a RN-025 exige confirmação explícita para caixinha negativa e bloqueio se a origem bancária não tiver saldo. A jornada visual existe, mas o protótipo não calcula nem impõe esses limites.
+- T2 RN-026 a RN-032 cobre transferência entre caixinhas, contas e carteira física; nesta iteração foi inspecionado o exemplo conta principal → carteira física, sem percorrer todos os pares de origem/destino.
+- T2 RN-036 a RN-044 (arredondamento, limite, recálculo, cancelamento rastreável, idempotência, histórico e relatórios) e todos os critérios T3 ainda precisam de execução manual/casos de teste.
+
+### Checklist atualizado
+
+- [x] Separar os estados de sucesso de exportação e restauração.
+- [x] Explicitar pagamento sem despesa duplicada ou novo desconto.
+- [x] Criar estado de sucesso para transferência e conciliação.
+- [x] Inspecionar screenshot do estado de conciliação após correção visual.
+- [ ] Executar manualmente os fluxos no modo Present e anotar resultados reais.
+- [ ] Testar bases/ordem de distribuição, arredondamento, excesso e alteração pontual.
+- [ ] Testar despesas e transferências com saldo insuficiente, incluindo cancelamento.
+- [ ] Testar conciliação com diferença positiva e negativa, cancelamento e preservação do histórico.
+- [ ] Testar restauração cancelada e confirmada, sem assumir operação real no protótipo.
+- [ ] Conferir todos os critérios T3 individualmente e corrigir os pontos divergentes.
+- [ ] Inspecionar todos os frames e registrar defeitos visuais encontrados.
+- [ ] Obter aprovação explícita do usuário.
+
+**Conclusão:** foram adicionados estados de sucesso e clarificada a semântica de conciliação. A UX3 continua **EM ANDAMENTO** porque o teste manual no modo Present, a revisão integral T2/T3 e a aprovação não foram realizados.
