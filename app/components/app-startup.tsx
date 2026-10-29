@@ -8,11 +8,20 @@ const leaves = [0, 120, 240];
 const stamens = Array.from({ length: 12 }, (_, index) => index);
 
 export function AppStartup({ children }: { children: React.ReactNode }) {
-  const [showIntro, setShowIntro] = useState(true);
+  const [showIntro, setShowIntro] = useState(false);
 
   useEffect(() => {
+    // Play once per browser tab, not on every route change or development render.
+    const key = "tangerina-startup-seen";
+    try {
+      if (sessionStorage.getItem(key)) return;
+      sessionStorage.setItem(key, "1");
+    } catch {
+      // Storage may be unavailable; the intro still works for this mount.
+    }
+    setShowIntro(true);
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const timeout = window.setTimeout(() => setShowIntro(false), reducedMotion ? 500 : 3200);
+    const timeout = window.setTimeout(() => setShowIntro(false), reducedMotion ? 700 : 3300);
     return () => window.clearTimeout(timeout);
   }, []);
 
@@ -44,7 +53,7 @@ export function AppStartup({ children }: { children: React.ReactNode }) {
               </g>
               {petals.map((index) => (
                 <g key={index} className="startup-flower__petal"
-                  transform={`rotate(${index * 45} 100 105)`} style={{ "--delay": `${0.45 + index * 0.11}s` } as React.CSSProperties>
+                  transform={`rotate(${index * 45} 100 105)`} style={{ "--delay": `${0.45 + index * 0.11}s` } as React.CSSProperties}>
                   <path d="M100 108 C78 91 76 62 100 31 C124 62 122 91 100 108Z"
                     fill="url(#startup-petal)" stroke="#D8C99E" strokeWidth=".8" />
                   <path d="M100 101 L100 42" stroke="#D6C69B" strokeWidth=".8" opacity=".8" />
@@ -52,7 +61,7 @@ export function AppStartup({ children }: { children: React.ReactNode }) {
               ))}
               {stamens.map((index) => (
                 <g key={index} className="startup-flower__stamen"
-                  transform={`rotate(${index * 30} 100 105)`} style={{ "--delay": `${1.5 + index * 0.035}s` } as React.CSSProperties>
+                  transform={`rotate(${index * 30} 100 105)`} style={{ "--delay": `${1.5 + index * 0.035}s` } as React.CSSProperties}>
                   <path d="M100 106 L100 82" stroke="#C59B27" strokeWidth="1.7" strokeLinecap="round" />
                   <circle cx="100" cy="80" r="2.6" fill="url(#startup-gold)" />
                 </g>
