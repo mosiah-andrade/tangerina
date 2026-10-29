@@ -140,7 +140,7 @@ const milestones = [
   ["UX1","Inventariar telas e estados do MVP","CONCLUÍDA: inventário documentado em docs/ux/UX1-inventario-telas-estados.md. Abrange 23 telas/fluxos, estados transversais, validações financeiras críticas, acessibilidade e pendências que devem permanecer em aberto. Base: briefing, T1–T4 e ADR-001.","UX",2],
   ["UX2","Criar protótipo de baixa fidelidade no Figma","CONCLUÍDA: protótipo inicial com 23 frames mobile editáveis (390 × 844 px), Auto Layout e interface low-fi em português BR. Relatório: docs/ux/UX2-prototipo-baixa-fidelidade.md. Figma: https://www.figma.com/design/3g1tk0uRUD3cNv96U0gXeN. Conexões navegáveis e validação permanecem na UX3.","UX",6],
   ["UX3","Validar e aprovar os fluxos do protótipo","CONCLUÍDA — aprovação explícita registrada em 29/10/2026. Escopo limitado à prototipação no Figma: responsável informou ter concluído a revisão dos fluxos de receita/distribuição, despesas/caixinhas, transferências/conciliação, pagamentos/backup e estados gerais. Saldo não alocado ilustrativo corrigido para R$ 2.150,00. Matriz documentada RN-001–RN-044, CT-001–CT-018 e CA01–CA27. A UX3 não certifica cálculos, persistência, auditoria, pagamentos ou backup reais; estes pertencem à implementação. Próxima etapa: planejar a implementação em separado. Relatório: docs/ux/UX3-validacao-fluxos.md.","UX",3],
-  ["T8","Criar estrutura de pastas e rotas","Separar componentes, páginas, domínio financeiro, persistência e utilitários.","Arquitetura",3],
+  ["T8","Criar estrutura de pastas e rotas","CONCLUÍDA: responsabilidades separadas e documentadas para rotas/páginas, componentes reutilizáveis, domínio financeiro, persistência local e utilitários. Criados READMEs arquiteturais nas camadas e atualizado app/README.md. As pastas de domínio e persistência são apenas fronteiras arquiteturais; regras financeiras e banco funcional permanecem nas tarefas seguintes. Relatório: docs/infra/T8-estrutura-aplicacao.md.","Arquitetura",3],
   ["T9","Implementar tokens da identidade Tangerina","Cores, tipografia, espaçamentos, botões, inputs, cards e estados de foco.","UI",4],
   ["T10","Construir layout responsivo base","Navegação, cabeçalho/sidebar conforme dispositivo, área de conteúdo e estados vazios.","UI",4],
   ["T11","Configurar testes e checagens","Teste de unidade inicial, build, lint e checklist de verificação manual.","Qualidade",3]
@@ -199,8 +199,8 @@ const milestones = [
  ]}
 ];
 const STORAGE_KEY="tangerina-roadmap-v1";
-let completed = {T1:true,T2:true,T3:true,T4:true,T5:true,T6:true,T7:true,UX1:true,UX2:true,UX3:true};
-try { const saved = localStorage.getItem(STORAGE_KEY); completed = saved ? {...{T1:true,T2:true,T3:true,T4:true,T5:true,T6:true,T7:true,UX1:true,UX2:true,UX3:true}, ...(JSON.parse(saved) || {})} : {T1:true,T2:true,T3:true,T4:true,T5:true,T6:true,T7:true,UX1:true,UX2:true,UX3:true}; } catch(e) { completed = {T1:true,T2:true,T3:true,T4:true,T5:true,T6:true,T7:true,UX1:true,UX2:true,UX3:true}; }
+let completed = {T1:true,T2:true,T3:true,T4:true,T5:true,T6:true,T7:true,T8:true,UX1:true,UX2:true,UX3:true};
+try { const saved = localStorage.getItem(STORAGE_KEY); completed = saved ? {...{T1:true,T2:true,T3:true,T4:true,T5:true,T6:true,T7:true,T8:true,UX1:true,UX2:true,UX3:true}, ...(JSON.parse(saved) || {})} : {T1:true,T2:true,T3:true,T4:true,T5:true,T6:true,T7:true,T8:true,UX1:true,UX2:true,UX3:true}; } catch(e) { completed = {T1:true,T2:true,T3:true,T4:true,T5:true,T6:true,T7:true,T8:true,UX1:true,UX2:true,UX3:true}; }
 const allTasks = () => milestones.flatMap(m => m.tasks.map(t => ({m,t})));
 function save(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(completed));}catch(e){}}
 function render(){
