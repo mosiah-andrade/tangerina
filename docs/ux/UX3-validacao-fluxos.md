@@ -417,3 +417,65 @@ A contagem e os nomes dos frames permitem auditoria estrutural inicial, mas não
 - [ ] Solicitar aprovação explícita do responsável antes de encerrar a UX3.
 
 **Resultado desta iteração:** revisão documental e estrutural parcial realizada; cobertura integral T2/T3 e revisão visual completa ainda pendentes. **UX3 permanece EM ANDAMENTO.**
+
+## 19. Décima primeira iteração — matriz de rastreabilidade e revisão visual amostral
+
+**Data:** 29/10/2026  
+**Status:** EM ANDAMENTO — aprovação final pendente.
+
+### 19.1. Matriz inicial de rastreabilidade T2/T3
+
+A matriz abaixo relaciona os casos de teste essenciais CT-001–CT-018 às regras RN-001–RN-044 e aos critérios de aceitação CA01–CA11 existentes. A associação é temática e documental; não significa que o critério tenha sido executado no aplicativo.
+
+| Caso T2 | Regras relacionadas | Critério T3 relacionado | Cobertura documental |
+|---|---|---|---|
+| CT-001 — valor de R$ 0,01 | RN-001, RN-036 | Lacuna | Parcial: falta critério explícito de precisão monetária mínima |
+| CT-002 — caixinhas acima do saldo inicial | RN-007–RN-011 | Lacuna | Falta critério explícito de configuração inicial inconsistente |
+| CT-003 — distribuição menor que a receita | RN-016, RN-019 | CA01 | Coberto em nível funcional |
+| CT-004 — distribuição excedente | RN-015, RN-037 | CA03 | Coberto em nível funcional; teste de limite permanece necessário na implementação |
+| CT-005 — percentual sobre saldo restante | RN-013, RN-014, RN-038 | CA01, CA03 | Parcial: falta exemplo explícito com múltiplas bases e ordem |
+| CT-006 — despesa acima da caixinha | RN-021, RN-022, RN-025 | CA04, CA05 | Coberto em nível funcional |
+| CT-007 — despesa acima do saldo bancário | RN-023, RN-025 | CA05 | Coberto em nível funcional |
+| CT-008 — transferência entre caixinhas | RN-003, RN-026, RN-027 | CA06 | Coberto em nível funcional |
+| CT-009 — transferência entre contas | RN-002, RN-028, RN-029 | CA07 | Coberto em nível funcional |
+| CT-010 — saque para carteira física | RN-030, RN-032 | Lacuna | Falta critério de aceitação explícito para saque/carteira |
+| CT-011 — despesa em dinheiro | RN-024, RN-031 | CA04 | Parcial: CA04 não explicita carteira física |
+| CT-012 — carteira insuficiente | RN-024 | Lacuna | Falta critério de aceitação explícito |
+| CT-013 — conciliação com diferença | RN-033–RN-035 | Lacuna | Falta critério de aceitação explícito para prévia, justificativa e auditoria |
+| CT-014 — cancelamento antes da confirmação | RN-018, RN-022, RN-032 | Parcial: CA02, CA05 | Falta critério transversal explícito de cancelamento sem efeitos |
+| CT-015 — edição de movimento confirmado | RN-039–RN-043 | Lacuna | Falta critério explícito de auditoria com valores anteriores/novos e recálculo |
+| CT-016 — repetição de confirmação | RN-005, RN-018, RN-042 | CA04, CA08 | Parcial: falta critério geral de idempotência para receita e transferência |
+| CT-017 — fração de centavo | RN-001, RN-036–RN-038 | Lacuna | Falta critério explícito de arredondamento e proibição de exceder disponível |
+| CT-018 — importação repetida de backup | RN-006, RN-042, RN-043 | Lacuna | Falta critério explícito de validação, prévia, cancelamento e importação sem duplicação |
+
+### 19.2. Cobertura T3 que ainda precisa ser ampliada
+
+O documento T3 contém CA01–CA11. Além das lacunas assinaladas na matriz, os seguintes temas não têm critério dedicado identificável no conjunto atual:
+
+- Conciliação de saldos e ajuste com justificativa.
+- Saque e carteira física, incluindo saldo insuficiente.
+- Edição, cancelamento rastreável e auditoria dos valores anteriores/novos.
+- Arredondamento para centavos e preservação do limite disponível.
+- Importação/restauração de backup, arquivo inválido e prevenção de duplicidade.
+- Configuração inicial inconsistente e valores mínimos.
+- Persistência consistente e ausência de efeitos parciais em falhas.
+
+Esses itens são lacunas documentais a resolver em T3; não são falhas observadas no protótipo.
+
+### 19.3. Revisão visual amostral
+
+Foi feita inspeção estrutural e captura amostral de cinco frames: Boas-vindas (390 × 844), Dashboard (390 × 844), Formulário de receita (390 × 844), Revisão da distribuição (390 × 844) e Receita registrada (390 × 844).
+
+A amostra confirma o uso consistente do frame mobile 390 × 844 nas telas selecionadas. A contagem estrutural continua indicando 286 frames descendentes na página `UX2 — Wireframes mobile` e nenhum elemento de nível superior na página `UX3 — Fluxos e validação`.
+
+**Limite desta revisão:** a amostra não comprova que todos os 286 frames foram inspecionados visualmente. Não foram registradas falhas visuais específicas a partir desta revisão amostral, e não foram feitas alterações no Figma. A revisão visual completa permanece pendente.
+
+### 19.4. Próximas ações para encerrar a UX3
+
+- [ ] Ampliar T3 com critérios para todas as lacunas da matriz, preservando as decisões aprovadas em T2.
+- [ ] Organizar ou renomear a página vazia `UX3 — Fluxos e validação` após decidir a organização desejada; não mover frames sem revisão.
+- [ ] Concluir a inspeção visual de todos os frames relevantes e registrar achados concretos.
+- [ ] Validar regras financeiras no aplicativo executável após sua implementação; o template atual em `app/app/page.tsx` não permite comprovar essa funcionalidade.
+- [ ] Submeter relatório, matriz e revisão visual ao responsável para aprovação explícita.
+
+**Resultado:** matriz inicial criada e revisão visual amostral registrada. A cobertura integral T2/T3, a revisão visual completa e a validação da implementação permanecem pendentes. **UX3 permanece EM ANDAMENTO.**
