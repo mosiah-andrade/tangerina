@@ -479,3 +479,84 @@ A amostra confirma o uso consistente do frame mobile 390 × 844 nas telas seleci
 - [ ] Submeter relatório, matriz e revisão visual ao responsável para aprovação explícita.
 
 **Resultado:** matriz inicial criada, critérios adicionais CA12–CA19 incluídos em T3 e revisão visual amostral registrada. A certificação integral da rastreabilidade T2/T3, a revisão visual completa e a validação da implementação permanecem pendentes. **UX3 permanece EM ANDAMENTO.**
+## 20. Décima segunda iteração — certificação individual da matriz T2/T3
+
+**Data:** 29/10/2026  
+**Escopo:** revisão documental de RN-001–RN-044, CT-001–CT-018 e CA01–CA19.  
+**Status:** rastreabilidade documental revisada; execução no aplicativo e cobertura completa dos critérios ainda pendentes.
+
+### 20.1. Matriz por regra de negócio
+
+A coluna “Cobertura” avalia se há ligação documental plausível entre a regra, um caso de teste T2 e um critério de aceitação T3. “Coberto” não significa que o teste foi executado no código; “Parcial” indica que o cenário relacionado existe, mas falta explicitar um limite, resultado ou verificação importante.
+
+| Regra T2 | Caso(s) T2 | Critério(s) T3 | Cobertura documental / lacuna |
+|---|---|---|---|
+| RN-001 | CT-001, CT-017 | CA13 | Cobertura documental; execução no código pendente |
+| RN-002 | CT-009 | CA07 | Coberto em nível de critério |
+| RN-003 | CT-008 | CA06 | Coberto em nível de critério |
+| RN-004 | CT-003 | CA01 | Parcial: interpretação de saldo não alocado com caixinhas negativas não explicitada |
+| RN-005 | CT-016 | CA18 | Coberto em nível de critério |
+| RN-006 | CT-014, CT-018 | CA17, CA19 | Parcial: atomicidade em falha de persistência exige teste técnico |
+| RN-007 | CT-002 | CA12 | Coberto em nível de critério |
+| RN-008 | CT-002 | CA12 | Coberto em nível de critério |
+| RN-009 | CT-003 | CA01 | Parcial: caso de configuração com saldo não alocado não testado explicitamente |
+| RN-010 | CT-001, CT-002 | CA12, CA13 | Parcial: saldo zero e valores inválidos precisam de casos próprios |
+| RN-011 | CT-002, CT-013 | CA12, CA15 | Coberto em nível de critério |
+| RN-012 | CT-003 | CA01 | Parcial: descrição, data e conta de destino não têm teste individual |
+| RN-013 | CT-005 | CA01, CA03 | Parcial: falta cobertura explícita dos três tipos de regra |
+| RN-014 | CT-005 | CA01, CA13 | Parcial: ordem configurável e bases variadas precisam de exemplos específicos |
+| RN-015 | CT-004 | CA03 | Coberto em nível de critério |
+| RN-016 | CT-003 | CA01 | Coberto em nível de critério |
+| RN-017 | — | CA02 | Parcial: critério existe, falta caso de regressão que compare regra padrão antes/depois |
+| RN-018 | CT-014, CT-016 | CA17, CA18 | Coberto em nível de critério |
+| RN-019 | CT-003, CT-005 | CA01 | Parcial: falta verificar saldo da conta e alocações conjuntamente |
+| RN-020 | CT-006, CT-011 | CA04, CA14 | Parcial: validação de campos obrigatórios sem caso individual |
+| RN-021 | CT-006 | CA05 | Coberto em nível de critério |
+| RN-022 | CT-014 | CA17 | Coberto em nível de critério |
+| RN-023 | CT-007 | CA05 | Coberto em nível de critério |
+| RN-024 | CT-012 | CA14 | Coberto em nível de critério |
+| RN-025 | CT-006, CT-007, CT-011 | CA04, CA05, CA14 | Parcial: conferir origens diferentes e atualização única em cada origem |
+| RN-026 | CT-008 | CA06 | Coberto em nível de critério |
+| RN-027 | CT-008 | CA06 | Parcial: falta cenário de origem negativa/limite disponível |
+| RN-028 | CT-009 | CA07 | Parcial: falta cenário explícito de insuficiência e mesma conta |
+| RN-029 | CT-009 | CA07 | Parcial: critério não afirma diretamente que caixinhas globais não mudam |
+| RN-030 | CT-010 | CA14 | Coberto em nível de critério |
+| RN-031 | CT-011 | CA14 | Coberto em nível de critério |
+| RN-032 | CT-010 | CA14, CA17 | Parcial: falha entre os dois lados do saque requer teste técnico de atomicidade |
+| RN-033 | CT-013 | CA15 | Coberto em nível de critério |
+| RN-034 | CT-013 | CA15 | Coberto em nível de critério |
+| RN-035 | CT-013 | CA15 | Parcial: impacto em alocações globais deve ser verificado explicitamente |
+| RN-036 | CT-001, CT-017 | CA13 | Coberto em nível de critério |
+| RN-037 | CT-004, CT-017 | CA03, CA13 | Coberto em nível de critério |
+| RN-038 | CT-005, CT-017 | CA13 | Parcial: sequência com várias bases de cálculo precisa de caso detalhado |
+| RN-039 | CT-015 | CA16 | Coberto em nível de critério |
+| RN-040 | CT-015 | CA16 | Parcial: bloqueio de edição que violaria saldo ainda precisa de caso próprio |
+| RN-041 | CT-014, CT-015 | CA16, CA17 | Parcial: CT-014 cobre cancelamento antes da confirmação, não cancelamento de movimento confirmado |
+| RN-042 | CT-016, CT-018 | CA18, CA19 | Coberto em nível de critério |
+| RN-043 | CT-015, CT-018 | CA16, CA17, CA19 | Parcial: consistência entre saldo, movimento e auditoria exige testes de falha |
+| RN-044 | CT-008, CT-009, CT-010 | CA06, CA07, CA14, CA18 | Parcial: relatório agregado sem transferências precisa de caso de teste específico |
+
+### 20.2. Verificação dos identificadores
+
+- **RN-001–RN-044:** todos os 44 identificadores foram percorridos individualmente na matriz acima.
+- **CT-001–CT-018:** todos os 18 casos aparecem ao menos uma vez na matriz; isso confirma rastreabilidade temática, não execução automatizada.
+- **CA01–CA19:** todos os 19 critérios foram consultados. CA01–CA11 cobrem fluxos de receita, despesas, transferências, boletos, recorrência e metas; CA12–CA19 complementam configuração inicial, precisão, carteira física, conciliação, auditoria, cancelamento, idempotência e backup.
+
+### 20.3. Lacunas que impedem certificação integral
+
+A rastreabilidade documental foi preenchida, mas a cobertura não deve ser declarada integral enquanto faltarem casos explícitos para:
+
+1. RN-004: interpretação do saldo não alocado quando existem caixinhas negativas.
+2. RN-010: configuração com saldos zero e entradas inválidas/negativas.
+3. RN-012 e RN-020: validação individual dos campos obrigatórios.
+4. RN-013–RN-014 e RN-038: comparação dos três tipos de regra, ordem configurada e bases diferentes em uma mesma receita.
+5. RN-017: provar que alteração pontual não altera a regra padrão salva.
+6. RN-027–RN-029: limites de transferência, origem negativa e preservação das caixinhas globais ao transferir entre contas.
+7. RN-032 e RN-040–RN-043: falha parcial, edição que viola limites, cancelamento de movimento confirmado e consistência entre saldo, movimento e auditoria.
+8. RN-044: relatório que exclui todas as modalidades de transferência dos totais de receitas/despesas.
+
+### 20.4. Conclusão da certificação
+
+**Resultado: rastreabilidade documental individualizada concluída nesta revisão; certificação integral de cobertura ainda não aprovada.** A matriz liga cada RN a casos e critérios quando aplicável e explicita as lacunas restantes. Não foi executada uma suíte de testes contra o aplicativo, pois a página consultada app/app/page.tsx ainda corresponde ao template padrão do Next.js. Os testes manuais relatados anteriormente continuam válidos apenas como resultado informado do protótipo Figma.
+
+Próximo passo: decidir se as lacunas listadas devem ser adicionadas ao documento T3 como novos casos de aceitação, e depois prosseguir com a revisão visual e a organização do Figma. **UX3 permanece EM ANDAMENTO.**
