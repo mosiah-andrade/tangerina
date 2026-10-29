@@ -57,3 +57,31 @@ Os critérios abaixo complementam CA01–CA11 para cobrir regras financeiras já
 | CA19 | CT-018 |
 
 Os critérios CA12–CA19 complementam CA01–CA11. A validação final deve confirmar a correspondência de todos os casos CT-001–CT-018 e das regras RN-001–RN-044 antes de considerar a cobertura documental concluída.
+
+## 5. Critérios adicionais de aceitação — fechamento das lacunas de rastreabilidade
+
+Os critérios CA20–CA27 complementam CA01–CA19 para explicitar cenários que a revisão individual de T2 identificou como parciais. Eles preservam as decisões aprovadas no T2.
+
+- **CA20 — Configuração com saldo zero e entradas inválidas:** a configuração deve aceitar saldos iniciais iguais a zero quando válidos para o tipo de saldo. Deve rejeitar valores não numéricos, formatos monetários inválidos e valores negativos quando proibidos, indicando o campo a corrigir. A soma das caixinhas, saldo bancário consolidado e saldo não alocado devem permanecer coerentes.
+- **CA21 — Campos obrigatórios:** ao tentar confirmar receita ou despesa sem valor, descrição, data, conta/origem de pagamento exigida ou demais campos obrigatórios do fluxo, o sistema deve identificar os campos ausentes, preservar o que já foi preenchido e não criar movimentação.
+- **CA22 — Ordem e base das regras de distribuição:** para uma receita de R$ 1.000,00, uma regra de 50% da receita bruta deve destinar R$ 500,00; uma regra posterior de 30% do saldo restante deve usar R$ 500,00 como base e destinar R$ 150,00. Alterar a ordem deve recalcular a prévia conforme a ordem configurada. O total distribuído não pode superar o disponível.
+- **CA23 — Alteração pontual sem modificar regra padrão:** alterar a distribuição em uma única receita deve mudar apenas aquela operação. Ao iniciar outra receita, as regras padrão salvas devem permanecer inalteradas, salvo se o usuário as editar explicitamente.
+- **CA24 — Limites de transferência e caixinhas globais:** transferências entre caixinhas não podem exceder o saldo disponível da origem nem aprofundar saldo negativo; transferências para a mesma caixinha/conta devem ser bloqueadas. Transferências entre contas bancárias não devem alterar os saldos das caixinhas globais nem o saldo bancário consolidado.
+- **CA25 — Cancelamento de movimentação confirmada:** cancelar uma movimentação já confirmada deve reverter os efeitos financeiros uma única vez, marcar a movimentação como cancelada e preservar o registro original e a auditoria. Repetir o cancelamento não pode aplicar uma segunda reversão.
+- **CA26 — Edição que viola limites e falha de persistência:** se a edição de uma movimentação deixar uma conta bancária ou carteira física abaixo do permitido, bloquear a gravação ou exigir correção antes de salvar. Se a gravação falhar, nenhum efeito parcial deve permanecer; saldos, movimentação e auditoria devem continuar consistentes.
+- **CA27 — Relatórios sem dupla contagem:** relatórios de receitas e despesas devem excluir transferências entre contas, entre caixinhas e saques para carteira física. Registrar uma transferência não deve aumentar totais de receita/despesa de consumo; despesas pagas com dinheiro devem ser contabilizadas apenas no momento do gasto.
+
+## 6. Relação complementar com T2
+
+| Critério | Regras T2 | Casos T2 relacionados |
+|---|---|---|
+| CA20 | RN-007–RN-011 | CT-002 |
+| CA21 | RN-012, RN-020 | CT-003, CT-006 |
+| CA22 | RN-013–RN-016, RN-036–RN-038 | CT-004, CT-005, CT-017 |
+| CA23 | RN-017–RN-018 | CT-014, CT-016 |
+| CA24 | RN-026–RN-029 | CT-008, CT-009 |
+| CA25 | RN-005, RN-039–RN-043 | CT-014, CT-015, CT-016 |
+| CA26 | RN-006, RN-023–RN-024, RN-032, RN-040, RN-043 | CT-007, CT-012, CT-015 |
+| CA27 | RN-005, RN-030–RN-031, RN-044 | CT-008, CT-009, CT-010, CT-011 |
+
+A existência de CA20–CA27 completa a especificação documental dos cenários citados, mas não substitui a execução de testes contra a implementação.
