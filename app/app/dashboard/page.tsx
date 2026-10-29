@@ -3,8 +3,7 @@ import { FiArrowDownLeft, FiArrowUpRight, FiChevronDown, FiTarget, FiGrid, FiEye
 import { LuArrowLeftRight, LuCalendarDays, LuArrowRight } from "react-icons/lu";
 import { AppBrand } from "@/components/app-brand";
 import { BottomNavigation } from "@/components/bottom-navigation";
-
-const money = new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" });
+import { formatMoneyFromCents } from "@/lib/format-money";
 
 export default function DashboardPage() {
   // Valores de demonstração do protótipo; ainda não são dados persistidos.
@@ -32,7 +31,7 @@ export default function DashboardPage() {
             <p className="balance-label" id="balance-title">Patrimônio acompanhado</p>
             <span className="balance-eye" aria-hidden="true"><FiEye size={17} /></span>
           </div>
-          <p className="balance-value">{money.format(total / 100)}</p>
+          <p className="balance-value">{formatMoneyFromCents(total)}</p>
           <p className="balance-caption">Saldo total · valores ilustrativos</p>
           <div className="balance-divider" />
           <div className="balance-foot"><span>Visão pessoal</span><span className="balance-dot" /> <span>Atualizado nesta demonstração</span></div>
@@ -43,13 +42,13 @@ export default function DashboardPage() {
           <article className="summary-card">
             <div className="summary-icon"><FiTarget size={18} /></div>
             <p>Em caixinhas</p>
-            <strong>{money.format(caixinhas / 100)}</strong>
+            <strong>{formatMoneyFromCents(caixinhas)}</strong>
             <small>Reservado para seus objetivos</small>
           </article>
           <article className="summary-card">
             <div className="summary-icon gold"><FiGrid size={18} /></div>
             <p>Não alocado</p>
-            <strong>{money.format(naoAlocado / 100)}</strong>
+            <strong>{formatMoneyFromCents(naoAlocado)}</strong>
             <small>Disponível para distribuir</small>
           </article>
         </section>
