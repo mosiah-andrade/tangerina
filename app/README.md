@@ -1,36 +1,54 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Tangerina Financeiro — aplicação
 
-## Getting Started
+Aplicação Next.js com TypeScript e App Router. O projeto prioriza uso mobile e processamento local, conforme a ADR-001.
 
-First, run the development server:
+## Executar
+
+A partir deste diretório:
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Abra http://localhost:3000.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Checagens disponíveis
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run lint
+npm run format:check
+npm run build
+```
 
-## Learn More
+Estes comandos estão configurados, mas só devem ser considerados validados quando executados no ambiente de trabalho.
 
-To learn more about Next.js, take a look at the following resources:
+## Estrutura arquitetural
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```text
+app/
+├── app/                  # Rotas, páginas, layouts e estados de carregamento
+├── components/           # Componentes React reutilizáveis
+├── domain/finance/       # Regras e cálculos financeiros puros
+└── lib/
+    └── persistence/      # Acesso ao armazenamento local (Dexie/IndexedDB)
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- **Rotas e páginas:** app/ (App Router) compõem as telas e conectam os componentes.
+- **Componentes:** components/ contém elementos visuais sem regras financeiras nem acesso direto ao banco.
+- **Domínio financeiro:** domain/finance/ será a fonte das regras de negócio, independente da interface.
+- **Persistência:** lib/persistence/ será responsável pelo IndexedDB/Dexie, transações e migrações.
+- **Utilitários compartilhados:** lib/ recebe funções técnicas genéricas; cálculos financeiros não devem ser colocados aqui.
 
-## Deploy on Vercel
+Os READMEs dentro dessas camadas descrevem suas responsabilidades e limites. A presença das pastas não significa que regras financeiras ou persistência já estejam implementadas.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Estado funcional
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+A interface atual é uma base visual. O painel contém valores de demonstração e algumas rotas apresentam estados “em construção”. As funcionalidades reais serão implementadas nas tarefas seguintes, com critérios de aceite e testes.
+
+## Referências do projeto
+
+- Requisitos e regras: ../docs/requisitos/
+- Decisões técnicas: ../docs/decisoes/ADR-001-stack.md
+- Fundação técnica: ../docs/infra/T7-configuracao-ambiente.md
+- Roadmap: ../tangerina_roadmap.html
