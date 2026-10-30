@@ -1,5 +1,5 @@
 # Tangerina Financeiro
-
+https://tangerina-bay.vercel.app/
 Aplicativo de organização financeira com foco em uso mobile, controle de contas e caixinhas, distribuição de recebimentos e acompanhamento de movimentações. O escopo e as regras do MVP estão registrados nos documentos do projeto.
 
 > **Estado atual:** fundação técnica da T7 integrada. A aplicação ainda está em desenvolvimento; a configuração do projeto não significa que as funcionalidades financeiras estejam implementadas.
