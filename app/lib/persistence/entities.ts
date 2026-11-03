@@ -98,9 +98,7 @@ export interface Alocacao extends EntidadeCriada {
 }
 
 export type TipoCalculoDistribuicao =
-  | "valor_fixo"
-  | "percentual_receita_bruta"
-  | "percentual_saldo_restante";
+  "valor_fixo" | "percentual_receita_bruta" | "percentual_saldo_restante";
 
 export type BaseCalculoDistribuicao = "receita_bruta" | "saldo_restante";
 
@@ -118,9 +116,7 @@ export type RegraDistribuicao =
       percentual?: never;
     })
   | (RegraDistribuicaoBase & {
-      tipoCalculo:
-        | "percentual_receita_bruta"
-        | "percentual_saldo_restante";
+      tipoCalculo: "percentual_receita_bruta" | "percentual_saldo_restante";
       percentual: PontosBase;
       valorFixoCentavos?: never;
     });
@@ -173,11 +169,7 @@ export interface AporteMeta {
 }
 
 export type AcaoAuditoria =
-  | "criado"
-  | "editado"
-  | "cancelado"
-  | "restaurado"
-  | "conciliado";
+  "criado" | "editado" | "cancelado" | "restaurado" | "conciliado";
 
 export type TipoEntidadeAuditoria =
   | "contas"
@@ -192,12 +184,7 @@ export type TipoEntidadeAuditoria =
   | "aportesMeta";
 
 export type JsonValue =
-  | null
-  | boolean
-  | number
-  | string
-  | JsonValue[]
-  | { [key: string]: JsonValue };
+  null | boolean | number | string | JsonValue[] | { [key: string]: JsonValue };
 
 export interface Auditoria extends EntidadeCriada {
   entidadeTipo: TipoEntidadeAuditoria;
