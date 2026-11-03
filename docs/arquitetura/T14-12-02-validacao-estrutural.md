@@ -135,4 +135,4 @@ A T14 continua em andamento até a conclusão das demais entregas previstas no r
 
 ---
 
-**Nota de rastreabilidade:** o código e a documentação estão publicados na branch `feat/t14-12-validacao-integridade`. A comparação com `main` indica 4 commits à frente e 0 atrás. A integração à `main` foi confirmada pelo usuário após o merge do PR #27.
+**Nota de rastreabilidade:** a T14-12-02 foi integrada à `main` pelo PR #27. A etapa seguinte, T14-12-03 — validação de integridade referencial, também foi integrada à `main` pelo PR #28. Os registros de implementação, verificações e limites estão nos respectivos documentos desta pasta.
