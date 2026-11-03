@@ -20,10 +20,8 @@ export interface ValidationFailure {
 
 export type ValidationResult = ValidationSuccess | ValidationFailure;
 
-export type Validator<T> = (valor: unknown) => ValidationResult;
+export type Validator = (valor: unknown) => ValidationResult;
 
 export type EntityValidatorMap = {
-  [K in keyof import("../entities").PersistedEntities]: Validator<
-    import("../entities").PersistedEntities[K]
-  >;
+  [K in keyof import("../entities").PersistedEntities]: Validator;
 };

@@ -336,3 +336,217 @@ export function validarEfeitoSaldo(valor: unknown): ValidationResult {
 
   return finalizarValidacao(erros);
 }
+
+export function validarAlocacao(valor: unknown): ValidationResult {
+  if (!validarObjeto(valor)) {
+    return validarRegistro(valor);
+  }
+
+  const erros: ValidationIssue[] = [
+    ...validarUUID(valor.id, "id"),
+    ...validarDateTimeISO(valor.createdAt, "createdAt"),
+    ...validarUUID(valor.movimentoId, "movimentoId"),
+    ...validarUUID(valor.caixinhaId, "caixinhaId"),
+    ...validarEnum(valor.tipo, "tipo", [
+      "credito_receita",
+      "debito_despesa",
+      "transferencia_entrada",
+      "transferencia_saida",
+      "ajuste",
+    ]),
+    ...validarCentavos(valor.valorCentavos, "valorCentavos"),
+    ...validarCampoOpcional(valor, "regraDistribuicaoId", validarUUID),
+    ...validarCampoOpcional(valor, "ordemAplicacao", (campo, nome) =>
+      validarNumeroInteiro(campo, nome, 0),
+    ),
+    ...validarCampoOpcional(valor, "baseCalculoCentavos", validarCentavos),
+    ...validarCampoOpcional(valor, "percentualAplicado", validarPercentual),
+  ];
+
+  return finalizarValidacao(erros);
+}
+
+export function validarRegraDistribuicao(valor: unknown): ValidationResult {
+  if (!validarObjeto(valor)) {
+    return validarRegistro(valor);
+  }
+
+  const erros: ValidationIssue[] = [
+    ...validarEntidadeBase(valor),
+    ...validarString(valor.nome, "nome"),
+    ...validarUUID(valor.caixinhaId, "caixinhaId"),
+    ...validarNumeroInteiro(valor.ordem, "ordem", 0),
+    ...validarBooleano(valor.ativa, "ativa"),
+    ...validarEnum(valor.tipoCalculo, "tipoCalculo", [
+      "valor_fixo",
+      "percentual_receita_bruta",
+      "percentual_saldo_restante",
+    ]),
+  ];
+
+  if (valor.tipoCalculo === "valor_fixo") {
+    erros.push(
+      ...validarCentavos(valor.valorFixoCentavos, "valorFixoCentavos"),
+    );
+
+    if (valor.percentual !== undefined) {
+      erros.push({
+        campo: "percentual",
+        codigo: "FIELD_NOT_ALLOWED",
+        mensagem:
+          "O campo percentual não é permitido para regras de valor fixo.",
+      });
+    }
+  } else if (
+    valor.tipoCalculo === "percentual_receita_bruta" ||
+    valor.tipoCalculo === "percentual_saldo_restante"
+  ) {
+    erros.push(...validarPercentual(valor.percentual, "percentual"));
+
+    if (valor.valorFixoCentavos !== undefined) {
+      erros.push({
+        campo: "valorFixoCentavos",
+        codigo: "FIELD_NOT_ALLOWED",
+        mensagem:
+          "O campo valorFixoCentavos não é permitido para regras percentuais.",
+      });
+    }
+  }
+
+  return finalizarValidacao(erros);
+}
+
+export function validarRecorrencia(valor: unknown): ValidationResult {
+  if (!validarObjeto(valor)) {
+    return validarRegistro(valor);
+  }
+
+  const erros: ValidationIssue[] = [
+    ...validarEntidadeBase(valor),
+    ...validarString(valor.descricao, "descricao"),
+    ...validarCentavos(valor.valorCentavos, "valorCentavos", 1),
+    ...validarNumeroInteiro(valor.diaVencimento, "diaVencimento", 1, 31),
+    ...validarDataISO(valor.dataInicio, "dataInicio"),
+    ...validarCampoOpcional(valor, "dataFim", validarDataISO),
+    ...validarString(valor.frequencia, "frequencia"),
+    ...validarBooleano(valor.ativa, "ativa"),
+    ...validarCampoOpcional(valor, "contaId", validarUUID),
+  ];
+
+  return finalizarValidacao(erros);
+}
+
+export function validarContaPagar(valor: unknown): ValidationResult {
+  if (!validarObjeto(valor)) {
+    return validarRegistro(valor);
+  }
+
+  const erros: ValidationIssue[] = [
+    ...validarEntidadeBase(valor),
+    ...validarCampoOpcional(valor, "recorrenciaId", validarUUID),
+    ...validarString(valor.chaveOcorrencia, "chaveOcorrencia"),
+    ...validarString(valor.descricao, "descricao"),
+    ...validarCentavos(valor.valorCentavos, "valorCentavos", 1),
+    ...validarDataISO(valor.dataVencimento, "dataVencimento"),
+    ...validarEnum(valor.status, "status", ["pendente", "paga", "cancelada"]),
+    ...validarCampoOpcional(valor, "movimentoPagamentoId", validarUUID),
+  ];
+
+  return finalizarValidacao(erros);
+}
+
+export function validarMeta(valor: unknown): ValidationResult {
+  if (!validarObjeto(valor)) {
+    return validarRegistro(valor);
+  }
+
+  const erros: ValidationIssue[] = [
+    ...validarEntidadeBase(valor),
+    ...validarString(valor.nome, "nome"),
+    ...validarCentavos(valor.valorAlvoCentavos, "valorAlvoCentavos", 1),
+    ...validarCampoOpcional(valor, "dataAlvo", validarDataISO),
+    ...validarEnum(valor.modoProgresso, "modoProgresso", [
+      "saldo_atual",
+      "aportes_acumulados",
+    ]),
+    ...validarCampoOpcional(valor, "caixinhaId", validarUUID),
+    ...validarBooleano(valor.ativa, "ativa"),
+  ];
+
+  return finalizarValidacao(erros);
+}
+
+export function validarAporteMeta(valor: unknown): ValidationResult {
+  if (!validarObjeto(valor)) {
+    return validarRegistro(valor);
+  }
+
+  const erros: ValidationIssue[] = [
+    ...validarUUID(valor.id, "id"),
+    ...validarUUID(valor.metaId, "metaId"),
+    ...validarCampoOpcional(valor, "movimentoId", validarUUID),
+    ...validarCentavos(valor.valorCentavos, "valorCentavos", 1),
+    ...validarDataISO(valor.data, "data"),
+  ];
+
+  return finalizarValidacao(erros);
+}
+export function validarAuditoria(valor: unknown): ValidationResult {
+  if (!validarObjeto(valor)) {
+    return validarRegistro(valor);
+  }
+
+  const erros: ValidationIssue[] = [
+    ...validarUUID(valor.id, "id"),
+    ...validarDateTimeISO(valor.createdAt, "createdAt"),
+    ...validarEnum(valor.entidadeTipo, "entidadeTipo", [
+      "contas",
+      "caixinhas",
+      "movimentos",
+      "efeitosSaldo",
+      "alocacoes",
+      "regrasDistribuicao",
+      "contasPagar",
+      "recorrencias",
+      "metas",
+      "aportesMeta",
+    ]),
+    ...validarUUID(valor.entidadeId, "entidadeId"),
+    ...validarEnum(valor.acao, "acao", [
+      "criado",
+      "editado",
+      "cancelado",
+      "restaurado",
+      "conciliado",
+    ]),
+    ...validarCampoOpcional(valor, "antes", validarJSON),
+    ...validarCampoOpcional(valor, "depois", validarJSON),
+    ...validarCampoOpcional(valor, "motivo", validarString),
+  ];
+
+  return finalizarValidacao(erros);
+}
+
+export function validarMetadataRecord(valor: unknown): ValidationResult {
+  if (!validarObjeto(valor)) {
+    return validarRegistro(valor);
+  }
+
+  const erros: ValidationIssue[] = [
+    ...validarString(valor.chave, "chave"),
+  ];
+
+  if (!Object.hasOwn(valor, "valor")) {
+    erros.push(
+      criarErro(
+        "valor",
+        "REQUIRED",
+        "O campo valor é obrigatório.",
+      ),
+    );
+  } else {
+    erros.push(...validarJSON(valor.valor, "valor"));
+  }
+
+  return finalizarValidacao(erros);
+}

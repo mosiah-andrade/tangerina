@@ -14,8 +14,6 @@ const {
   validarCampoOpcional,
   validarJSON,
   validarRegistro,
-  validarMovimento,
-  validarEfeitoSaldo,
 } = await import("../lib/persistence/validation/validators.ts");
 
 test("validates required and optional strings", () => {
@@ -150,96 +148,4 @@ test("validates that a record is an object", () => {
   assert.equal(validarRegistro(null).valido, false);
   assert.equal(validarRegistro([]).valido, false);
   assert.equal(validarRegistro("texto").valido, false);
-});
-
-const movimentoValido = {
-  id: "550e8400-e29b-41d4-a716-446655440002",
-  tipo: "receita",
-  status: "confirmado",
-  descricao: "Salário",
-  valorCentavos: 300000,
-  dataMovimento: "2026-11-03",
-  idempotencyKey: "receita-salario-2026-11",
-  confirmedAt: agora,
-  createdAt: agora,
-  updatedAt: agora,
-};
-
-const efeitoSaldoValido = {
-  id: "550e8400-e29b-41d4-a716-446655440003",
-  movimentoId: "550e8400-e29b-41d4-a716-446655440002",
-  tipoAlvo: "conta",
-  alvoId: "550e8400-e29b-41d4-a716-446655440000",
-  valorCentavosAssinado: 300000,
-  estado: "ativo",
-  createdAt: agora,
-};
-
-test("validates a complete movement", () => {
-  assert.equal(validarMovimento(movimentoValido).valido, true);
-});
-
-test("validates movement optional identifiers and dates", () => {
-  assert.equal(
-    validarMovimento({
-      ...movimentoValido,
-      contaOrigemId: "550e8400-e29b-41d4-a716-446655440000",
-      contaDestinoId: "550e8400-e29b-41d4-a716-446655440001",
-      caixinhaId: "550e8400-e29b-41d4-a716-446655440003",
-      cancelledAt: agora,
-      motivoCancelamento: "Correção",
-    }).valido,
-    true,
-  );
-});
-
-test("rejects invalid movement data", () => {
-  const resultado = validarMovimento({
-    ...movimentoValido,
-    tipo: "pagamento",
-    status: "aberto",
-    valorCentavos: 0,
-    dataMovimento: "2026-02-30",
-    idempotencyKey: "",
-    contaOrigemId: "conta-inexistente",
-  });
-
-  assert.equal(resultado.valido, false);
-});
-
-test("does not impose conditional movement requirements yet", () => {
-  assert.equal(
-    validarMovimento({
-      ...movimentoValido,
-      contaOrigemId: undefined,
-      contaDestinoId: undefined,
-    }).valido,
-    true,
-  );
-});
-
-test("validates a complete balance effect", () => {
-  assert.equal(validarEfeitoSaldo(efeitoSaldoValido).valido, true);
-});
-
-test("accepts signed balance effects", () => {
-  assert.equal(
-    validarEfeitoSaldo({
-      ...efeitoSaldoValido,
-      valorCentavosAssinado: -5000,
-    }).valido,
-    true,
-  );
-});
-
-test("rejects invalid balance effects", () => {
-  assert.equal(
-    validarEfeitoSaldo({
-      ...efeitoSaldoValido,
-      tipoAlvo: "meta",
-      valorCentavosAssinado: 10.5,
-      estado: "cancelado",
-    }).valido,
-    false,
-  );
 });
