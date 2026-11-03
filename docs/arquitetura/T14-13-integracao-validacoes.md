@@ -3,7 +3,7 @@
 **Projeto:** Tangerina Financeiro  
 **Tarefa:** T14-13 — Integrar validações aos repositórios  
 **Subtarefa:** T14-13-01 — Contrato de integração  
-**Status:** Contrato aprovado; implementação em revisão e testes  
+**Status:** Implementação submetida ao PR #29; aguardando revisão e merge  
 **Base:** T14 — Camada de Persistência Local
 
 ## 1. Objetivo
@@ -64,4 +64,8 @@ O mapa de validadores cobre as 12 tabelas do contrato `PersistedEntities`. A int
 ## 7. Histórico
 
 - Contrato T14-13-01 aprovado pelo usuário em 03/11/2026.
-- Implementação preparada na branch `feat/t14-13-integrar-validacoes`; aguardando execução e revisão dos testes antes de abrir PR.
+- Implementação integrada aos oito repositórios e testes ampliados na branch `feat/t14-13-integrar-validacoes`.
+- Verificações executadas: `npm test` (82 testes aprovados), `npm run typecheck`, `npm run lint` e `npm run build` (todos aprovados).
+- Arquivos alterados da T14-13 verificados com Prettier; a verificação global ainda aponta problemas em arquivos fora do escopo desta task.
+- PR #29 aberto para revisão: https://github.com/mosiah-andrade/tangerina/pull/29.
+- Status atual: aguardando revisão e merge. A tarefa ainda não está concluída.
