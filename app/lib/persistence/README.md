@@ -16,6 +16,7 @@ Esta camada é responsável pelo acesso aos dados armazenados no dispositivo.
 - `database.ts`: classe Dexie, declaração das 12 tabelas, índices, versão e instância compartilhada.
 - `entities.ts`: tipos dos registros persistidos, enums aprovados e mapa entre tabelas e entidades.
 - `repositories/`: repositórios tipados com busca por ID, listagem, inserção, atualização parcial e arquivamento quando a entidade possui `ativa`.
+- `validation/persistence.ts`: mapa central de validadores estruturais e integração com a verificação de referências antes das gravações.
 - `errors.ts` e `transactions.ts`: reservados para erros padronizados e operações atômicas.
 
 Os tipos TypeScript descrevem contratos em tempo de compilação. Eles não substituem validações de dados em tempo de execução, verificações de referências ou regras financeiras do domínio.
@@ -26,4 +27,4 @@ Os repositórios recebem uma instância `TangerinaDatabase` explicitamente, o qu
 
 ## Limites desta etapa
 
-A T14-11 implementa operações CRUD básicas tipadas para os agregados documentados. A remoção física não é exposta: registros financeiros e históricos devem ser cancelados, revertidos ou arquivados conforme o domínio. Esta etapa ainda não implementa validação estrutural em tempo de execução, integridade referencial, transações de negócio, migrações futuras ou backup/restauração.
+A T14-11 implementa operações CRUD básicas tipadas para os agregados documentados. A T14-13 integra validação estrutural e referencial às operações de inserção, atualização e arquivamento dos oito repositórios existentes. A remoção física não é exposta: registros financeiros e históricos devem ser cancelados, revertidos ou arquivados conforme o domínio. Transações de negócio, migrações futuras e backup/restauração permanecem fora desta entrega.
