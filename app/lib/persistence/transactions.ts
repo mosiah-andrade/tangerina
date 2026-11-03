@@ -18,5 +18,5 @@ export async function executarTransacaoPersistencia<T>(
 
   const tabelasUnicas = [...new Set(tabelas)];
 
-  return db.transaction("rw", ...tabelasUnicas, operacao);
+  return db.transaction("rw", tabelasUnicas, operacao);
 }
