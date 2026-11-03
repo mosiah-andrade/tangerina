@@ -147,7 +147,7 @@ const milestones = [
  ]},
  {id:"M3",title:"Modelo de dados e persistência local",desc:"Construir a base confiável para todo lançamento financeiro.",weeks:"Semanas 3–4",hours:25,outcome:"Saída: dados estruturados, salvos localmente e recuperados após recarregar.",tasks:[
   ["T12","Modelar entidades e identificadores","CONCLUÍDA — ESPECIFICAÇÃO DOCUMENTAL APROVADA E INTEGRADA À MAIN. Documento: docs/arquitetura/T12-modelagem-entidades.md. Define UUIDs locais para todas as entidades, tipos fundamentais (Id, Centavos, DataISO, DateTimeISO e PontosBase), tipos específicos, relações por ID e invariantes financeiros. Registra como pendências antes da implementação: validar frequências de recorrência contra T3, detalhar relação Alocacao/EfeitoSaldo e testar cancelamento idempotente. A conclusão é documental; implementação, migrações e testes permanecem pendentes. PR #17 integrado via squash; commit 70202ed91445f087d74ff5736d61b650066115c0.","Dados",4],
-  ["T13","Criar utilitários monetários","Armazenar valores em centavos inteiros; validar entradas e formatar BRL sem cálculos com ponto flutuante.","Financeiro",4],
+  ["T13","Criar utilitários monetários","CONCLUÍDA E INTEGRADA À MAIN. Implementados app/domain/finance/money.ts e app/tests/money.test.mjs. Inclui parsing exato de valores no padrão brasileiro, validação de centavos seguros, soma, subtração, comparação e multiplicação por pontos-base com BigInt, arredondamento comercial para longe de zero e testes automatizados. CI aprovada no PR #19. Merge squash: 7e30a04fd60fe14b7c1d1150a88b3967891c9870.","Financeiro",4],
   ["T14","Implementar camada de persistência","CRUD, versionamento do schema e tratamento de dados ausentes/corrompidos.","Dados",5],
   ["T15","Criar dados de demonstração e reset seguro","Permitir iniciar com dados fictícios e limpar ambiente de demonstração com confirmação.","DevEx",2],
   ["T16","Implementar contas bancárias","Cadastro, edição, saldo inicial e visualização do saldo registrado por conta.","Funcionalidade",4],
@@ -199,8 +199,8 @@ const milestones = [
  ]}
 ];
 const STORAGE_KEY="tangerina-roadmap-v1";
-let completed = {T1:true,T2:true,T3:true,T4:true,T5:true,T6:true,T7:true,T8:true,T9:true,T10:true,UX1:true,UX2:true,UX3:true,T11:true,T12:true};
-try { const saved = localStorage.getItem(STORAGE_KEY); completed = saved ? {...{T1:true,T2:true,T3:true,T4:true,T5:true,T6:true,T7:true,T8:true,T9:true,T10:true,UX1:true,UX2:true,UX3:true,T11:true,T12:true}, ...(JSON.parse(saved) || {})} : {T1:true,T2:true,T3:true,T4:true,T5:true,T6:true,T7:true,T8:true,T9:true,T10:true,UX1:true,UX2:true,UX3:true,T11:true,T12:true}; } catch(e) { completed = {T1:true,T2:true,T3:true,T4:true,T5:true,T6:true,T7:true,T8:true,T9:true,T10:true,UX1:true,UX2:true,UX3:true,T11:true,T12:true}; }
+let completed = {T1:true,T2:true,T3:true,T4:true,T5:true,T6:true,T7:true,T8:true,T9:true,T10:true,UX1:true,UX2:true,UX3:true,T11:true,T12:true,T13:true};
+try { const saved = localStorage.getItem(STORAGE_KEY); completed = saved ? {...{T1:true,T2:true,T3:true,T4:true,T5:true,T6:true,T7:true,T8:true,T9:true,T10:true,UX1:true,UX2:true,UX3:true,T11:true,T12:true,T13:true}, ...(JSON.parse(saved) || {})} : {T1:true,T2:true,T3:true,T4:true,T5:true,T6:true,T7:true,T8:true,T9:true,T10:true,UX1:true,UX2:true,UX3:true,T11:true,T12:true,T13:true}; } catch(e) { completed = {T1:true,T2:true,T3:true,T4:true,T5:true,T6:true,T7:true,T8:true,T9:true,T10:true,UX1:true,UX2:true,UX3:true,T11:true,T12:true}; }
 // T10 foi concluída e integrada à main; preservar o status oficial mesmo se houver progresso antigo salvo neste navegador.
 completed.T10 = true;
 const allTasks = () => milestones.flatMap(m => m.tasks.map(t => ({m,t})));
