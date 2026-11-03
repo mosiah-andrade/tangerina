@@ -10,7 +10,7 @@ declare const db: TangerinaDatabase;
 
 const contas = criarRepositorioContas(db);
 const movimentos = criarRepositorioMovimentos(db);
-const generico = criarRepositorio<Conta>(db.contas);
+const generico = criarRepositorio<Conta>(db.contas, "contas", db);
 
 void contas.buscarPorId("conta-1");
 void contas.listar();

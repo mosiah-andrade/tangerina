@@ -1,5 +1,7 @@
-import type { Table, UpdateSpec } from "dexie";
-import type { Id } from "../entities";
+import type { Table } from "dexie";
+import type { Id, PersistedEntities } from "../entities.ts";
+import type { TangerinaDatabase } from "../database.ts";
+import { validarRegistroPersistido } from "../validation/persistence.ts";
 
 export type Atualizacao<T> = Partial<Omit<T, "id" | "createdAt" | "updatedAt">>;
 
@@ -11,14 +13,19 @@ export interface Repositorio<T extends { id: Id }> {
   arquivar(id: Id): Promise<boolean>;
 }
 
+type TipoEntidadeComId = Exclude<keyof PersistedEntities, "metadados">;
+
 /**
- * Cria operações CRUD tipadas para tabelas cuja chave primária é id.
+ * Cria operações CRUD tipadas e garante validação estrutural e referencial
+ * antes de inserir, atualizar ou arquivar registros.
  *
  * A remoção física não é exposta: registros financeiros e históricos devem
  * ser cancelados, revertidos ou arquivados conforme o domínio.
  */
 export function criarRepositorio<T extends { id: Id }>(
   tabela: Table<T, Id>,
+  tipo: TipoEntidadeComId,
+  db: TangerinaDatabase,
 ): Repositorio<T> {
   return {
     buscarPorId(id) {
@@ -29,7 +36,8 @@ export function criarRepositorio<T extends { id: Id }>(
       return tabela.toArray();
     },
 
-    inserir(registro) {
+    async inserir(registro) {
+      await validarRegistroPersistido(tipo, registro, db);
       return tabela.add(registro);
     },
 
@@ -37,18 +45,19 @@ export function criarRepositorio<T extends { id: Id }>(
       const registro = await tabela.get(id);
       if (!registro) return false;
 
-      const atualizacao: Record<string, unknown> = { ...alteracoes };
+      const atualizado = {
+        ...registro,
+        ...alteracoes,
+        id: registro.id,
+        ...("createdAt" in registro ? { createdAt: registro.createdAt } : {}),
+        ...("updatedAt" in registro
+          ? { updatedAt: new Date().toISOString() }
+          : {}),
+      } as T;
 
-      if ("updatedAt" in registro) {
-        atualizacao.updatedAt = new Date().toISOString();
-      }
-
-      const quantidade = await tabela.update(
-        id,
-        atualizacao as unknown as UpdateSpec<T>,
-      );
-
-      return quantidade > 0;
+      await validarRegistroPersistido(tipo, atualizado, db);
+      await tabela.put(atualizado);
+      return true;
     },
 
     async arquivar(id) {
@@ -61,19 +70,17 @@ export function criarRepositorio<T extends { id: Id }>(
         );
       }
 
-      const atualizacao: Record<string, unknown> = {
+      const atualizado = {
+        ...registro,
         ativa: false,
         ...("updatedAt" in registro
           ? { updatedAt: new Date().toISOString() }
           : {}),
-      };
+      } as T;
 
-      const quantidade = await tabela.update(
-        id,
-        atualizacao as unknown as UpdateSpec<T>,
-      );
-
-      return quantidade > 0;
+      await validarRegistroPersistido(tipo, atualizado, db);
+      await tabela.put(atualizado);
+      return true;
     },
   };
 }
