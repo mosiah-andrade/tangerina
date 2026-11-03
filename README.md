@@ -27,6 +27,7 @@ Aplicativo de organização financeira com foco em uso mobile, controle de conta
 | [T5 — Modelo de dados](docs/arquitetura/T5-modelo-dados.md) | Entidades, relacionamentos e DER |
 | [T12 — Modelagem de entidades](docs/arquitetura/T12-modelagem-entidades.md) | Identificadores, tipos e entidades persistidas |
 | [T14-12-02 — Validação estrutural](docs/arquitetura/T14-12-02-validacao-estrutural.md) | Contratos, validadores, cobertura, testes e limites da validação estrutural |
+| [T14-12-03 — Integridade referencial](docs/arquitetura/T14-12-03-integridade-referencial.md) | Existência e coerência das referências entre registros persistidos |
 | [ADR-001 — Stack tecnológica](docs/decisoes/ADR-001-stack.md) | Tecnologias aprovadas e premissas |
 | [T7 — Configuração do ambiente](docs/infra/T7-configuracao-ambiente.md) | Fundação técnica e validações registradas |
 | [T8 — Estrutura da aplicação](docs/infra/T8-estrutura-aplicacao.md) | Separação entre rotas, componentes, domínio, persistência e utilitários |

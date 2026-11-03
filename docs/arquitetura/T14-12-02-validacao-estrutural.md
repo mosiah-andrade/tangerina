@@ -2,7 +2,7 @@
 
 **Projeto:** Tangerina Financeiro  
 **Tarefa:** T14-12-02  
-**Status:** Implementação, testes e documentação sincronizados na branch remota; integração via PR pendente  
+**Status:** Concluída e integrada à `main` (merge confirmado pelo usuário)  
 **Branch de trabalho:** `feat/t14-12-validacao-integridade`  
 **Data do registro:** 03/11/2026
 
@@ -119,7 +119,7 @@ O Node.js emitiu avisos `MODULE_TYPELESS_PACKAGE_JSON` durante os testes para ar
 - [x] Typecheck, lint e build aprovados.
 - [x] Revisão local de whitespace sem apontamentos.
 - [x] Código e documentação sincronizados com a branch remota `feat/t14-12-validacao-integridade`.
-- [ ] Pull request aberto e integração aprovada.
+- [x] Pull request integrado à `main` (merge confirmado pelo usuário).
 
 ## 9. Próxima etapa
 
@@ -131,4 +131,4 @@ Prosseguir para **T14-12-03 — validação de integridade referencial**, manten
 
 ---
 
-**Nota de rastreabilidade:** o código e a documentação estão publicados na branch `feat/t14-12-validacao-integridade`. A comparação com `main` indica 4 commits à frente e 0 atrás. A tarefa ainda aguarda revisão e integração via pull request; não está integrada à `main`.
+**Nota de rastreabilidade:** o código e a documentação estão publicados na branch `feat/t14-12-validacao-integridade`. A comparação com `main` indica 4 commits à frente e 0 atrás. A integração à `main` foi confirmada pelo usuário após o merge do PR #27.
