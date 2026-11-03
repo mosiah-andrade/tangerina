@@ -56,6 +56,11 @@ jobs:
       - name: Print Prettier-formatted unit test for diagnosis
         run: npx prettier tests/format-money.test.mjs
 
+      - name: Print formatted persistence files for diagnosis
+        run: |
+          npx prettier lib/persistence/entities.ts
+          npx prettier tests/persistence-database.test.mjs
+
       - name: Check formatting of new test utilities
         run: >-
           npx prettier --check lib/format-money.ts tests/format-money.test.mjs package.json
