@@ -22,6 +22,8 @@ Os tipos TypeScript descrevem contratos em tempo de compilação. Eles não subs
 
 A frequência de recorrência permanece como texto no contrato persistido até que o catálogo definitivo seja confirmado contra T3. A relação operacional entre `Alocacao` e `EfeitoSaldo` também permanece pendente de detalhamento, conforme a especificação da T14.
 
+Os repositórios recebem uma instância `TangerinaDatabase` explicitamente, o que facilita testes isolados e evita abrir o IndexedDB implicitamente dentro dos módulos. A abertura do banco continua sob responsabilidade de `getDatabase()` no contexto de navegador.
+
 ## Limites desta etapa
 
 A T14-11 implementa operações CRUD básicas tipadas para os agregados documentados. A remoção física não é exposta: registros financeiros e históricos devem ser cancelados, revertidos ou arquivados conforme o domínio. Esta etapa ainda não implementa validação estrutural em tempo de execução, integridade referencial, transações de negócio, migrações futuras ou backup/restauração.
