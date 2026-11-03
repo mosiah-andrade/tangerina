@@ -2,7 +2,9 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import "fake-indexeddb/auto";
 
-test("database opens, exposes all stores, and preserves data after reopening", async () => {
+test(
+  "database opens, exposes all stores, and preserves data after reopening",
+  async () => {
   globalThis.window = { indexedDB: globalThis.indexedDB };
 
   const { getDatabase } = await import("../lib/persistence/database.ts");
@@ -61,10 +63,7 @@ test("getDatabase rejects access outside the browser (SSR)", async () => {
 
   const { getDatabase } = await import("../lib/persistence/database.ts");
 
-  assert.throws(
-    () => getDatabase(),
-    /só pode ser acessada no navegador/,
-  );
+  assert.throws(() => getDatabase(), /só pode ser acessada no navegador/);
 });
 
 test("getDatabase reports when IndexedDB is unavailable", async () => {
@@ -72,10 +71,7 @@ test("getDatabase reports when IndexedDB is unavailable", async () => {
 
   const { getDatabase } = await import("../lib/persistence/database.ts");
 
-  assert.throws(
-    () => getDatabase(),
-    /não oferece suporte ao IndexedDB/,
-  );
+  assert.throws(() => getDatabase(), /não oferece suporte ao IndexedDB/);
 
   delete globalThis.window;
 });
