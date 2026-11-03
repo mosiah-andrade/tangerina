@@ -51,41 +51,42 @@ test("repository supports typed insert, lookup, list, update and archive", async
 
   db.close();
   await db.delete();
-    delete globalThis.window;
-  },
-);
+  delete globalThis.window;
+});
 
 test(
   "repository does not physically delete records or archive entities without ativa",
   async () => {
-  globalThis.window = { indexedDB: globalThis.indexedDB };
+    globalThis.window = { indexedDB: globalThis.indexedDB };
 
-  const [{ getDatabase }, { criarRepositorioAuditorias }] = await Promise.all([
-    import("../lib/persistence/database.ts"),
-    import("../lib/persistence/repositories/auditorias.ts"),
-  ]);
+    const [{ getDatabase }, { criarRepositorioAuditorias }] =
+      await Promise.all([
+        import("../lib/persistence/database.ts"),
+        import("../lib/persistence/repositories/auditorias.ts"),
+      ]);
 
-  const db = getDatabase();
-  await db.delete();
-  await db.open();
+    const db = getDatabase();
+    await db.delete();
+    await db.open();
 
-  const repositorio = criarRepositorioAuditorias(db);
-  const auditoria = {
-    id: "auditoria-1",
-    entidadeTipo: "contas",
-    entidadeId: "conta-1",
-    acao: "criado",
-    createdAt: "2026-11-03T12:00:00.000Z",
-  };
+    const repositorio = criarRepositorioAuditorias(db);
+    const auditoria = {
+      id: "auditoria-1",
+      entidadeTipo: "contas",
+      entidadeId: "conta-1",
+      acao: "criado",
+      createdAt: "2026-11-03T12:00:00.000Z",
+    };
 
-  await repositorio.inserir(auditoria);
-  await assert.rejects(
-    () => repositorio.arquivar(auditoria.id),
-    /não possui arquivamento/,
-  );
-  assert.deepEqual(await repositorio.buscarPorId(auditoria.id), auditoria);
+    await repositorio.inserir(auditoria);
+    await assert.rejects(
+      () => repositorio.arquivar(auditoria.id),
+      /não possui arquivamento/,
+    );
+    assert.deepEqual(await repositorio.buscarPorId(auditoria.id), auditoria);
 
-  db.close();
-  await db.delete();
-  delete globalThis.window;
-});
+    db.close();
+    await db.delete();
+    delete globalThis.window;
+  },
+);
