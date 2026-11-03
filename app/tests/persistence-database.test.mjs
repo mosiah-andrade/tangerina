@@ -2,9 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import "fake-indexeddb/auto";
 
-test(
-  "database opens, exposes all stores, and preserves data after reopening",
-  async () => {
+test("database opens, exposes all stores, and preserves data after reopening", async () => {
   globalThis.window = { indexedDB: globalThis.indexedDB };
 
   const { getDatabase } = await import("../lib/persistence/database.ts");
