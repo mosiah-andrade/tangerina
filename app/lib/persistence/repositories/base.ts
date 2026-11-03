@@ -39,9 +39,7 @@ export function criarRepositorio<T extends { id: Id }>(
       const registro = await tabela.get(id);
       if (!registro) return false;
 
-      const atualizacao: Record<string, unknown> = {
-        ...alteracoes,
-      };
+      const atualizacao: Record<string, unknown> = { ...alteracoes };
 
       if ("updatedAt" in registro) {
         atualizacao.updatedAt = new Date().toISOString();
