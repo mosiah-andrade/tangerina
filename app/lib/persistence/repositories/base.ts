@@ -1,9 +1,7 @@
 import type { Table, UpdateSpec } from "dexie";
 import type { Id } from "../entities";
 
-export type Atualizacao<T> = Partial<
-  Omit<T, "id" | "createdAt" | "updatedAt">
->;
+export type Atualizacao<T> = Partial<Omit<T, "id" | "createdAt" | "updatedAt">>;
 
 export interface Repositorio<T extends { id: Id }> {
   buscarPorId(id: Id): Promise<T | undefined>;
