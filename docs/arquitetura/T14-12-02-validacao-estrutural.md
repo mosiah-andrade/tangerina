@@ -121,13 +121,17 @@ O Node.js emitiu avisos `MODULE_TYPELESS_PACKAGE_JSON` durante os testes para ar
 - [x] Código e documentação sincronizados com a branch remota `feat/t14-12-validacao-integridade`.
 - [x] Pull request integrado à `main` (merge confirmado pelo usuário).
 
-## 9. Próxima etapa
+## 9. Etapa seguinte
 
-Prosseguir para **T14-12-03 — validação de integridade referencial**, mantendo a separação entre:
+A **T14-12-03 — validação de integridade referencial** foi implementada e integrada à `main` pelo PR #28. Seu contrato, implementação, testes e limites estão registrados em [T14-12-03 — integridade referencial](T14-12-03-integridade-referencial.md).
+
+A separação de responsabilidades permanece:
 
 1. validade estrutural de cada registro;
 2. existência e coerência das referências entre registros;
 3. regras de negócio e efeitos transacionais.
+
+A T14 continua em andamento até a conclusão das demais entregas previstas no roadmap.
 
 ---
 
