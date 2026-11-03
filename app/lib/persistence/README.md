@@ -15,13 +15,15 @@ Esta camada é responsável pelo acesso aos dados armazenados no dispositivo.
 
 - `database.ts`: classe Dexie, declaração das 12 tabelas, índices, versão e instância compartilhada.
 - `entities.ts`: tipos dos registros persistidos, enums aprovados e mapa entre tabelas e entidades.
-- `repositories/`: reservado para os repositórios tipados das entidades.
+- `repositories/`: repositórios tipados com busca por ID, listagem, inserção, atualização parcial e arquivamento quando a entidade possui `ativa`.
 - `errors.ts` e `transactions.ts`: reservados para erros padronizados e operações atômicas.
 
 Os tipos TypeScript descrevem contratos em tempo de compilação. Eles não substituem validações de dados em tempo de execução, verificações de referências ou regras financeiras do domínio.
 
 A frequência de recorrência permanece como texto no contrato persistido até que o catálogo definitivo seja confirmado contra T3. A relação operacional entre `Alocacao` e `EfeitoSaldo` também permanece pendente de detalhamento, conforme a especificação da T14.
 
+Os repositórios recebem uma instância `TangerinaDatabase` explicitamente, o que facilita testes isolados e evita abrir o IndexedDB implicitamente dentro dos módulos. A abertura do banco continua sob responsabilidade de `getDatabase()` no contexto de navegador.
+
 ## Limites desta etapa
 
-A tipagem das tabelas não significa que CRUD, validação estrutural, integridade referencial, migrações futuras, transações de negócio ou backup/restauração estejam implementados.
+A T14-11 implementa operações CRUD básicas tipadas para os agregados documentados. A remoção física não é exposta: registros financeiros e históricos devem ser cancelados, revertidos ou arquivados conforme o domínio. Esta etapa ainda não implementa validação estrutural em tempo de execução, integridade referencial, transações de negócio, migrações futuras ou backup/restauração.

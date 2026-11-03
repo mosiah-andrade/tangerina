@@ -1,0 +1,10 @@
+export { criarRepositorioContas } from "./contas.ts";
+export { criarRepositorioCaixinhas } from "./caixinhas.ts";
+export { criarRepositorioMovimentos } from "./movimentos.ts";
+export { criarRepositorioRegrasDistribuicao } from "./regras-distribuicao.ts";
+export { criarRepositorioContasPagar } from "./contas-pagar.ts";
+export { criarRepositorioRecorrencias } from "./recorrencias.ts";
+export { criarRepositorioMetas } from "./metas.ts";
+export { criarRepositorioAuditorias } from "./auditorias.ts";
+export { criarRepositorio } from "./base.ts";
+export type { Atualizacao, Repositorio } from "./base.ts";
