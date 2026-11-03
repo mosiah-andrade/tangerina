@@ -6,7 +6,7 @@
  */
 
 const MAX_SAFE_CENTS = BigInt(Number.MAX_SAFE_INTEGER);
-const BASIS_POINTS_DENOMINATOR = 10_000n;
+const BASIS_POINTS_DENOMINATOR = BigInt(10_000);
 
 export function assertValidCents(value: number): void {
   if (typeof value !== "number" || !Number.isFinite(value)) {
@@ -51,8 +51,10 @@ export function parseMoneyToCents(value: string): number {
   const [, sign, ungrouped, grouped, decimal = ""] = match;
   const integerPart = (ungrouped ?? grouped).replaceAll(".", "");
   const centsText = decimal.padEnd(2, "0");
-  const absoluteCents = BigInt(integerPart) * 100n + BigInt(centsText || "0");
-  const signedCents = sign === "-" ? -absoluteCents : absoluteCents;
+  const absoluteCents =
+    BigInt(integerPart) * BigInt(100) + BigInt(centsText || "0");
+  const signedCents =
+    sign === "-" ? -absoluteCents : absoluteCents;
 
   return toSafeCents(signedCents);
 }
@@ -99,10 +101,11 @@ export function multiplyAndRoundCents(
   const numerator = BigInt(value) * BigInt(multiplierBps);
   const quotient = numerator / BASIS_POINTS_DENOMINATOR;
   const remainder = numerator % BASIS_POINTS_DENOMINATOR;
-  const absoluteRemainder = remainder < 0n ? -remainder : remainder;
+  const absoluteRemainder =
+    remainder < BigInt(0) ? -remainder : remainder;
   const rounded =
-    absoluteRemainder * 2n >= BASIS_POINTS_DENOMINATOR
-      ? quotient + (numerator < 0n ? -1n : 1n)
+    absoluteRemainder * BigInt(2) >= BASIS_POINTS_DENOMINATOR
+      ? quotient + (numerator < BigInt(0) ? BigInt(-1) : BigInt(1))
       : quotient;
 
   return toSafeCents(rounded);
