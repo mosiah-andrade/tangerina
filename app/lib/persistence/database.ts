@@ -1,32 +1,32 @@
 import Dexie, { type Table } from "dexie";
-
-/**
- * Tipos estruturais mínimos da camada de persistência.
- * Os contratos completos das entidades permanecem em app/domain.
- */
-export interface IdentifiedRecord {
-  id: string;
-  createdAt?: string;
-  updatedAt?: string;
-}
-
-export interface MetadataRecord {
-  chave: string;
-  valor: unknown;
-}
+import type {
+  Alocacao,
+  AporteMeta,
+  Auditoria,
+  Caixinha,
+  Conta,
+  ContaPagar,
+  EfeitoSaldo,
+  Id,
+  MetadataRecord,
+  Meta,
+  Movimento,
+  Recorrencia,
+  RegraDistribuicao,
+} from "./entities";
 
 export class TangerinaDatabase extends Dexie {
-  contas!: Table<IdentifiedRecord, string>;
-  caixinhas!: Table<IdentifiedRecord, string>;
-  movimentos!: Table<IdentifiedRecord, string>;
-  efeitosSaldo!: Table<IdentifiedRecord, string>;
-  alocacoes!: Table<IdentifiedRecord, string>;
-  regrasDistribuicao!: Table<IdentifiedRecord, string>;
-  contasPagar!: Table<IdentifiedRecord, string>;
-  recorrencias!: Table<IdentifiedRecord, string>;
-  metas!: Table<IdentifiedRecord, string>;
-  aportesMeta!: Table<IdentifiedRecord, string>;
-  auditorias!: Table<IdentifiedRecord, string>;
+  contas!: Table<Conta, Id>;
+  caixinhas!: Table<Caixinha, Id>;
+  movimentos!: Table<Movimento, Id>;
+  efeitosSaldo!: Table<EfeitoSaldo, Id>;
+  alocacoes!: Table<Alocacao, Id>;
+  regrasDistribuicao!: Table<RegraDistribuicao, Id>;
+  contasPagar!: Table<ContaPagar, Id>;
+  recorrencias!: Table<Recorrencia, Id>;
+  metas!: Table<Meta, Id>;
+  aportesMeta!: Table<AporteMeta, Id>;
+  auditorias!: Table<Auditoria, Id>;
   metadados!: Table<MetadataRecord, string>;
 
   constructor() {
