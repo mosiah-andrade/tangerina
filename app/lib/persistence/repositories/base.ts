@@ -59,7 +59,10 @@ export function criarRepositorio<T extends { id: Id }>(
       const registro = await tabela.get(id);
       if (!registro) return false;
 
-      if (!("ativa" in registro) || typeof registro.ativa !== "boolean") {
+      if (
+        !("ativa" in registro) ||
+        typeof registro.ativa !== "boolean"
+      ) {
         throw new Error(
           "Esta entidade não possui arquivamento pelo campo 'ativa'.",
         );
