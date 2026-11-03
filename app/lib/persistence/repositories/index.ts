@@ -1,0 +1,10 @@
+export { criarRepositorioContas } from "./contas";
+export { criarRepositorioCaixinhas } from "./caixinhas";
+export { criarRepositorioMovimentos } from "./movimentos";
+export { criarRepositorioRegrasDistribuicao } from "./regras-distribuicao";
+export { criarRepositorioContasPagar } from "./contas-pagar";
+export { criarRepositorioRecorrencias } from "./recorrencias";
+export { criarRepositorioMetas } from "./metas";
+export { criarRepositorioAuditorias } from "./auditorias";
+export { criarRepositorio } from "./base";
+export type { Atualizacao, Repositorio } from "./base";
