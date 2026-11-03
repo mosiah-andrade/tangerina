@@ -2,7 +2,7 @@
 
 **Projeto:** Tangerina Financeiro  
 **Tarefa:** T14-12-02  
-**Status:** Implementação e testes concluídos localmente; sincronização do código e integração via PR pendentes  
+**Status:** Implementação, testes e documentação sincronizados na branch remota; integração via PR pendente  
 **Branch de trabalho:** `feat/t14-12-validacao-integridade`  
 **Data do registro:** 03/11/2026
 
@@ -118,7 +118,7 @@ O Node.js emitiu avisos `MODULE_TYPELESS_PACKAGE_JSON` durante os testes para ar
 - [x] Testes locais aprovados: 75/75.
 - [x] Typecheck, lint e build aprovados.
 - [x] Revisão local de whitespace sem apontamentos.
-- [ ] Código sincronizado com a branch remota.
+- [x] Código e documentação sincronizados com a branch remota `feat/t14-12-validacao-integridade`.
 - [ ] Pull request aberto e integração aprovada.
 
 ## 9. Próxima etapa
@@ -131,4 +131,4 @@ Prosseguir para **T14-12-03 — validação de integridade referencial**, manten
 
 ---
 
-**Nota de rastreabilidade:** este documento registra os resultados locais reportados durante a execução da tarefa. A documentação foi publicada na branch de trabalho; isso não significa que o código de implementação já tenha sido enviado ou integrado à `main`.
+**Nota de rastreabilidade:** o código e a documentação estão publicados na branch `feat/t14-12-validacao-integridade`. A comparação com `main` indica 4 commits à frente e 0 atrás. A tarefa ainda aguarda revisão e integração via pull request; não está integrada à `main`.
