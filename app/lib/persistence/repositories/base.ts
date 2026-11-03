@@ -46,70 +46,56 @@ export function criarRepositorio<T extends { id: Id }>(
     },
 
     inserir(registro) {
-      return executarTransacaoPersistencia(
-        db,
-        tabelasDaOperacao,
-        async () => {
-          await validarRegistroPersistido(tipo, registro, db);
-          return tabela.add(registro);
-        },
-      );
+      return executarTransacaoPersistencia(db, tabelasDaOperacao, async () => {
+        await validarRegistroPersistido(tipo, registro, db);
+        return tabela.add(registro);
+      });
     },
 
     atualizar(id, alteracoes) {
-      return executarTransacaoPersistencia(
-        db,
-        tabelasDaOperacao,
-        async () => {
-          const registro = await tabela.get(id);
-          if (!registro) return false;
+      return executarTransacaoPersistencia(db, tabelasDaOperacao, async () => {
+        const registro = await tabela.get(id);
+        if (!registro) return false;
 
-          const atualizado = {
-            ...registro,
-            ...alteracoes,
-            id: registro.id,
-            ...("createdAt" in registro
-              ? { createdAt: registro.createdAt }
-              : {}),
-            ...("updatedAt" in registro
-              ? { updatedAt: new Date().toISOString() }
-              : {}),
-          } as T;
+        const atualizado = {
+          ...registro,
+          ...alteracoes,
+          id: registro.id,
+          ...("createdAt" in registro ? { createdAt: registro.createdAt } : {}),
+          ...("updatedAt" in registro
+            ? { updatedAt: new Date().toISOString() }
+            : {}),
+        } as T;
 
-          await validarRegistroPersistido(tipo, atualizado, db);
-          await tabela.put(atualizado);
-          return true;
-        },
-      );
+        await validarRegistroPersistido(tipo, atualizado, db);
+        await tabela.put(atualizado);
+        return true;
+      });
     },
 
     arquivar(id) {
-      return executarTransacaoPersistencia(
-        db,
-        tabelasDaOperacao,
-        async () => {
-          const registro = await tabela.get(id);
-          if (!registro) return false;
+      return executarTransacaoPersistencia(db, tabelasDaOperacao, async () => {
+        const registro = await tabela.get(id);
+        if (!registro) return false;
 
-          if (!("ativa" in registro) || typeof registro.ativa !== "boolean") {
-            throw new Error(
-              "Esta entidade não possui arquivamento pelo campo 'ativa'.",
-            );
-          }
+        if (!("ativa" in registro) || typeof registro.ativa !== "boolean") {
+          throw new Error(
+            "Esta entidade não possui arquivamento pelo campo 'ativa'.",
+          );
+        }
 
-          const atualizado = {
-            ...registro,
-            ativa: false,
-            ...("updatedAt" in registro
-              ? { updatedAt: new Date().toISOString() }
-              : {}),
-          } as T;
+        const atualizado = {
+          ...registro,
+          ativa: false,
+          ...("updatedAt" in registro
+            ? { updatedAt: new Date().toISOString() }
+            : {}),
+        } as T;
 
-          await validarRegistroPersistido(tipo, atualizado, db);
-          await tabela.put(atualizado);
-          return true;
-        },
-      );
+        await validarRegistroPersistido(tipo, atualizado, db);
+        await tabela.put(atualizado);
+        return true;
+      });
     },
   };
 }
