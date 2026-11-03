@@ -99,8 +99,9 @@ export function multiplyAndRoundCents(
   const numerator = BigInt(value) * BigInt(multiplierBps);
   const quotient = numerator / BASIS_POINTS_DENOMINATOR;
   const remainder = numerator % BASIS_POINTS_DENOMINATOR;
+  const absoluteRemainder = remainder < 0n ? -remainder : remainder;
   const rounded =
-    remainder * 2n >= BASIS_POINTS_DENOMINATOR
+    absoluteRemainder * 2n >= BASIS_POINTS_DENOMINATOR
       ? quotient + (numerator < 0n ? -1n : 1n)
       : quotient;
 
