@@ -53,15 +53,14 @@ jobs:
       - name: Run ESLint
         run: npm run lint
 
-      - name: Print Prettier-formatted unit test for diagnosis
-        run: npx prettier tests/format-money.test.mjs
-
       - name: Check formatting of new test utilities
         run: >-
           npx prettier --check lib/format-money.ts tests/format-money.test.mjs package.json
           lib/persistence/README.md lib/persistence/database.ts
           lib/persistence/entities.ts tests/persistence-database.test.mjs
           tests/persistence-entities.typecheck.ts
+          lib/persistence/repositories/*.ts tests/persistence-repositories.test.mjs
+          tests/persistence-repositories.typecheck.ts
 
       - name: Build production app
         run: npm run build
