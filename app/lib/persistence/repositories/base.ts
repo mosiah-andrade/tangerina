@@ -1,4 +1,4 @@
-import type { Table } from "dexie";
+import type { Table, UpdateSpec } from "dexie";
 import type { Id } from "../entities";
 
 export type Atualizacao<T> = Partial<
@@ -49,7 +49,7 @@ export function criarRepositorio<T extends { id: Id }>(
 
       const quantidade = await tabela.update(
         id,
-        atualizacao as Partial<T>,
+        atualizacao as unknown as UpdateSpec<T>,
       );
 
       return quantidade > 0;
@@ -65,12 +65,17 @@ export function criarRepositorio<T extends { id: Id }>(
         );
       }
 
-      const quantidade = await tabela.update(id, {
+      const atualizacao: Record<string, unknown> = {
         ativa: false,
         ...("updatedAt" in registro
           ? { updatedAt: new Date().toISOString() }
           : {}),
-      } as Partial<T>);
+      };
+
+      const quantidade = await tabela.update(
+        id,
+        atualizacao as unknown as UpdateSpec<T>,
+      );
 
       return quantidade > 0;
     },
