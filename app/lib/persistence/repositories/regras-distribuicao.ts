@@ -3,5 +3,9 @@ import type { RegraDistribuicao } from "../entities.ts";
 import { criarRepositorio } from "./base.ts";
 
 export function criarRepositorioRegrasDistribuicao(db: TangerinaDatabase) {
-  return criarRepositorio<RegraDistribuicao>(db.regrasDistribuicao, "regrasDistribuicao", db);
+  return criarRepositorio<RegraDistribuicao>(
+    db.regrasDistribuicao,
+    "regrasDistribuicao",
+    db,
+  );
 }

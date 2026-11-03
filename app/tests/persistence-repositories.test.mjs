@@ -36,9 +36,8 @@ test("repository validates insert, lookup, list, update and archive", async () =
   const db = await prepararBanco();
 
   try {
-    const { criarRepositorioContas } = await import(
-      "../lib/persistence/repositories/contas.ts"
-    );
+    const { criarRepositorioContas } =
+      await import("../lib/persistence/repositories/contas.ts");
     const repositorio = criarRepositorioContas(db);
     const conta = criarConta();
 
@@ -85,9 +84,8 @@ test("repository rejects structurally invalid records before insertion", async (
   const db = await prepararBanco();
 
   try {
-    const { criarRepositorioContas } = await import(
-      "../lib/persistence/repositories/contas.ts"
-    );
+    const { criarRepositorioContas } =
+      await import("../lib/persistence/repositories/contas.ts");
     const repositorio = criarRepositorioContas(db);
 
     await assert.rejects(
@@ -108,9 +106,8 @@ test("repository rejects records with missing references", async () => {
   const db = await prepararBanco();
 
   try {
-    const { criarRepositorioMovimentos } = await import(
-      "../lib/persistence/repositories/movimentos.ts"
-    );
+    const { criarRepositorioMovimentos } =
+      await import("../lib/persistence/repositories/movimentos.ts");
     const repositorio = criarRepositorioMovimentos(db);
     const agora = "2026-11-03T12:00:00.000Z";
 
