@@ -66,60 +66,133 @@ export async function validarReferencias(
 
   switch (tipo) {
     case "movimentos":
-      await verificarReferencia(erros, "contaOrigemId", valor.contaOrigemId, (id) => db.contas.get(id));
-      await verificarReferencia(erros, "contaDestinoId", valor.contaDestinoId, (id) => db.contas.get(id));
-      await verificarReferencia(erros, "caixinhaId", valor.caixinhaId, (id) => db.caixinhas.get(id));
+      await verificarReferencia(
+        erros,
+        "contaOrigemId",
+        valor.contaOrigemId,
+        (id) => db.contas.get(id),
+      );
+      await verificarReferencia(
+        erros,
+        "contaDestinoId",
+        valor.contaDestinoId,
+        (id) => db.contas.get(id),
+      );
+      await verificarReferencia(erros, "caixinhaId", valor.caixinhaId, (id) =>
+        db.caixinhas.get(id),
+      );
       break;
 
     case "efeitosSaldo": {
-      await verificarReferencia(erros, "movimentoId", valor.movimentoId, (id) => db.movimentos.get(id));
+      await verificarReferencia(erros, "movimentoId", valor.movimentoId, (id) =>
+        db.movimentos.get(id),
+      );
       if (valor.tipoAlvo === "conta") {
-        await verificarReferencia(erros, "alvoId", valor.alvoId, (id) => db.contas.get(id));
+        await verificarReferencia(erros, "alvoId", valor.alvoId, (id) =>
+          db.contas.get(id),
+        );
       } else if (valor.tipoAlvo === "caixinha") {
-        await verificarReferencia(erros, "alvoId", valor.alvoId, (id) => db.caixinhas.get(id));
+        await verificarReferencia(erros, "alvoId", valor.alvoId, (id) =>
+          db.caixinhas.get(id),
+        );
       } else if (valor.alvoId !== undefined) {
-        erros.push(criarErro("tipoAlvo", "REFERENCE_TYPE_MISMATCH", "O tipo do alvo deve ser 'conta' ou 'caixinha' para validar sua referência."));
+        erros.push(
+          criarErro(
+            "tipoAlvo",
+            "REFERENCE_TYPE_MISMATCH",
+            "O tipo do alvo deve ser 'conta' ou 'caixinha' para validar sua referência.",
+          ),
+        );
       }
       break;
     }
 
     case "alocacoes": {
-      await verificarReferencia(erros, "movimentoId", valor.movimentoId, (id) => db.movimentos.get(id));
-      await verificarReferencia(erros, "caixinhaId", valor.caixinhaId, (id) => db.caixinhas.get(id));
-      const regra = await verificarReferencia(erros, "regraDistribuicaoId", valor.regraDistribuicaoId, (id) => db.regrasDistribuicao.get(id));
-      if (regra && ehRegistro(regra) && typeof valor.caixinhaId === "string" && regra.caixinhaId !== valor.caixinhaId) {
-        erros.push(criarErro("regraDistribuicaoId", "REFERENCE_INCONSISTENT", "A regra de distribuição deve pertencer à mesma caixinha da alocação."));
+      await verificarReferencia(erros, "movimentoId", valor.movimentoId, (id) =>
+        db.movimentos.get(id),
+      );
+      await verificarReferencia(erros, "caixinhaId", valor.caixinhaId, (id) =>
+        db.caixinhas.get(id),
+      );
+      const regra = await verificarReferencia(
+        erros,
+        "regraDistribuicaoId",
+        valor.regraDistribuicaoId,
+        (id) => db.regrasDistribuicao.get(id),
+      );
+      if (
+        regra &&
+        ehRegistro(regra) &&
+        typeof valor.caixinhaId === "string" &&
+        regra.caixinhaId !== valor.caixinhaId
+      ) {
+        erros.push(
+          criarErro(
+            "regraDistribuicaoId",
+            "REFERENCE_INCONSISTENT",
+            "A regra de distribuição deve pertencer à mesma caixinha da alocação.",
+          ),
+        );
       }
       break;
     }
 
     case "regrasDistribuicao":
-      await verificarReferencia(erros, "caixinhaId", valor.caixinhaId, (id) => db.caixinhas.get(id));
+      await verificarReferencia(erros, "caixinhaId", valor.caixinhaId, (id) =>
+        db.caixinhas.get(id),
+      );
       break;
 
     case "recorrencias":
-      await verificarReferencia(erros, "contaId", valor.contaId, (id) => db.contas.get(id));
+      await verificarReferencia(erros, "contaId", valor.contaId, (id) =>
+        db.contas.get(id),
+      );
       break;
 
     case "contasPagar":
-      await verificarReferencia(erros, "recorrenciaId", valor.recorrenciaId, (id) => db.recorrencias.get(id));
-      await verificarReferencia(erros, "movimentoPagamentoId", valor.movimentoPagamentoId, (id) => db.movimentos.get(id));
+      await verificarReferencia(
+        erros,
+        "recorrenciaId",
+        valor.recorrenciaId,
+        (id) => db.recorrencias.get(id),
+      );
+      await verificarReferencia(
+        erros,
+        "movimentoPagamentoId",
+        valor.movimentoPagamentoId,
+        (id) => db.movimentos.get(id),
+      );
       break;
 
     case "metas":
-      await verificarReferencia(erros, "caixinhaId", valor.caixinhaId, (id) => db.caixinhas.get(id));
+      await verificarReferencia(erros, "caixinhaId", valor.caixinhaId, (id) =>
+        db.caixinhas.get(id),
+      );
       break;
 
     case "aportesMeta":
-      await verificarReferencia(erros, "metaId", valor.metaId, (id) => db.metas.get(id));
-      await verificarReferencia(erros, "movimentoId", valor.movimentoId, (id) => db.movimentos.get(id));
+      await verificarReferencia(erros, "metaId", valor.metaId, (id) =>
+        db.metas.get(id),
+      );
+      await verificarReferencia(erros, "movimentoId", valor.movimentoId, (id) =>
+        db.movimentos.get(id),
+      );
       break;
 
     case "auditorias": {
       const tipoEntidade = valor.entidadeTipo;
-      if (typeof tipoEntidade !== "string" || !(tipoEntidade in tabelasAuditoria)) {
+      if (
+        typeof tipoEntidade !== "string" ||
+        !(tipoEntidade in tabelasAuditoria)
+      ) {
         if (valor.entidadeTipo !== undefined) {
-          erros.push(criarErro("entidadeTipo", "REFERENCE_TYPE_MISMATCH", "O tipo de entidade da auditoria não possui uma tabela de referência válida."));
+          erros.push(
+            criarErro(
+              "entidadeTipo",
+              "REFERENCE_TYPE_MISMATCH",
+              "O tipo de entidade da auditoria não possui uma tabela de referência válida.",
+            ),
+          );
         }
         break;
       }
@@ -127,17 +200,28 @@ export async function validarReferencias(
       const tabela = tabelasAuditoria[tipoEntidade as TipoEntidadeAuditoria];
       const buscar = async (id: string): Promise<unknown> => {
         switch (tabela) {
-          case "contas": return db.contas.get(id);
-          case "caixinhas": return db.caixinhas.get(id);
-          case "movimentos": return db.movimentos.get(id);
-          case "efeitosSaldo": return db.efeitosSaldo.get(id);
-          case "alocacoes": return db.alocacoes.get(id);
-          case "regrasDistribuicao": return db.regrasDistribuicao.get(id);
-          case "contasPagar": return db.contasPagar.get(id);
-          case "recorrencias": return db.recorrencias.get(id);
-          case "metas": return db.metas.get(id);
-          case "aportesMeta": return db.aportesMeta.get(id);
-          default: return undefined;
+          case "contas":
+            return db.contas.get(id);
+          case "caixinhas":
+            return db.caixinhas.get(id);
+          case "movimentos":
+            return db.movimentos.get(id);
+          case "efeitosSaldo":
+            return db.efeitosSaldo.get(id);
+          case "alocacoes":
+            return db.alocacoes.get(id);
+          case "regrasDistribuicao":
+            return db.regrasDistribuicao.get(id);
+          case "contasPagar":
+            return db.contasPagar.get(id);
+          case "recorrencias":
+            return db.recorrencias.get(id);
+          case "metas":
+            return db.metas.get(id);
+          case "aportesMeta":
+            return db.aportesMeta.get(id);
+          default:
+            return undefined;
         }
       };
       await verificarReferencia(erros, "entidadeId", valor.entidadeId, buscar);
