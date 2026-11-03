@@ -2,8 +2,9 @@
 
 **Projeto:** Tangerina Financeiro  
 **Tarefa:** T14-12-03  
-**Status:** Implementação e testes publicados na branch; execução local e integração pendentes  
+**Status:** Concluída e integrada à `main` (merge do PR #28 confirmado pelo usuário)  
 **Branch:** `feat/t14-12-03-integridade-referencial`  
+**Pull Request:** [#28 — feat(persistence): adicionar validação de integridade referencial](https://github.com/mosiah-andrade/tangerina/pull/28) — integrado à `main` em 03/11/2026  
 **Data:** 03/11/2026
 
 ## 1. Objetivo
@@ -60,7 +61,7 @@ Esta etapa não:
 
 A existência pode mudar entre a consulta e a gravação. A validação referencial isolada não é uma garantia transacional; operações que exigem consistência concorrente deverão validar e gravar dentro de uma transação apropriada nas etapas seguintes.
 
-## 7. Critérios de conclusão
+## 7. Verificações e critérios de conclusão
 
 - [x] Contrato assíncrono de integridade referencial implementado.
 - [x] Relacionamentos aprovados mapeados para as tabelas corretas.
@@ -68,9 +69,15 @@ A existência pode mudar entre a consulta e a gravação. A validação referenc
 - [x] Coerência entre alocação e regra de distribuição.
 - [x] Resolução de auditoria pela tabela indicada em `entidadeTipo`.
 - [x] Testes automatizados adicionados.
-- [ ] Testes, typecheck, lint, formatação e build executados localmente.
-- [ ] CI aprovada e pull request integrado.
+- [x] `npm test`: 80 testes aprovados, 0 falhas.
+- [x] `npm run typecheck` aprovado.
+- [x] `npm run lint` aprovado.
+- [x] `npm run build` aprovado.
+- [ ] `npm run format:check` global: não confirmado nesta etapa; os três arquivos novos/alterados da T14-12-03 foram formatados individualmente com Prettier.
+- [x] Pull request #28 integrado à `main` (merge confirmado pelo usuário).
 
-## 8. Próximo passo
+## 8. Encerramento
 
-Executar as verificações locais em `app/`, corrigir eventuais problemas e então abrir/revisar o pull request. A T14 permanece em andamento.
+A T14-12-03 está concluída e integrada à `main`. A validação estrutural da T14-12-02 e a validação referencial desta etapa permanecem separadas: a primeira verifica formato e estrutura; a segunda verifica existência e coerência das relações entre registros.
+
+A T14 como um todo permanece em andamento, pois ainda há outras entregas da camada de persistência previstas no roadmap.
