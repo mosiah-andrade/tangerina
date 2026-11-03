@@ -62,7 +62,7 @@ A tabela `metadados` permanece disponível para transações explícitas futuras
 
 - `inserir`: valida estrutura e referências e executa `add` na mesma transação.
 - `atualizar`: busca o registro, aplica alterações, preserva `id` e `createdAt`, atualiza `updatedAt` quando aplicável, valida e executa `put` na mesma transação.
-- `arquivar`: busca o registro, aplica `ativa: false), atualiza `updatedAt) quando aplicável, valida e executa `put` na mesma transação.
+- `arquivar`: busca o registro, aplica `ativa: false`, atualiza `updatedAt` quando aplicável, valida e executa `put` na mesma transação.
 - Atualização ou arquivamento de registro inexistente retorna `false`, sem gravação.
 - `buscarPorId` e `listar` continuam como consultas simples.
 
