@@ -64,6 +64,6 @@ O mapa de validadores cobre as 12 tabelas do contrato `PersistedEntities`. A int
 
 - Contrato T14-13-01 aprovado pelo usuário em 03/11/2026.
 - Implementação integrada aos oito repositórios com chave `id`, com mapa estrutural cobrindo as 12 tabelas.
-- PR #29 integrado à `main) via squash em 03/11/2026.
+- PR #29 integrado à `main` via squash em 03/11/2026.
 - Commit de merge: `1a0887771e1c2aacb96bcd47b89fb77abdad38e6`.
 - T14-13 concluída. A T14 — camada de persistência — permanece em andamento; as demais subtarefas não são concluídas por este merge.
