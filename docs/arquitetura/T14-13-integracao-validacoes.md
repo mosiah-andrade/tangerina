@@ -3,7 +3,9 @@
 **Projeto:** Tangerina Financeiro  
 **Tarefa:** T14-13 — Integrar validações aos repositórios  
 **Subtarefa:** T14-13-01 — Contrato de integração  
-**Status:** Implementação submetida ao PR #29; aguardando revisão e merge  
+**Status:** CONCLUÍDA E INTEGRADA À MAIN  
+**PR:** #29 — https://github.com/mosiah-andrade/tangerina/pull/29  
+**Merge squash:** `1a0887771e1c2aacb96bcd47b89fb77abdad38e6`  
 **Base:** T14 — Camada de Persistência Local
 
 ## 1. Objetivo
@@ -49,23 +51,19 @@ O mapa de validadores cobre as 12 tabelas do contrato `PersistedEntities`. A int
 - Não padroniza todos os erros nativos do IndexedDB; isso pertence à T14-15.
 - Não implementa migrações ou backup/restauração.
 
-## 6. Testes previstos
+## 6. Testes e verificações
 
-- Inserção estruturalmente inválida é rejeitada e não persiste.
-- Inserção com referência inexistente é rejeitada e não persiste.
-- Inserção com referência válida é aceita.
-- Atualização valida o registro completo após aplicar as alterações.
-- Atualização inválida preserva o registro anterior.
-- Atualização preserva `id` e `createdAt`, atualizando `updatedAt`.
-- Arquivamento passa pelas validações.
-- Consultas não executam gravações nem validações desnecessárias.
-- Testes CRUD e demais testes existentes permanecem aprovados.
+- 82 testes automatizados aprovados em `npm test`.
+- `npm run typecheck`: aprovado.
+- `npm run lint`: aprovado.
+- `npm run build`: aprovado.
+- Prettier direcionado aos dois arquivos da task: aprovado.
+- A verificação global `npm run format:check` ainda aponta arquivos preexistentes fora do escopo desta entrega.
 
 ## 7. Histórico
 
 - Contrato T14-13-01 aprovado pelo usuário em 03/11/2026.
-- Implementação integrada aos oito repositórios e testes ampliados na branch `feat/t14-13-integrar-validacoes`.
-- Verificações executadas: `npm test` (82 testes aprovados), `npm run typecheck`, `npm run lint` e `npm run build` (todos aprovados).
-- Arquivos alterados da T14-13 verificados com Prettier; a verificação global ainda aponta problemas em arquivos fora do escopo desta task.
-- PR #29 aberto para revisão: https://github.com/mosiah-andrade/tangerina/pull/29.
-- Status atual: aguardando revisão e merge. A tarefa ainda não está concluída.
+- Implementação integrada aos oito repositórios com chave `id`, com mapa estrutural cobrindo as 12 tabelas.
+- PR #29 integrado à `main) via squash em 03/11/2026.
+- Commit de merge: `1a0887771e1c2aacb96bcd47b89fb77abdad38e6`.
+- T14-13 concluída. A T14 — camada de persistência — permanece em andamento; as demais subtarefas não são concluídas por este merge.
