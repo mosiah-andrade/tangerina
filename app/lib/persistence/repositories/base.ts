@@ -1,5 +1,5 @@
-import type { Table, UpdateSpecObject } from "dexie";
-import type { EntidadeBase, Id } from "../entities";
+import type { Table } from "dexie";
+import type { Id } from "../entities";
 
 export type Atualizacao<T> = Partial<
   Omit<T, "id" | "createdAt" | "updatedAt">
@@ -49,7 +49,7 @@ export function criarRepositorio<T extends { id: Id }>(
 
       const quantidade = await tabela.update(
         id,
-        atualizacao as UpdateSpecObject<T>,
+        atualizacao as Partial<T>,
       );
 
       return quantidade > 0;
@@ -70,7 +70,7 @@ export function criarRepositorio<T extends { id: Id }>(
         ...("updatedAt" in registro
           ? { updatedAt: new Date().toISOString() }
           : {}),
-      } as UpdateSpecObject<T>);
+      } as Partial<T>);
 
       return quantidade > 0;
     },
