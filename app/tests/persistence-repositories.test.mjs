@@ -148,15 +148,35 @@ test("repository allows valid references and validates audit records", async () 
   const db = await prepararBanco();
 
   try {
-    const [{ criarRepositorioContas }, { criarRepositorioAuditorias }] =
-      await Promise.all([
-        import("../lib/persistence/repositories/contas.ts"),
-        import("../lib/persistence/repositories/auditorias.ts"),
-      ]);
+    const [
+      { criarRepositorioContas },
+      { criarRepositorioMovimentos },
+      { criarRepositorioAuditorias },
+    ] = await Promise.all([
+      import("../lib/persistence/repositories/contas.ts"),
+      import("../lib/persistence/repositories/movimentos.ts"),
+      import("../lib/persistence/repositories/auditorias.ts"),
+    ]);
 
     const contas = criarRepositorioContas(db);
+    const movimentos = criarRepositorioMovimentos(db);
     const auditorias = criarRepositorioAuditorias(db);
     await contas.inserir(criarConta());
+
+    const movimento = {
+      id: ids.movimento,
+      tipo: "despesa",
+      status: "rascunho",
+      descricao: "Despesa com referência válida",
+      valorCentavos: 500,
+      dataMovimento: "2026-11-03",
+      idempotencyKey: "despesa-referencia-valida-1",
+      contaOrigemId: ids.conta,
+      createdAt: "2026-11-03T12:00:00.000Z",
+      updatedAt: "2026-11-03T12:00:00.000Z",
+    };
+    await movimentos.inserir(movimento);
+    assert.deepEqual(await movimentos.buscarPorId(ids.movimento), movimento);
 
     const auditoria = {
       id: ids.auditoria,
