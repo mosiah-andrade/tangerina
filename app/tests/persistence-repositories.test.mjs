@@ -41,17 +41,23 @@ test("repository supports typed insert, lookup, list, update and archive", async
   assert.equal(registroAtualizado?.createdAt, agora);
   assert.notEqual(registroAtualizado?.updatedAt, agora);
 
-  assert.equal(await repositorio.atualizar("inexistente", { nome: "x" }), false);
+  assert.equal(
+    await repositorio.atualizar("inexistente", { nome: "x" }),
+    false,
+  );
   assert.equal(await repositorio.arquivar(conta.id), true);
   assert.equal((await repositorio.buscarPorId(conta.id))?.ativa, false);
   assert.equal(await repositorio.arquivar("inexistente"), false);
 
   db.close();
   await db.delete();
-  delete globalThis.window;
-});
+    delete globalThis.window;
+  },
+);
 
-test("repository does not physically delete records or archive entities without ativa", async () => {
+test(
+  "repository does not physically delete records or archive entities without ativa",
+  async () => {
   globalThis.window = { indexedDB: globalThis.indexedDB };
 
   const [{ getDatabase }, { criarRepositorioAuditorias }] = await Promise.all([
