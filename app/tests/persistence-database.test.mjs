@@ -33,20 +33,23 @@ test("database opens, exposes all stores, and preserves data after reopening", a
     expectedStores.sort(),
   );
 
-  await db.contas.add({
+  const contaTeste = {
     id: "conta-teste",
-    tipo: "corrente",
+    nome: "Conta de teste",
+    tipo: "bancaria",
+    saldoInicialCentavos: 0,
+    dataSaldoInicial: "2026-11-03",
     ativa: true,
-  });
+    createdAt: "2026-11-03T12:00:00.000Z",
+    updatedAt: "2026-11-03T12:00:00.000Z",
+  };
+
+  await db.contas.add(contaTeste);
 
   db.close();
   await db.open();
 
-  assert.deepEqual(await db.contas.get("conta-teste"), {
-    id: "conta-teste",
-    tipo: "corrente",
-    ativa: true,
-  });
+  assert.deepEqual(await db.contas.get("conta-teste"), contaTeste);
 
   db.close();
   await db.delete();
