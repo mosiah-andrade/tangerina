@@ -5,6 +5,7 @@ on:
     branches:
       - main
       - feat/t8-estrutura-aplicacao
+      - feat/t14-11-persistence-repositories
     paths:
       - "app/**"
       - ".github/workflows/app-ci.yml"
