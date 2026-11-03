@@ -2,22 +2,26 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import "fake-indexeddb/auto";
 
-test("repository supports typed insert, lookup, list, update and archive", async () => {
+const ids = {
+  conta: "550e8400-e29b-41d4-a716-446655440000",
+  contaDestino: "550e8400-e29b-41d4-a716-446655440001",
+  movimento: "550e8400-e29b-41d4-a716-446655440002",
+  auditoria: "550e8400-e29b-41d4-a716-446655440003",
+};
+
+async function prepararBanco() {
   globalThis.window = { indexedDB: globalThis.indexedDB };
-
-  const [{ getDatabase }, { criarRepositorioContas }] = await Promise.all([
-    import("../lib/persistence/database.ts"),
-    import("../lib/persistence/repositories/contas.ts"),
-  ]);
-
+  const { getDatabase } = await import("../lib/persistence/database.ts");
   const db = getDatabase();
   await db.delete();
   await db.open();
+  return db;
+}
 
-  const repositorio = criarRepositorioContas(db);
+function criarConta(id = ids.conta) {
   const agora = "2026-11-03T12:00:00.000Z";
-  const conta = {
-    id: "conta-repositorio",
+  return {
+    id,
     nome: "Conta inicial",
     tipo: "bancaria",
     saldoInicialCentavos: 12_500,
@@ -26,63 +30,153 @@ test("repository supports typed insert, lookup, list, update and archive", async
     createdAt: agora,
     updatedAt: agora,
   };
+}
 
-  await repositorio.inserir(conta);
-  assert.deepEqual(await repositorio.buscarPorId(conta.id), conta);
-  assert.deepEqual(await repositorio.listar(), [conta]);
+test("repository validates insert, lookup, list, update and archive", async () => {
+  const db = await prepararBanco();
 
-  const atualizada = await repositorio.atualizar(conta.id, {
-    nome: "Conta atualizada",
-  });
-  assert.equal(atualizada, true);
+  try {
+    const { criarRepositorioContas } = await import(
+      "../lib/persistence/repositories/contas.ts"
+    );
+    const repositorio = criarRepositorioContas(db);
+    const conta = criarConta();
 
-  const registroAtualizado = await repositorio.buscarPorId(conta.id);
-  assert.equal(registroAtualizado?.nome, "Conta atualizada");
-  assert.equal(registroAtualizado?.createdAt, agora);
-  assert.notEqual(registroAtualizado?.updatedAt, agora);
+    await repositorio.inserir(conta);
+    assert.deepEqual(await repositorio.buscarPorId(conta.id), conta);
+    assert.deepEqual(await repositorio.listar(), [conta]);
 
-  assert.equal(
-    await repositorio.atualizar("inexistente", { nome: "x" }),
-    false,
-  );
-  assert.equal(await repositorio.arquivar(conta.id), true);
-  assert.equal((await repositorio.buscarPorId(conta.id))?.ativa, false);
-  assert.equal(await repositorio.arquivar("inexistente"), false);
+    const atualizada = await repositorio.atualizar(conta.id, {
+      nome: "Conta atualizada",
+    });
+    assert.equal(atualizada, true);
 
-  db.close();
-  await db.delete();
-  delete globalThis.window;
+    const registroAtualizado = await repositorio.buscarPorId(conta.id);
+    assert.equal(registroAtualizado?.nome, "Conta atualizada");
+    assert.equal(registroAtualizado?.createdAt, conta.createdAt);
+    assert.notEqual(registroAtualizado?.updatedAt, conta.updatedAt);
+
+    await assert.rejects(
+      () => repositorio.atualizar(conta.id, { saldoInicialCentavos: -1 }),
+      (erro) =>
+        erro.name === "ValidationError" &&
+        erro.erros.some((item) => item.codigo === "BELOW_MINIMUM"),
+    );
+    assert.equal(
+      (await repositorio.buscarPorId(conta.id))?.saldoInicialCentavos,
+      12_500,
+    );
+
+    assert.equal(
+      await repositorio.atualizar(ids.contaDestino, { nome: "inexistente" }),
+      false,
+    );
+    assert.equal(await repositorio.arquivar(conta.id), true);
+    assert.equal((await repositorio.buscarPorId(conta.id))?.ativa, false);
+    assert.equal(await repositorio.arquivar(ids.contaDestino), false);
+  } finally {
+    db.close();
+    await db.delete();
+    delete globalThis.window;
+  }
 });
 
-test("repository does not physically delete records or archive entities without ativa", async () => {
-  globalThis.window = { indexedDB: globalThis.indexedDB };
+test("repository rejects structurally invalid records before insertion", async () => {
+  const db = await prepararBanco();
 
-  const [{ getDatabase }, { criarRepositorioAuditorias }] = await Promise.all([
-    import("../lib/persistence/database.ts"),
-    import("../lib/persistence/repositories/auditorias.ts"),
-  ]);
+  try {
+    const { criarRepositorioContas } = await import(
+      "../lib/persistence/repositories/contas.ts"
+    );
+    const repositorio = criarRepositorioContas(db);
 
-  const db = getDatabase();
-  await db.delete();
-  await db.open();
+    await assert.rejects(
+      () => repositorio.inserir({ ...criarConta(), id: "id-invalido" }),
+      (erro) =>
+        erro.name === "ValidationError" &&
+        erro.erros.some((item) => item.codigo === "INVALID_UUID"),
+    );
+    assert.equal(await db.contas.count(), 0);
+  } finally {
+    db.close();
+    await db.delete();
+    delete globalThis.window;
+  }
+});
 
-  const repositorio = criarRepositorioAuditorias(db);
-  const auditoria = {
-    id: "auditoria-1",
-    entidadeTipo: "contas",
-    entidadeId: "conta-1",
-    acao: "criado",
-    createdAt: "2026-11-03T12:00:00.000Z",
-  };
+test("repository rejects records with missing references", async () => {
+  const db = await prepararBanco();
 
-  await repositorio.inserir(auditoria);
-  await assert.rejects(
-    () => repositorio.arquivar(auditoria.id),
-    /não possui arquivamento/,
-  );
-  assert.deepEqual(await repositorio.buscarPorId(auditoria.id), auditoria);
+  try {
+    const { criarRepositorioMovimentos } = await import(
+      "../lib/persistence/repositories/movimentos.ts"
+    );
+    const repositorio = criarRepositorioMovimentos(db);
+    const agora = "2026-11-03T12:00:00.000Z";
 
-  db.close();
-  await db.delete();
-  delete globalThis.window;
+    await assert.rejects(
+      () =>
+        repositorio.inserir({
+          id: ids.movimento,
+          tipo: "despesa",
+          status: "rascunho",
+          descricao: "Despesa de teste",
+          valorCentavos: 500,
+          dataMovimento: "2026-11-03",
+          idempotencyKey: "despesa-teste-1",
+          contaOrigemId: ids.conta,
+          createdAt: agora,
+          updatedAt: agora,
+        }),
+      (erro) =>
+        erro.name === "ValidationError" &&
+        erro.erros.some(
+          (item) =>
+            item.campo === "contaOrigemId" &&
+            item.codigo === "REFERENCE_NOT_FOUND",
+        ),
+    );
+    assert.equal(await db.movimentos.count(), 0);
+  } finally {
+    db.close();
+    await db.delete();
+    delete globalThis.window;
+  }
+});
+
+test("repository allows valid references and validates audit records", async () => {
+  const db = await prepararBanco();
+
+  try {
+    const [{ criarRepositorioContas }, { criarRepositorioAuditorias }] =
+      await Promise.all([
+        import("../lib/persistence/repositories/contas.ts"),
+        import("../lib/persistence/repositories/auditorias.ts"),
+      ]);
+
+    const contas = criarRepositorioContas(db);
+    const auditorias = criarRepositorioAuditorias(db);
+    await contas.inserir(criarConta());
+
+    const auditoria = {
+      id: ids.auditoria,
+      entidadeTipo: "contas",
+      entidadeId: ids.conta,
+      acao: "criado",
+      createdAt: "2026-11-03T12:00:00.000Z",
+    };
+
+    await auditorias.inserir(auditoria);
+    assert.deepEqual(await auditorias.buscarPorId(auditoria.id), auditoria);
+
+    await assert.rejects(
+      () => auditorias.arquivar(auditoria.id),
+      /não possui arquivamento/,
+    );
+    assert.deepEqual(await auditorias.buscarPorId(auditoria.id), auditoria);
+  } finally {
+    db.close();
+    await db.delete();
+    delete globalThis.window;
+  }
 });
