@@ -18,13 +18,10 @@ export async function obterEstadoDadosDemonstracao(
     db.metadados.get(CHAVE_LOADED_AT),
   ]);
 
-  const status =
-    statusMetadata?.valor === "loaded" ? "loaded" : "not_loaded";
+  const status = statusMetadata?.valor === "loaded" ? "loaded" : "not_loaded";
 
   const loadedAt =
-    typeof loadedAtMetadata?.valor === "string"
-      ? loadedAtMetadata.valor
-      : null;
+    typeof loadedAtMetadata?.valor === "string" ? loadedAtMetadata.valor : null;
 
   return {
     status,
