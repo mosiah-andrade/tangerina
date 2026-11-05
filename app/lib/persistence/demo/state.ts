@@ -7,15 +7,15 @@ export interface EstadoDadosDemonstracao {
   loadedAt: string | null;
 }
 
-const CHAVE_STATUS = "demo.status";
-const CHAVE_LOADED_AT = "demo.loadedAt";
+export const CHAVE_STATUS_DEMO = "demo.status";
+export const CHAVE_LOADED_AT_DEMO = "demo.loadedAt";
 
 export async function obterEstadoDadosDemonstracao(
   db: TangerinaDatabase,
 ): Promise<EstadoDadosDemonstracao> {
   const [statusMetadata, loadedAtMetadata] = await Promise.all([
-    db.metadados.get(CHAVE_STATUS),
-    db.metadados.get(CHAVE_LOADED_AT),
+    db.metadados.get(CHAVE_STATUS_DEMO),
+    db.metadados.get(CHAVE_LOADED_AT_DEMO),
   ]);
 
   const status = statusMetadata?.valor === "loaded" ? "loaded" : "not_loaded";
