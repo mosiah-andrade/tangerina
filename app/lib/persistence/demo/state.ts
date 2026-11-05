@@ -14,8 +14,8 @@ export async function obterEstadoDadosDemonstracao(
   db: TangerinaDatabase,
 ): Promise<EstadoDadosDemonstracao> {
   const [statusMetadata, loadedAtMetadata] = await Promise.all([
-    db.metadata.get(CHAVE_STATUS),
-    db.metadata.get(CHAVE_LOADED_AT),
+    db.metadados.get(CHAVE_STATUS),
+    db.metadados.get(CHAVE_LOADED_AT),
   ]);
 
   const status =
