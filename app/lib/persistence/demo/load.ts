@@ -3,6 +3,9 @@ import { executarTransacaoPersistencia } from "../transactions.ts";
 import type { DadosDemonstracao } from "./seed.ts";
 import { criarDadosDemonstracao } from "./seed.ts";
 
+const CHAVE_STATUS_DEMO = "demo.status";
+const CHAVE_LOADED_AT_DEMO = "demo.loadedAt";
+
 export interface ResultadoCargaDemonstracao {
   contas: number;
   caixinhas: number;
@@ -38,6 +41,7 @@ export async function carregarDadosDemonstracao(
       db.recorrencias,
       db.contasPagar,
       db.metas,
+      db.metadados,
     ],
     async () => {
       await db.contas.bulkAdd(dados.contas);
@@ -49,6 +53,19 @@ export async function carregarDadosDemonstracao(
       await db.recorrencias.bulkAdd(dados.recorrencias);
       await db.contasPagar.bulkAdd(dados.contasPagar);
       await db.metas.bulkAdd(dados.metas);
+
+      const loadedAt = new Date().toISOString();
+
+      await db.metadados.bulkPut([
+        {
+          chave: CHAVE_STATUS_DEMO,
+          valor: "loaded",
+        },
+        {
+          chave: CHAVE_LOADED_AT_DEMO,
+          valor: loadedAt,
+        },
+      ]);
 
       return {
         contas: dados.contas.length,
