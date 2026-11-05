@@ -1,7 +1,7 @@
-import type { TangerinaDatabase } from "../database";
-import { executarTransacaoPersistencia } from "../transactions";
-import { criarDadosDemonstracao } from "./seed";
-import { CHAVE_LOADED_AT_DEMO, CHAVE_STATUS_DEMO } from "./state";
+import type { TangerinaDatabase } from "../database.ts";
+import { executarTransacaoPersistencia } from "../transactions.ts";
+import { criarDadosDemonstracao } from "./seed.ts";
+import { CHAVE_LOADED_AT_DEMO, CHAVE_STATUS_DEMO } from "./state.ts";
 
 export interface ResultadoResetDemonstracao {
   contas: number;
