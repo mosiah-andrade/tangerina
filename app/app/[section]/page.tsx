@@ -4,14 +4,39 @@ import { notFound } from "next/navigation";
 import { AppBrand } from "@/components/app-brand";
 import { BottomNavigation } from "@/components/bottom-navigation";
 import { SeedLoading } from "@/components/seed-loading";
+import { DemoDataControls } from "@/components/demo-data-controls";
 
 const sections: Record<string, { title: string; description: string }> = {
-  receitas: { title: "Receitas", description: "O registro e a distribuição de receitas serão implementados na próxima etapa." },
-  despesas: { title: "Despesas", description: "O registro de despesas, a seleção de caixinhas e a revisão antes de confirmar serão implementados na próxima etapa." },
-  transferencias: { title: "Transferências", description: "A movimentação entre contas e a revisão de seus efeitos serão implementadas na próxima etapa." },
-  movimentacoes: { title: "Movimentações", description: "O histórico financeiro será conectado aos dados locais nas próximas etapas." },
-  caixinhas: { title: "Caixinhas", description: "A gestão de caixinhas e seus saldos será implementada nas próximas etapas." },
-  mais: { title: "Mais opções", description: "Contas, regras de distribuição, backup e configurações serão adicionados gradualmente." },
+  receitas: {
+    title: "Receitas",
+    description:
+      "O registro e a distribuição de receitas serão implementados na próxima etapa.",
+  },
+  despesas: {
+    title: "Despesas",
+    description:
+      "O registro de despesas, a seleção de caixinhas e a revisão antes de confirmar serão implementados na próxima etapa.",
+  },
+  transferencias: {
+    title: "Transferências",
+    description:
+      "A movimentação entre contas e a revisão de seus efeitos serão implementadas na próxima etapa.",
+  },
+  movimentacoes: {
+    title: "Movimentações",
+    description:
+      "O histórico financeiro será conectado aos dados locais nas próximas etapas.",
+  },
+  caixinhas: {
+    title: "Caixinhas",
+    description:
+      "A gestão de caixinhas e seus saldos será implementada nas próximas etapas.",
+  },
+  mais: {
+    title: "Mais opções",
+    description:
+      "Contas, regras de distribuição, backup e configurações serão adicionados gradualmente.",
+  },
 };
 
 async function SectionContent({
@@ -23,20 +48,23 @@ async function SectionContent({
   const item = sections[section];
   if (!item) notFound();
 
-  const activeNavigation = section === "movimentacoes"
-    ? "/movimentacoes"
-    : section === "caixinhas"
-      ? "/caixinhas"
-      : section === "mais"
-        ? "/mais"
-        : "";
+  const activeNavigation =
+    section === "movimentacoes"
+      ? "/movimentacoes"
+      : section === "caixinhas"
+        ? "/caixinhas"
+        : section === "mais"
+          ? "/mais"
+          : "";
 
   return (
     <>
       <main className="app-shell">
         <header className="app-header">
           <AppBrand />
-          <Link className="context-label" href="/dashboard">Voltar ao início</Link>
+          <Link className="context-label" href="/dashboard">
+            Voltar ao início
+          </Link>
         </header>
         <section className="dashboard-greeting">
           <p>Em construção</p>
@@ -46,7 +74,14 @@ async function SectionContent({
           <strong>Esta etapa ainda não está implementada.</strong>
           <p>{item.description}</p>
         </section>
-        <Link className="button-primary" style={{ marginTop: 22 }} href="/dashboard">
+
+        {section === "mais" && <DemoDataControls />}
+
+        <Link
+          className="button-primary"
+          style={{ marginTop: 22 }}
+          href="/dashboard"
+        >
           Voltar ao painel <span aria-hidden="true">→</span>
         </Link>
       </main>

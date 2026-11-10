@@ -8,6 +8,7 @@ import {
   obterEstadoDadosDemonstracao,
   type EstadoDadosDemonstracao,
 } from "@/lib/persistence/demo/state";
+import { notificarDadosFinanceirosAtualizados } from "@/lib/persistence/events/dados-financeiros";
 
 interface UseDemonstracaoResult {
   estado: EstadoDadosDemonstracao | null;
@@ -86,6 +87,8 @@ export function useDemonstracao(): UseDemonstracaoResult {
 
       const novoEstado = await obterEstadoDadosDemonstracao(db);
       setEstado(novoEstado);
+
+      notificarDadosFinanceirosAtualizados();
     } catch (erro) {
       setError(
         erro instanceof Error
@@ -107,6 +110,8 @@ export function useDemonstracao(): UseDemonstracaoResult {
 
       const novoEstado = await obterEstadoDadosDemonstracao(db);
       setEstado(novoEstado);
+
+      notificarDadosFinanceirosAtualizados();
     } catch (erro) {
       setError(
         erro instanceof Error
