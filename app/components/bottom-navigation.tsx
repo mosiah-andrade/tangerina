@@ -1,9 +1,21 @@
 import Link from "next/link";
-import { FiHome, FiList, FiTarget, FiGrid } from "react-icons/fi";
+import {
+  FiHome,
+  FiCreditCard,
+  FiPlus,
+  FiTarget,
+  FiGrid,
+} from "react-icons/fi";
 
 const items = [
   { href: "/dashboard", label: "Início", Icon: FiHome },
-  { href: "/movimentacoes", label: "Movimentos", Icon: FiList },
+  { href: "/contas", label: "Contas", Icon: FiCreditCard },
+  {
+    href: "/movimentacoes",
+    label: "Registrar",
+    Icon: FiPlus,
+    primaryAction: true,
+  },
   { href: "/caixinhas", label: "Caixinhas", Icon: FiTarget },
   { href: "/mais", label: "Mais", Icon: FiGrid },
 ];
@@ -14,9 +26,17 @@ export function BottomNavigation({ active = "/dashboard" }: BottomNavigationProp
   return (
     <nav className="bottom-nav" aria-label="Navegação principal">
       <div className="bottom-nav-inner">
-        {items.map(({ href, label, Icon }) => (
-          <Link key={href} href={href} aria-current={active === href ? "page" : undefined}>
-            <Icon size={19} aria-hidden="true" />
+        {items.map(({ href, label, Icon, primaryAction }) => (
+          <Link
+            key={href}
+            href={href}
+            className={primaryAction ? "bottom-nav-primary-action" : undefined}
+            aria-current={active === href ? "page" : undefined}
+            aria-label={primaryAction ? "Registrar movimentação" : undefined}
+          >
+            <span className="bottom-nav-icon">
+              <Icon size={primaryAction ? 23 : 19} aria-hidden="true" />
+            </span>
             <span>{label}</span>
           </Link>
         ))}
