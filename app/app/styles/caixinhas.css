@@ -153,3 +153,39 @@
     padding: var(--space-6) var(--space-7);
   }
 }
+
+
+/* Correção de sobreposição com a navegação e proporção do resumo */
+.caixinhas-page {
+  isolation: isolate;
+  z-index: 1;
+}
+
+.caixinhas-total {
+  position: relative;
+  z-index: 2;
+}
+
+@media (min-width: 900px) {
+  .caixinhas-page {
+    padding-bottom: var(--space-12);
+  }
+
+  .caixinhas-total {
+    width: min(100%, 640px);
+    min-height: 150px;
+    padding: var(--space-7);
+  }
+
+  .caixinhas-total .balance-value {
+    font-size: clamp(2rem, 3vw, 2.5rem);
+  }
+}
+
+@media (min-width: 1200px) {
+  .caixinhas-total {
+    width: 600px;
+    min-height: 164px;
+    padding: var(--space-8);
+  }
+}
