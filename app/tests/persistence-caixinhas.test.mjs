@@ -67,3 +67,40 @@ test("calcula o saldo da caixinha sem duplicar efeitos de outros alvos", async (
     delete globalThis.window;
   }
 });
+
+
+test("persiste a edição e o arquivamento da caixinha após reabrir o banco", async () => {
+  const db = await prepararBanco();
+
+  try {
+    const { criarCaixinha } = await import("../lib/persistence/caixinhas/criar.ts");
+    const { editarCaixinha } = await import("../lib/persistence/caixinhas/editar.ts");
+    const { arquivarCaixinha } = await import("../lib/persistence/caixinhas/arquivar.ts");
+
+    const criada = await criarCaixinha(db, {
+      nome: "Viagem",
+      saldoInicialCentavos: 20_000,
+      dataSaldoInicial: "2026-11-11",
+    });
+
+    await editarCaixinha(db, criada.id, {
+      nome: "Viagem internacional",
+      descricao: "Meta de férias",
+    });
+    await arquivarCaixinha(db, criada.id);
+
+    db.close();
+    await db.open();
+
+    const persistida = await db.caixinhas.get(criada.id);
+
+    assert.equal(persistida?.nome, "Viagem internacional");
+    assert.equal(persistida?.descricao, "Meta de férias");
+    assert.equal(persistida?.saldoInicialCentavos, 20_000);
+    assert.equal(persistida?.ativa, false);
+  } finally {
+    db.close();
+    await db.delete();
+    delete globalThis.window;
+  }
+});
