@@ -1475,3 +1475,76 @@ button {
     transition: none;
   }
 }
+
+/* T16.05 — visualização de contas bancárias */
+.contas-lista {
+  display: grid;
+  gap: 12px;
+}
+.conta-card {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding: 17px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.62);
+}
+.conta-card__icon,
+.contas-empty__icon {
+  display: grid;
+  flex: 0 0 auto;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  background: var(--mint);
+  color: var(--emerald);
+}
+.conta-card__content {
+  min-width: 0;
+  flex: 1;
+}
+.conta-card__content p {
+  margin: 0 0 5px;
+  color: var(--muted);
+  font-size: 10px;
+}
+.conta-card__content strong {
+  display: block;
+  overflow-wrap: anywhere;
+  color: var(--emerald);
+  font-size: 18px;
+}
+.conta-status {
+  color: var(--color-success);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+}
+.conta-status--inactive {
+  color: var(--muted);
+}
+.contas-empty,
+.contas-loading {
+  display: grid;
+  justify-items: center;
+  gap: 12px;
+  padding: 34px 22px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.48);
+  color: var(--muted);
+  text-align: center;
+}
+.contas-empty strong {
+  color: var(--emerald);
+  font-size: 13px;
+}
+.contas-empty p {
+  max-width: 280px;
+  margin: 0;
+  font-size: 11px;
+  line-height: 1.6;
+}
+.contas-add {
+  margin-top: 20px;
+}
