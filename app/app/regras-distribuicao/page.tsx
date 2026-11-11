@@ -38,10 +38,10 @@ export default function RegrasDistribuicaoPage() {
     const db = getDatabase();
     const [listaRegras, listaCaixinhas] = await Promise.all([
       listarRegrasDistribuicao(db),
-      db.caixinhas.where("ativa").equals(1).toArray(),
+      db.caixinhas.toArray(),
     ]);
     setRegras(listaRegras);
-    setCaixinhas(listaCaixinhas.map(({ id, nome }) => ({ id, nome })));
+    setCaixinhas(listaCaixinhas.filter((caixinha) => caixinha.ativa).map(({ id, nome }) => ({ id, nome })));
   }
 
   useEffect(() => {
