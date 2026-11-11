@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { FiArrowLeft, FiCreditCard, FiPlus, FiRefreshCw } from "react-icons/fi";
-import { AppBrand } from "@/components/app-brand";
+import Image from "next/image";
+import {  FiCreditCard, FiPlus, FiRefreshCw } from "react-icons/fi";
 import { BottomNavigation } from "@/components/bottom-navigation";
 import { SeedLoading } from "@/components/seed-loading";
 import { formatMoneyFromCents } from "@/lib/format-money";
@@ -79,16 +79,17 @@ export function ContasBancarias() {
   return (
     <>
       <main className="app-shell contas-page">
-        <header className="app-header">
-          <Link
-            className="contas-back"
-            href="/dashboard"
-            aria-label="Voltar ao início"
-          >
-            <FiArrowLeft aria-hidden="true" size={18} />
-          </Link>
-          <AppBrand />
-          <span className="contas-header-space" aria-hidden="true" />
+        <header className="welcome-brand" aria-label="Tangerina Financeiro">
+          <Image
+            src="/favicon.svg"
+            alt=""
+            width={56}
+            height={56}
+            priority
+            className="welcome-brand__icon"
+            unoptimized
+          />
+          <span className="welcome-brand__name">Tangerina</span>
         </header>
 
         <section className="dashboard-greeting contas-intro">
