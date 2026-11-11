@@ -30,59 +30,87 @@
 .bottom-nav a:focus-visible {
   outline-offset: 2px;
 }
-@media (min-width: 900px) {
-  .app-shell {
-    width: min(100% - 320px, 1120px);
-    max-width: 1120px;
-    margin: 32px 32px 32px 272px;
-    padding: 32px clamp(24px, 3vw, 48px) 48px;
-    min-height: calc(100svh - 64px);
-    border: 1px solid var(--line);
-    border-radius: var(--radius-md);
-  }
+
+/* Navegação mobile: cinco ações sempre na mesma linha, com ação central integrada. */
+@media (max-width: 899px) {
   .bottom-nav {
-    top: 32px;
-    right: auto;
-    bottom: 32px;
-    left: 32px;
-    width: 208px;
-    align-items: flex-start;
-    justify-content: flex-start;
-    padding: 18px 12px;
-    border: 1px solid var(--line);
-    background: var(--color-silk);
-    backdrop-filter: none;
-  }
-  .bottom-nav-inner {
     display: flex;
-    flex-direction: column;
-    width: 100%;
-    max-width: none;
-    gap: 8px;
-    padding: 0;
+    align-items: flex-end;
+    justify-content: center;
+    padding: 0 12px max(8px, env(safe-area-inset-bottom));
     border: 0;
     background: transparent;
-    box-shadow: none;
   }
+
+  .bottom-nav-inner {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    grid-template-rows: 68px;
+    align-items: end;
+    width: 100%;
+    max-width: 480px;
+    min-height: 68px;
+    padding: 13px 4px 8px;
+    border-radius: 0 0 28px 28px;
+    background: rgba(249, 248, 243, 0.98);
+    box-shadow: 0 -8px 28px rgba(11, 60, 42, 0.08);
+    overflow: visible;
+  }
+
+  .bottom-nav-inner::before {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  top: -10px;
+  left: 50%;
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  background: var(--silk);
+  transform: translateX(-50%);
+}
+
   .bottom-nav a {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    gap: 12px;
-    min-height: 46px;
-    padding: 10px 12px;
-    border: 1px solid transparent;
-    font-size: 12px;
+    z-index: 1;
+    width: 100%;
+    min-width: 0;
+    min-height: 0;
+    padding: 5px 1px 3px;
+    overflow: visible;
+    overflow-wrap: normal;
+    white-space: nowrap;
   }
-  .bottom-nav a[aria-current="page"] {
-    border-color: var(--line);
-    background: var(--cream);
+
+  .bottom-nav .bottom-nav-primary-action {
+    gap: 0;
+    padding-top: 0;
   }
-  .bottom-nav a[aria-current="page"]::after {
-    width: 3px;
-    height: 22px;
-    margin: 0 0 0 auto;
+
+  .bottom-nav-primary-action .bottom-nav-icon {
+    width: 48px;
+    height: 48px;
+    min-width: 48px;
+    min-height: 48px;
+    margin-top: -20px;
+    margin-bottom: 3px;
+    border: 7px solid var(--silk);
+    border-radius: 50%;
+    background: var(--emerald);
+    color: var(--silk);
+    box-shadow: 0 4px 12px rgba(11, 60, 42, 0.12);
   }
+}
+
+@media (min-width: 900px) {
+  .app-shell { width: min(100% - 320px, 1120px); max-width: 1120px; margin: 32px 32px 32px 272px; padding: 32px clamp(24px, 3vw, 48px) 48px; min-height: calc(100svh - 64px); border: 1px solid var(--line); border-radius: var(--radius-md); }
+  .bottom-nav { top: 32px; right: auto; bottom: 32px; left: 32px; display: flex; width: 208px; align-items: stretch; justify-content: stretch; padding: 18px 12px; border: 1px solid var(--line); border-radius: var(--radius-md); background: var(--color-silk); pointer-events: auto; backdrop-filter: none; }
+  .bottom-nav-inner { display: flex; flex-direction: column; align-items: stretch; width: 100%; max-width: none; min-height: 0; gap: 8px; padding: 0; border: 0; border-radius: 0; background: transparent; box-shadow: none; overflow: visible; }
+  .bottom-nav-inner::before { display: none; }
+  .bottom-nav a, .bottom-nav .bottom-nav-primary-action { display: flex; justify-content: flex-start; align-items: center; gap: 12px; width: 100%; min-height: 46px; margin: 0; padding: 10px 12px; border: 1px solid transparent; font-size: 12px; line-height: 1.2; white-space: normal; transform: none; }
+  .bottom-nav-icon, .bottom-nav-primary-action .bottom-nav-icon { width: 24px; height: 24px; min-width: 24px; min-height: 24px; margin: 0; border: 0; border-radius: 0; background: transparent; color: currentColor; box-shadow: none; transform: none; }
+  .bottom-nav a[aria-current="page"] { border-color: var(--line); background: var(--cream); }
+  .bottom-nav a[aria-current="page"]::after { width: 3px; height: 22px; margin: 0 0 0 auto; }
 }
 @media (min-width: 1200px) {
   .summary-grid {
