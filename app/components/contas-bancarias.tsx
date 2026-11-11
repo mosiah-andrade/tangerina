@@ -2,12 +2,7 @@
 
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import {
-  FiArrowLeft,
-  FiCreditCard,
-  FiPlus,
-  FiRefreshCw,
-} from "react-icons/fi";
+import { FiArrowLeft, FiCreditCard, FiPlus, FiRefreshCw } from "react-icons/fi";
 import { AppBrand } from "@/components/app-brand";
 import { BottomNavigation } from "@/components/bottom-navigation";
 import { SeedLoading } from "@/components/seed-loading";
@@ -136,7 +131,10 @@ export function ContasBancarias() {
 
         {contas !== null && !erro && (
           <>
-            <section className="balance-card contas-total" aria-label="Saldo total em contas">
+            <section
+              className="balance-card contas-total"
+              aria-label="Saldo total em contas"
+            >
               <div className="balance-topline">
                 <p className="balance-label">Saldo total em contas</p>
                 <FiCreditCard className="balance-eye" aria-hidden="true" />
@@ -171,23 +169,26 @@ export function ContasBancarias() {
                 </span>
                 <strong>Você ainda não cadastrou uma conta.</strong>
                 <p>
-                  Adicione uma conta bancária para acompanhar seu saldo real
-                  em um só lugar.
+                  Adicione uma conta bancária para acompanhar seu saldo real em
+                  um só lugar.
                 </p>
               </section>
             ) : (
               <section className="contas-lista" aria-label="Contas bancárias">
                 {contas.map(({ conta, saldoAtualCentavos }) => (
-                  <article className="conta-card" key={conta.id}>
+                  <Link
+                    className="conta-card"
+                    href={`/contas/${conta.id}/editar`}
+                    key={conta.id}
+                    aria-label={`Editar ${conta.nome}`}
+                  >
                     <span className="conta-card__icon" aria-hidden="true">
                       <FiCreditCard size={19} />
                     </span>
                     <div className="conta-card__content">
                       <p>{conta.instituicao ?? "Conta bancária"}</p>
                       <strong>{conta.nome}</strong>
-                      <span>
-                        {formatMoneyFromCents(saldoAtualCentavos)}
-                      </span>
+                      <span>{formatMoneyFromCents(saldoAtualCentavos)}</span>
                     </div>
                     <span
                       className={
@@ -198,7 +199,7 @@ export function ContasBancarias() {
                     >
                       {conta.ativa ? "Ativa" : "Inativa"}
                     </span>
-                  </article>
+                  </Link>
                 ))}
               </section>
             )}

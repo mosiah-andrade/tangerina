@@ -1485,9 +1485,25 @@ button {
   display: flex;
   align-items: center;
   gap: 13px;
-  padding: 17px;
+  padding: 16px;
   border: 1px solid var(--line);
-  background: rgba(255, 255, 255, 0.62);
+  background: rgba(255, 255, 255, 0.58);
+  box-shadow: 0 8px 24px rgba(6, 38, 26, 0.035);
+  color: inherit;
+  text-decoration: none;
+  transition:
+    transform var(--motion-fast) var(--motion-easing),
+    border-color var(--motion-fast) var(--motion-easing);
+}
+
+.conta-card:hover {
+  transform: translateY(-1px);
+  border-color: var(--gold);
+}
+
+.conta-card:focus-visible {
+  outline: var(--border-focus) solid var(--color-focus);
+  outline-offset: 3px;
 }
 .conta-card__icon,
 .contas-empty__icon {
@@ -1548,7 +1564,6 @@ button {
 .contas-add {
   margin-top: 20px;
 }
-
 
 /* T16.05 — tela de contas bancárias */
 .contas-page {
@@ -1817,4 +1832,87 @@ button {
 
 .mais-demo-section {
   margin-top: var(--space-6);
+}
+/* T16.06 — edição de conta bancária */
+.editar-conta-page {
+  padding-bottom: calc(var(--navigation-height) + var(--space-8));
+}
+
+.editar-conta-intro {
+  margin-bottom: var(--space-6);
+}
+
+.editar-conta-form {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.editar-conta-card {
+  display: grid;
+  gap: var(--space-5);
+  padding: var(--space-5);
+}
+
+.editar-conta-info {
+  display: grid;
+  gap: var(--space-4);
+  padding: var(--space-5);
+}
+
+.editar-conta-info__header {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  color: var(--color-emerald);
+}
+
+.editar-conta-info__header > div {
+  display: grid;
+  gap: 0.2rem;
+}
+
+.editar-conta-info__header strong {
+  font-size: var(--text-sm);
+}
+
+.editar-conta-info__header span {
+  color: var(--color-muted);
+  font-size: var(--text-xs);
+  line-height: 1.5;
+}
+
+.editar-conta-details {
+  display: grid;
+  gap: var(--space-3);
+  margin: 0;
+}
+
+.editar-conta-details > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding-top: var(--space-3);
+  border-top: var(--border-width) solid var(--color-border);
+}
+
+.editar-conta-details dt {
+  color: var(--color-muted);
+  font-size: var(--text-xs);
+}
+
+.editar-conta-details dd {
+  margin: 0;
+  color: var(--color-charcoal);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  text-align: right;
+}
+
+.editar-conta-submit-error {
+  margin: 0;
+}
+
+.editar-conta-submit {
+  width: 100%;
 }
