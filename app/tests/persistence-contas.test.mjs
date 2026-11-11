@@ -97,3 +97,89 @@ test("does not persist a bank account with invalid initial balance", async () =>
     delete globalThis.window;
   }
 });
+
+
+test("edits bank account registration data while preserving financial fields", async () => {
+  const db = await prepararBanco();
+
+  try {
+    const { criarContaBancaria } =
+      await import("../lib/persistence/contas/criar.ts");
+    const { editarContaBancaria } =
+      await import("../lib/persistence/contas/editar.ts");
+
+    const criada = await criarContaBancaria(db, {
+      nome: "Conta antiga",
+      instituicao: "Banco antigo",
+      saldoInicialCentavos: 25_000,
+      dataSaldoInicial: "2026-11-11",
+    });
+
+    const editada = await editarContaBancaria(db, criada.id, {
+      nome: "Conta principal",
+      instituicao: "Banco Tangerina",
+    });
+
+    assert.equal(editada?.nome, "Conta principal");
+    assert.equal(editada?.instituicao, "Banco Tangerina");
+    assert.equal(editada?.saldoInicialCentavos, 25_000);
+    assert.equal(editada?.dataSaldoInicial, "2026-11-11");
+    assert.equal(editada?.tipo, "bancaria");
+    assert.equal(editada?.id, criada.id);
+    assert.equal(editada?.createdAt, criada.createdAt);
+    assert.ok(editada?.updatedAt);
+  } finally {
+    db.close();
+    await db.delete();
+    delete globalThis.window;
+  }
+});
+
+test("removes the optional institution from a bank account", async () => {
+  const db = await prepararBanco();
+
+  try {
+    const { criarContaBancaria } =
+      await import("../lib/persistence/contas/criar.ts");
+    const { editarContaBancaria } =
+      await import("../lib/persistence/contas/editar.ts");
+
+    const criada = await criarContaBancaria(db, {
+      nome: "Conta principal",
+      instituicao: "Banco Tangerina",
+      saldoInicialCentavos: 0,
+      dataSaldoInicial: "2026-11-11",
+    });
+
+    const editada = await editarContaBancaria(db, criada.id, {
+      instituicao: null,
+    });
+
+    assert.equal(editada?.instituicao, undefined);
+  } finally {
+    db.close();
+    await db.delete();
+    delete globalThis.window;
+  }
+});
+
+test("does not edit a missing bank account", async () => {
+  const db = await prepararBanco();
+
+  try {
+    const { editarContaBancaria } =
+      await import("../lib/persistence/contas/editar.ts");
+
+    const editada = await editarContaBancaria(
+      db,
+      "00000000-0000-4000-8000-000000000000",
+      { nome: "Inexistente" },
+    );
+
+    assert.equal(editada, undefined);
+  } finally {
+    db.close();
+    await db.delete();
+    delete globalThis.window;
+  }
+});
