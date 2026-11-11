@@ -3,11 +3,13 @@
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import Image from "next/image";
-import {  FiCreditCard, FiPlus, FiRefreshCw } from "react-icons/fi";
+import { FiCreditCard, FiPlus, FiRefreshCw, FiX } from "react-icons/fi";
 import { BottomNavigation } from "@/components/bottom-navigation";
 import { SeedLoading } from "@/components/seed-loading";
 import { formatMoneyFromCents } from "@/lib/format-money";
 import { getDatabase } from "@/lib/persistence/database";
+import { parseMoneyToCents } from "@/domain/finance/money";
+import { criarContaBancaria } from "@/lib/persistence/contas/criar";
 import {
   listarContasComSaldo,
   type ContaComSaldo,
@@ -17,6 +19,11 @@ export function ContasBancarias() {
   const [contas, setContas] = useState<ContaComSaldo[] | null>(null);
   const [erro, setErro] = useState<string | null>(null);
   const [recarregando, setRecarregando] = useState(false);
+  const [mostrarNovaConta, setMostrarNovaConta] = useState(false);
+  const [nomeNovaConta, setNomeNovaConta] = useState("");
+  const [instituicaoNovaConta, setInstituicaoNovaConta] = useState("");
+  const [saldoNovaConta, setSaldoNovaConta] = useState("0,00");
+  const [salvandoNovaConta, setSalvandoNovaConta] = useState(false);
 
   const carregarContas = useCallback(async (manual = false) => {
     if (manual) setRecarregando(true);
@@ -64,6 +71,38 @@ export function ContasBancarias() {
       ativo = false;
     };
   }, []);
+
+  async function criarNovaConta(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const nome = nomeNovaConta.trim();
+    if (!nome) {
+      setErro("Informe o nome da conta.");
+      return;
+    }
+
+    setSalvandoNovaConta(true);
+    setErro(null);
+
+    try {
+      const db = getDatabase();
+      await db.open();
+      await criarContaBancaria(db, {
+        nome,
+        instituicao: instituicaoNovaConta.trim() || undefined,
+        saldoInicialCentavos: parseMoneyToCents(saldoNovaConta.trim()),
+        dataSaldoInicial: new Date().toISOString().slice(0, 10),
+      });
+      setMostrarNovaConta(false);
+      setNomeNovaConta("");
+      setInstituicaoNovaConta("");
+      setSaldoNovaConta("0,00");
+      await carregarContas();
+    } catch {
+      setErro("Não foi possível criar a conta. Confira os dados e tente novamente.");
+    } finally {
+      setSalvandoNovaConta(false);
+    }
+  }
 
   const saldoTotalCentavos = useMemo(
     () =>
@@ -207,13 +246,31 @@ export function ContasBancarias() {
           </>
         )}
 
-        <Link className="button-primary contas-add" href="/mais">
+        <button className="button-primary contas-add" type="button" onClick={() => setMostrarNovaConta(true)}>
           <span>Adicionar conta</span>
           <FiPlus size={19} aria-hidden="true" />
-        </Link>
+        </button>
       </main>
 
       <BottomNavigation active="/contas" />
+
+      {mostrarNovaConta && (
+        <div className="caixinhas-modal-backdrop" role="presentation">
+          <section className="caixinhas-modal" role="dialog" aria-modal="true" aria-labelledby="nova-conta-title">
+            <button className="caixinhas-modal__close" type="button" onClick={() => setMostrarNovaConta(false)} aria-label="Fechar">
+              <FiX />
+            </button>
+            <p className="caixinhas-modal__eyebrow">SUAS CONTAS</p>
+            <h2 id="nova-conta-title">Nova conta</h2>
+            <form onSubmit={criarNovaConta}>
+              <label className="field-group"><span className="field-label">Nome da conta</span><input className="text-input" value={nomeNovaConta} onChange={(event) => setNomeNovaConta(event.target.value)} placeholder="Ex.: Conta principal" autoFocus required /></label>
+              <label className="field-group"><span className="field-label">Instituição <span className="field-hint">(opcional)</span></span><input className="text-input" value={instituicaoNovaConta} onChange={(event) => setInstituicaoNovaConta(event.target.value)} placeholder="Ex.: Nubank" /></label>
+              <label className="field-group"><span className="field-label">Saldo inicial</span><input className="text-input" inputMode="decimal" value={saldoNovaConta} onChange={(event) => setSaldoNovaConta(event.target.value)} /><span className="field-hint">Use vírgula para os centavos.</span></label>
+              <div className="caixinhas-modal__actions"><button className="button-secondary" type="button" onClick={() => setMostrarNovaConta(false)} disabled={salvandoNovaConta}>Cancelar</button><button className="button-primary" type="submit" disabled={salvandoNovaConta}>{salvandoNovaConta ? "Salvando..." : "Criar conta"}</button></div>
+            </form>
+          </section>
+        </div>
+      )}
     </>
   );
 }

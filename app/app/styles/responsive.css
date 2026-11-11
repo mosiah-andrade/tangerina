@@ -104,7 +104,8 @@
 
 @media (min-width: 900px) {
   /* Desktop: a navegação deixa de flutuar e passa a ocupar uma coluna real. */
-  body {
+  /* A grade lateral só existe nas telas internas com navegação. */
+  body:has(.bottom-nav) {
     display: grid;
     grid-template-columns: 240px minmax(0, 1fr);
     align-items: start;

@@ -183,3 +183,41 @@ test("does not edit a missing bank account", async () => {
     delete globalThis.window;
   }
 });
+
+
+test("persiste a edição da conta após reabrir o banco", async () => {
+  const db = await prepararBanco();
+
+  try {
+    const { criarContaBancaria } =
+      await import("../lib/persistence/contas/criar.ts");
+    const { editarContaBancaria } =
+      await import("../lib/persistence/contas/editar.ts");
+
+    const criada = await criarContaBancaria(db, {
+      nome: "Conta antiga",
+      instituicao: "Banco antigo",
+      saldoInicialCentavos: 40_000,
+      dataSaldoInicial: "2026-11-11",
+    });
+
+    await editarContaBancaria(db, criada.id, {
+      nome: "Conta principal",
+      instituicao: "Banco Tangerina",
+    });
+
+    db.close();
+    await db.open();
+
+    const persistida = await db.contas.get(criada.id);
+
+    assert.equal(persistida?.nome, "Conta principal");
+    assert.equal(persistida?.instituicao, "Banco Tangerina");
+    assert.equal(persistida?.saldoInicialCentavos, 40_000);
+    assert.equal(persistida?.ativa, true);
+  } finally {
+    db.close();
+    await db.delete();
+    delete globalThis.window;
+  }
+});
