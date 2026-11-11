@@ -200,13 +200,13 @@ const milestones = [
  ]}
 ];
 const STORAGE_KEY="tangerina-roadmap-v1";
-let completed = {T1:true,T2:true,T3:true,T4:true,T5:true,T6:true,T7:true,T8:true,T9:true,T10:true,UX1:true,UX2:true,UX3:true,T11:true,T12:true,T13:true,T14:true,T15:true};
-try { const saved = localStorage.getItem(STORAGE_KEY); completed = saved ? {...{T1:true,T2:true,T3:true,T4:true,T5:true,T6:true,T7:true,T8:true,T9:true,T10:true,UX1:true,UX2:true,UX3:true,T11:true,T12:true,T13:true,T14:true,T15:true}, ...(JSON.parse(saved) || {})} : {T1:true,T2:true,T3:true,T4:true,T5:true,T6:true,T7:true,T8:true,T9:true,T10:true,UX1:true,UX2:true,UX3:true,T11:true,T12:true,T13:true,T14:true,T15:true}; } catch(e) { completed = {T1:true,T2:true,T3:true,T4:true,T5:true,T6:true,T7:true,T8:true,T9:true,T10:true,UX1:true,UX2:true,UX3:true,T11:true,T12:true,T13:true,T14:true,T15:true}; }
+let completed = {T1:true,T2:true,T3:true,T4:true,T5:true,T6:true,T7:true,T8:true,T9:true,T10:true,UX1:true,UX2:true,UX3:true,T11:true,T12:true,T13:true,T14:true,T15:true,T16:true};
+try { const saved = localStorage.getItem(STORAGE_KEY); completed = saved ? {...{T1:true,T2:true,T3:true,T4:true,T5:true,T6:true,T7:true,T8:true,T9:true,T10:true,UX1:true,UX2:true,UX3:true,T11:true,T12:true,T13:true,T14:true,T15:true,T16:true}, ...(JSON.parse(saved) || {})} : {T1:true,T2:true,T3:true,T4:true,T5:true,T6:true,T7:true,T8:true,T9:true,T10:true,UX1:true,UX2:true,UX3:true,T11:true,T12:true,T13:true,T14:true,T15:true,T16:true}; } catch(e) { completed = {T1:true,T2:true,T3:true,T4:true,T5:true,T6:true,T7:true,T8:true,T9:true,T10:true,UX1:true,UX2:true,UX3:true,T11:true,T12:true,T13:true,T14:true,T15:true,T16:true}; }
 // T10 e T15 foram concluídas e integradas à main; preservar o status oficial mesmo se houver progresso antigo salvo neste navegador.
 completed.T10 = true;
 completed.T15 = true;
 const allTasks = () => milestones.flatMap(m => m.tasks.map(t => ({m,t})));
-function save(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(completed));}catch(e){}}
+// T16 concluída e integrada à main: manter marcada mesmo com localStorage antigo.\ncompleted.T16 = true;\nfunction save(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(completed));}catch(e){}}
 function render(){
  const filter=document.getElementById("filterStatus").value;
  const root=document.getElementById("milestones");
