@@ -96,7 +96,7 @@ export function Caixinhas() {
   }
 
   return <>
-    <main className="app-shell caixinhas-page ml-8">
+    <main className="app-shell caixinhas-page">
       <header className="welcome-brand" aria-label="Tangerina Financeiro">
         <Image
           src="/favicon.svg"
@@ -120,12 +120,12 @@ export function Caixinhas() {
       </section>
 
       {erro && <p className="caixinhas-error" role="alert">{erro}</p>}
-      <div className="contas-section-heading"><h2>Suas caixinhas</h2><button className="button-secondary caixinhas-add-small" onClick={abrirNova}><FiPlus /> Adicionar</button></div>
+      <div className="caixinhas-section-heading"><h2>Suas caixinhas</h2><button className="button-secondary caixinhas-add-small" onClick={abrirNova}><FiPlus /> Adicionar</button></div>
 
       {itens === null && !erro ? <section className="caixinhas-state" aria-live="polite"><p className="field-hint">Carregando suas caixinhas...</p></section> : itens === null ? null : itens.length === 0 ? (
         <section className="caixinhas-empty surface-card"><span className="caixinhas-empty__icon"><FiBox size={22} /></span><strong>Você ainda não criou uma caixinha.</strong><p>Crie caixinhas para organizar partes do seu dinheiro por objetivo, sem duplicar seu saldo real.</p></section>
       ) : (
-        <section className="caixinhas-lista" aria-label="Caixinhas">
+        <section className="caixinhas-lista caixinhas-bento" aria-label="Caixinhas">
           {itens.map((item) => <article className={item.caixinha.ativa ? "caixinha-card" : "caixinha-card caixinha-card--inactive"} key={item.caixinha.id}>
             <div className="caixinha-card__main"><span className="caixinha-card__icon"><FiBox size={19} /></span><div><strong>{item.caixinha.nome}</strong>{item.caixinha.descricao && <p>{item.caixinha.descricao}</p>}<span className="caixinha-card__value">{formatMoneyFromCents(item.saldoAtualCentavos)}</span><span className={item.caixinha.ativa ? "caixinha-card__status" : "caixinha-card__status caixinha-card__status--inactive"}>{item.caixinha.ativa ? "Ativa" : "Arquivada"}</span></div></div>
             <div className="caixinha-card__actions"><button type="button" onClick={() => abrirEdicao(item)} aria-label={`Editar ${item.caixinha.nome}`}><FiEdit3 /></button>{item.caixinha.ativa && <button type="button" onClick={() => void arquivar(item.caixinha.id)} aria-label={`Arquivar ${item.caixinha.nome}`}><FiArchive /></button>}</div>
