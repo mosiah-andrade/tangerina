@@ -1548,3 +1548,185 @@ button {
 .contas-add {
   margin-top: 20px;
 }
+
+
+/* T16.05 — tela de contas bancárias */
+.contas-page {
+  position: relative;
+}
+.contas-back,
+.contas-header-space {
+  display: grid;
+  width: 42px;
+  height: 42px;
+  place-items: center;
+}
+.contas-back {
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.52);
+  color: var(--emerald);
+  transition: transform var(--motion-fast) var(--motion-easing);
+}
+.contas-back:hover {
+  transform: translateX(-2px);
+}
+.contas-intro {
+  margin-bottom: 20px;
+}
+.contas-intro > span {
+  display: block;
+  margin-top: 12px;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.6;
+}
+.contas-total {
+  margin-bottom: 25px;
+}
+.contas-section-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 0 12px;
+}
+.contas-section-heading h2 {
+  margin: 0;
+  color: var(--emerald);
+  font-family: var(--font-brand);
+  font-size: 24px;
+  font-weight: 600;
+}
+.contas-section-heading span {
+  display: grid;
+  min-width: 24px;
+  min-height: 24px;
+  place-items: center;
+  padding-inline: 7px;
+  border: 1px solid rgba(197, 155, 39, 0.28);
+  border-radius: 999px;
+  color: var(--gold-dark);
+  font-size: 10px;
+  font-weight: 700;
+}
+.contas-state {
+  min-height: 330px;
+  display: grid;
+  place-items: center;
+}
+.contas-lista {
+  display: grid;
+  gap: 10px;
+}
+.conta-card {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding: 16px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.58);
+  box-shadow: 0 8px 24px rgba(6, 38, 26, 0.035);
+}
+.conta-card__icon,
+.contas-empty__icon,
+.contas-error__icon {
+  display: grid;
+  flex: 0 0 auto;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border: 1px solid rgba(11, 60, 42, 0.1);
+  background: var(--mint);
+  color: var(--emerald);
+}
+.conta-card__content {
+  display: grid;
+  min-width: 0;
+  flex: 1;
+  gap: 3px;
+}
+.conta-card__content p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 9px;
+}
+.conta-card__content strong {
+  overflow-wrap: anywhere;
+  color: var(--emerald);
+  font-size: 12px;
+}
+.conta-card__content span {
+  color: var(--gold-dark);
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+}
+.conta-status {
+  align-self: flex-start;
+  padding-top: 2px;
+  color: var(--color-success);
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+}
+.conta-status--inactive {
+  color: var(--muted);
+}
+.contas-empty,
+.contas-error {
+  display: grid;
+  justify-items: center;
+  gap: 12px;
+  padding: 34px 22px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.48);
+  text-align: center;
+}
+.contas-empty strong,
+.contas-error strong {
+  color: var(--emerald);
+  font-size: 13px;
+}
+.contas-empty p,
+.contas-error p {
+  max-width: 300px;
+  margin: 0;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.6;
+}
+.contas-error {
+  justify-items: start;
+  text-align: left;
+}
+.contas-error > div {
+  display: grid;
+  gap: 5px;
+}
+.contas-error__icon {
+  background: rgba(165, 59, 50, 0.07);
+  color: var(--color-danger);
+}
+.contas-retry {
+  width: 100%;
+  margin-top: 4px;
+}
+.contas-retry__icon {
+  animation: contas-spin 900ms linear infinite;
+}
+.contas-add {
+  margin-top: 20px;
+}
+@keyframes contas-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .contas-back {
+    transition: none;
+  }
+  .contas-retry__icon {
+    animation: none;
+  }
+}
