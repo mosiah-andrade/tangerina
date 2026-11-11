@@ -1,0 +1,391 @@
+/* Abertura do app: splash por cima da primeira renderização. */
+.app-startup {
+  position: fixed;
+  z-index: 1000;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: var(--silk);
+  animation: startup-appear 0.25s ease-out both;
+}
+.app-startup .seed-loading--screen {
+  width: 100%;
+}
+.app-startup .seed-loader {
+  width: 116px;
+  height: 116px;
+}
+.app-startup .seed-loader__seed {
+  width: 16px;
+  height: 30px;
+  left: calc(50% - 8px);
+  top: calc(50% - 19px);
+  transform-origin: 8px 19px;
+}
+.app-startup .seed-loading__label {
+  max-width: 270px;
+  padding-inline: 12px;
+  line-height: 1.8;
+}
+.loading-preview {
+  position: relative;
+  min-height: 100svh;
+  background: var(--silk);
+}
+.loading-preview__back {
+  position: fixed;
+  z-index: 2;
+  left: 50%;
+  bottom: 28px;
+  transform: translateX(-50%);
+  padding: 12px 18px;
+  border: 1px solid var(--line);
+  background: rgba(249, 248, 243, 0.92);
+  color: var(--emerald);
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+@keyframes startup-appear {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .app-startup {
+    animation: none;
+  }
+}
+
+/* Loading interno: uma semente que pulsa e orbita, sem a flor de abertura. */
+.seed-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding: 36px 20px;
+  color: var(--emerald);
+  text-align: center;
+}
+.seed-loading--screen {
+  min-height: 100svh;
+  gap: 22px;
+  background:
+    radial-gradient(
+      ellipse at center,
+      rgba(197, 155, 39, 0.07),
+      transparent 48%
+    ),
+    var(--silk);
+}
+.seed-loader {
+  position: relative;
+  width: 96px;
+  height: 96px;
+  display: grid;
+  place-items: center;
+  animation: seed-orbit 7s linear infinite;
+}
+.seed-loader__seed {
+  position: absolute;
+  left: calc(50% - 5.5px);
+  top: calc(50% - 11px);
+  width: 11px;
+  height: 22px;
+  border: 1px solid rgba(249, 248, 243, 0.9);
+  border-radius: 90% 12% 90% 12%;
+  transform-origin: 5.5px 11px;
+  box-shadow: 0 2px 8px rgba(6, 38, 26, 0.12);
+  animation: seed-breathe 1.5s ease-in-out infinite;
+}
+.seed-loader__seed--green {
+  background: var(--emerald);
+}
+.seed-loader__seed--gold {
+  background: var(--gold);
+}
+.seed-loader__seed--cream {
+  background: #d9e5de;
+  border-color: var(--emerald);
+}
+.seed-loader__core {
+  width: 10px;
+  height: 10px;
+  border: 1px solid var(--gold);
+  border-radius: 50%;
+  background: var(--silk);
+  box-shadow: 0 0 0 5px rgba(197, 155, 39, 0.08);
+}
+.seed-loader__soil {
+  position: absolute;
+  bottom: 10px;
+  width: 24px;
+  height: 3px;
+  border-radius: 50%;
+  background: rgba(197, 155, 39, 0.42);
+  animation: seed-soil 1.5s ease-in-out infinite;
+}
+.seed-loading__label {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  margin: 0;
+  color: var(--gold-dark);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1.8px;
+  text-transform: uppercase;
+}
+.seed-loading__dots {
+  display: inline-block;
+  width: 18px;
+  overflow: hidden;
+  text-align: left;
+  animation: seed-dots 1.4s steps(4, end) infinite;
+}
+@keyframes seed-orbit {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes seed-breathe {
+  0%,
+  100% {
+    opacity: 0.65;
+    scale: 0.82;
+  }
+  50% {
+    opacity: 1;
+    scale: 1.1;
+  }
+}
+@keyframes seed-soil {
+  0%,
+  100% {
+    transform: scaleX(0.72);
+    opacity: 0.5;
+  }
+  50% {
+    transform: scaleX(1.15);
+    opacity: 1;
+  }
+}
+@keyframes seed-dots {
+  0% {
+    width: 0;
+  }
+  100% {
+    width: 18px;
+  }
+}
+
+/* Inicialização: sequência própria de semente, broto e flor desabrochando. */
+.app-startup {
+  position: fixed;
+  z-index: 1000;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background:
+    radial-gradient(
+      ellipse at 50% 42%,
+      rgba(197, 155, 39, 0.11),
+      transparent 38%
+    ),
+    var(--silk);
+  animation: startup-appear 0.35s ease-out both;
+}
+.startup-scene {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 100svh;
+  padding: 24px;
+  animation: startup-scene-in 0.6s ease-out both;
+}
+.startup-flower {
+  width: clamp(180px, 52vw, 240px);
+  height: auto;
+  overflow: visible;
+  filter: drop-shadow(0 14px 16px rgba(6, 38, 26, 0.09));
+}
+.startup-flower__leaf {
+  opacity: 0;
+  animation: startup-leaf-open 0.6s ease-out 0.2s forwards;
+}
+.startup-bud {
+  transform-box: view-box;
+  transform-origin: 100px 134px;
+  animation: startup-bud-grow 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+/* Rotação fica na camada SVG externa; somente a camada interna recebe escala. */
+.startup-flower__petal {
+  transform-box: fill-box;
+  transform-origin: center;
+  scale: 0.06;
+  opacity: 0;
+  animation: startup-petal-open 0.8s cubic-bezier(0.18, 0.75, 0.2, 1.12)
+    var(--delay) forwards;
+}
+.startup-flower__stamen {
+  transform-box: fill-box;
+  transform-origin: center;
+  scale: 1 0.05;
+  opacity: 0;
+  animation: startup-stamen-grow 0.4s ease-out var(--delay) forwards;
+}
+.startup-brand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  opacity: 0;
+  transform: translateY(8px);
+  animation: startup-brand-reveal 0.7s ease-out 1.8s forwards;
+}
+.startup-brand .brand-lockup {
+  justify-content: center;
+  gap: 10px;
+}
+.startup-brand .brand-name {
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: clamp(38px, 10vw, 48px);
+  font-weight: 600;
+  letter-spacing: -1px;
+}
+.startup-brand .dashboard-logo {
+  width: 44px;
+  height: 44px;
+}
+.startup-brand p {
+  margin: 0;
+  color: var(--gold-dark);
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 2.2px;
+}
+.startup-brand__line {
+  width: 34px;
+  height: 1px;
+  margin-top: 8px;
+  background: var(--gold);
+  transform: scaleX(0);
+  animation: startup-line-reveal 0.5s ease-out 2.35s forwards;
+}
+.loading-preview .seed-loading .brand-lockup {
+  display: none;
+}
+@keyframes startup-appear {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes startup-scene-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes startup-bud-grow {
+  0% {
+    transform: scale(0.2) translateY(18px);
+    opacity: 0;
+  }
+  70% {
+    transform: scale(1.08);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+@keyframes startup-leaf-open {
+  from {
+    scale: 0.05;
+    opacity: 0;
+  }
+  to {
+    scale: 1;
+    opacity: 1;
+  }
+}
+@keyframes startup-petal-open {
+  0% {
+    scale: 0.06;
+    opacity: 0;
+  }
+  72% {
+    scale: 1.07;
+    opacity: 1;
+  }
+  100% {
+    scale: 1;
+    opacity: 1;
+  }
+}
+@keyframes startup-stamen-grow {
+  from {
+    scale: 1 0.05;
+    opacity: 0;
+  }
+  to {
+    scale: 1 1;
+    opacity: 1;
+  }
+}
+@keyframes startup-brand-reveal {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes startup-line-reveal {
+  to {
+    transform: scaleX(1);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .seed-loader,
+  .seed-loader__seed,
+  .seed-loader__soil,
+  .seed-loading__dots,
+  .startup-scene,
+  .startup-bud,
+  .startup-flower__leaf,
+  .startup-flower__petal,
+  .startup-flower__stamen,
+  .startup-brand,
+  .startup-brand__line {
+    animation: none;
+  }
+  .startup-flower__leaf,
+  .startup-flower__petal,
+  .startup-flower__stamen {
+    opacity: 1;
+    scale: 1;
+  }
+  .startup-brand {
+    opacity: 1;
+    transform: none;
+  }
+  .startup-brand__line {
+    transform: scaleX(1);
+  }
+}
+
