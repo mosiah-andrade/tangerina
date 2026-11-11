@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import Image from "next/image";
 import { FiArchive, FiBox, FiEdit3, FiPlus, FiRefreshCw, FiX } from "react-icons/fi";
 import { AppBrand } from "@/components/app-brand";
 import { BottomNavigation } from "@/components/bottom-navigation";
@@ -96,8 +97,19 @@ export function Caixinhas() {
   }
 
   return <>
-    <main className="app-shell caixinhas-page">
-      <header className="app-header"><span className="contas-header-space" /><AppBrand /><span className="contas-header-space" /></header>
+    <main className="app-shell caixinhas-page ml-8">
+      <header className="welcome-brand" aria-label="Tangerina Financeiro">
+        <Image
+          src="/favicon.svg"
+          alt=""
+          width={56}
+          height={56}
+          priority
+          className="welcome-brand__icon"
+          unoptimized
+        />
+        <span className="welcome-brand__name">Tangerina</span>
+      </header>
       <section className="dashboard-greeting caixinhas-intro">
         <p>ORGANIZAÇÃO</p><h1>Suas <em>caixinhas</em></h1>
         <span>Organize seu dinheiro sem duplicar seu patrimônio.</span>
