@@ -23,3 +23,86 @@
 @media(min-width:1100px){.caixinhas-page{max-width:1180px}.caixinhas-total{display:grid;grid-template-columns:1fr auto;align-items:center;min-height:190px}.caixinhas-total .balance-caption{max-width:420px}.caixinhas-lista{grid-template-columns:repeat(3,minmax(0,1fr))}.caixinha-card{align-items:flex-start}.caixinha-card__actions{position:absolute;right:var(--space-4);bottom:var(--space-4)}}
 @media(max-width:420px){.caixinhas-total{padding:var(--space-5)}.caixinha-card{align-items:flex-start;padding:var(--space-4)}.caixinha-card__actions{flex-direction:column}.caixinhas-modal__actions{grid-template-columns:1fr}}
 @media(prefers-reduced-motion:reduce){.caixinha-card{transition:none}}
+
+
+/* Desktop — Bento financeiro */
+@media (min-width: 900px) {
+  .caixinhas-page {
+    max-width: 1240px;
+  }
+
+  .caixinhas-bento {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    grid-auto-flow: dense;
+    gap: var(--space-5);
+  }
+
+  .caixinhas-bento .caixinha-card {
+    grid-column: span 4;
+    min-height: 190px;
+    padding: var(--space-6);
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-content: space-between;
+  }
+
+  .caixinhas-bento .caixinha-card:first-child {
+    grid-column: span 8;
+    min-height: 250px;
+  }
+
+  .caixinhas-bento .caixinha-card:first-child .caixinha-card__main {
+    align-items: flex-start;
+  }
+
+  .caixinhas-bento .caixinha-card:first-child .caixinha-card__icon {
+    width: 62px;
+    height: 62px;
+    border-radius: 20px;
+  }
+
+  .caixinhas-bento .caixinha-card:first-child .caixinha-card__main strong {
+    font-size: var(--text-lg);
+  }
+
+  .caixinhas-bento .caixinha-card:first-child .caixinha-card__value {
+    font-size: 2rem;
+  }
+
+  .caixinhas-bento .caixinha-card:nth-child(2) {
+    grid-column: span 4;
+  }
+
+  .caixinhas-bento .caixinha-card:nth-child(3),
+  .caixinhas-bento .caixinha-card:nth-child(4) {
+    grid-column: span 6;
+  }
+
+  .caixinhas-bento .caixinha-card:nth-child(n+5) {
+    grid-column: span 4;
+  }
+
+  .caixinha-card__actions {
+    position: static;
+    align-self: start;
+  }
+
+  .caixinhas-add {
+    margin-top: var(--space-7);
+  }
+}
+
+@media (min-width: 1200px) {
+  .caixinhas-total {
+    min-height: 220px;
+    padding: var(--space-10);
+  }
+}
+
+@media (max-width: 899px) {
+  .caixinhas-bento {
+    display: grid;
+    gap: var(--space-4);
+  }
+}
