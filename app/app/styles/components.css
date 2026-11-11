@@ -138,3 +138,20 @@
   }
 }
 
+
+
+/* Padrão global para mensagens de erro dentro de formulários e modais */
+.form-error,
+.modal-form-error {
+  margin: 0;
+  padding: 12px 14px;
+  border: 1px solid rgba(184, 55, 55, 0.22);
+  border-radius: 12px;
+  background: rgba(184, 55, 55, 0.09);
+  color: var(--color-danger);
+  font-size: var(--text-sm);
+  line-height: 1.45;
+}
+.modal-form-error {
+  width: 100%;
+}
