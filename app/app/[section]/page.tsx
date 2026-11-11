@@ -5,6 +5,7 @@ import { AppBrand } from "@/components/app-brand";
 import { BottomNavigation } from "@/components/bottom-navigation";
 import { SeedLoading } from "@/components/seed-loading";
 import { DemoDataControls } from "@/components/demo-data-controls";
+import { MaisOpcoes } from "@/components/mais-opcoes";
 
 const sections: Record<string, { title: string; description: string }> = {
   receitas: {
@@ -47,6 +48,9 @@ async function SectionContent({
   const { section } = await params;
   const item = sections[section];
   if (!item) notFound();
+  if (section === "mais") {
+    return <MaisOpcoes />;
+  }
 
   const activeNavigation =
     section === "movimentacoes"
