@@ -212,7 +212,7 @@ export function ContasBancarias() {
         </Link>
       </main>
 
-      <BottomNavigation active="/mais" />
+      <BottomNavigation active="/contas" />
     </>
   );
 }
