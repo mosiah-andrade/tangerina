@@ -3,16 +3,16 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-  "dev": "next dev",
-  "build": "next build",
-  "start": "next start",
-  "lint": "eslint",
-  "typecheck": "tsc --noEmit",
-  "test": "node --experimental-strip-types --test tests/*.test.mjs",
-  "test:file": "node --experimental-strip-types --test",
-  "format": "prettier --write .",
-  "format:check": "prettier --check ."
-},
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint",
+    "typecheck": "tsc --noEmit",
+    "test": "node --experimental-strip-types --test tests/*.test.mjs",
+    "test:file": "node --experimental-strip-types --test",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
   "dependencies": {
     "next": "16.4.3",
     "react": "19.3.0",
