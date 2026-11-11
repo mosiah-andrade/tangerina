@@ -119,7 +119,6 @@ export default function RegrasDistribuicaoPage() {
           </button>
         </section>
 
-        {erro && <p className="form-error">{erro}</p>}
 
         <section className="regras-lista">
           {regras.length === 0 ? (
@@ -170,6 +169,7 @@ export default function RegrasDistribuicaoPage() {
             <label>Caixinha<select value={form.caixinhaId} onChange={(event) => setForm({ ...form, caixinhaId: event.target.value })}><option value="">Selecione</option>{caixinhas.map((caixinha) => <option key={caixinha.id} value={caixinha.id}>{caixinha.nome}</option>)}</select></label>
             <label>Tipo<select value={form.tipoCalculo} onChange={(event) => setForm({ ...form, tipoCalculo: event.target.value as TipoCalculoDistribuicao, valor: event.target.value === "valor_fixo" ? "0,00" : "0" })}><option value="valor_fixo">Valor fixo</option><option value="percentual_receita_bruta">% da receita bruta</option><option value="percentual_saldo_restante">% do saldo restante</option></select></label>
             <label>{form.tipoCalculo === "valor_fixo" ? "Valor" : "Percentual"}<input value={form.valor} onChange={(event) => setForm({ ...form, valor: event.target.value })} inputMode="decimal" placeholder={form.tipoCalculo === "valor_fixo" ? "0,00" : "0"} /></label>
+            {erro && <p className="form-error regras-form-error" role="alert">{erro}</p>}
             <button className="button-primary" type="submit">Salvar regra</button>
           </form>
         </div>
