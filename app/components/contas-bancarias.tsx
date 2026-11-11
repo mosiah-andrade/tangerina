@@ -42,8 +42,33 @@ export function ContasBancarias() {
   }, []);
 
   useEffect(() => {
-    void carregarContas();
-  }, [carregarContas]);
+    let ativo = true;
+
+    const carregar = async () => {
+      try {
+        const db = getDatabase();
+        await db.open();
+
+        const contasCarregadas = await listarContasComSaldo(db);
+
+        if (ativo) {
+          setContas(contasCarregadas);
+        }
+      } catch {
+        if (ativo) {
+          setErro(
+            "Não foi possível acessar suas contas neste dispositivo. Tente novamente.",
+          );
+        }
+      }
+    };
+
+    void carregar();
+
+    return () => {
+      ativo = false;
+    };
+  }, []);
 
   const saldoTotalCentavos = useMemo(
     () =>
