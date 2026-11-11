@@ -37,3 +37,5 @@
     z-index: 2;
   }
 }
+
+.regras-form-error{margin:0;padding:12px 14px;border-radius:12px;background:rgba(184,55,55,.09);border:1px solid rgba(184,55,55,.22);color:#8f2f2f;font-size:var(--text-sm);line-height:1.45}.regras-form .form-error{grid-column:1/-1}
