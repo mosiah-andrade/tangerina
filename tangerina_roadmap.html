@@ -208,7 +208,8 @@ completed.T15 = true;
 const allTasks = () => milestones.flatMap(m => m.tasks.map(t => ({m,t})));
 // T16 e T17 concluídas e integradas à main: manter marcadas mesmo com localStorage antigo.
 completed.T16 = true;
-completed.T17 = true;\nfunction save(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(completed));}catch(e){}}
+completed.T17 = true;
+function save(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(completed));}catch(e){}}
 function render(){
  const filter=document.getElementById("filterStatus").value;
  const root=document.getElementById("milestones");
