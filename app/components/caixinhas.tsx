@@ -2,8 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
-import { FiArchive, FiBox, FiEdit3, FiPlus, FiRefreshCw, FiX } from "react-icons/fi";
-import { AppBrand } from "@/components/app-brand";
+import { FiArchive, FiBox, FiEdit3, FiPlus, FiX } from "react-icons/fi";
 import { BottomNavigation } from "@/components/bottom-navigation";
 import { formatMoneyFromCents } from "@/lib/format-money";
 import { parseMoneyToCents } from "@/domain/finance/money";

@@ -3,8 +3,7 @@
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import Image from "next/image";
-import { FiArrowLeft, FiCreditCard, FiPlus, FiRefreshCw } from "react-icons/fi";
-import { AppBrand } from "@/components/app-brand";
+import {  FiCreditCard, FiPlus, FiRefreshCw } from "react-icons/fi";
 import { BottomNavigation } from "@/components/bottom-navigation";
 import { SeedLoading } from "@/components/seed-loading";
 import { formatMoneyFromCents } from "@/lib/format-money";
