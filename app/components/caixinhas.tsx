@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { FiArchive, FiBox, FiEdit3, FiPlus, FiX } from "react-icons/fi";
 import { AppBrand } from "@/components/app-brand";
 import { BottomNavigation } from "@/components/bottom-navigation";
@@ -24,13 +24,38 @@ export function Caixinhas() {
   const [erro, setErro] = useState<string | null>(null);
   const [salvando, setSalvando] = useState(false);
 
-  const carregar = useCallback(async () => {
+  async function carregar() {
     const db = getDatabase();
     await db.open();
-    setItens(await listarCaixinhasComSaldo(db));
-  }, []);
+    const caixinhas = await listarCaixinhasComSaldo(db);
+    setItens(caixinhas);
+  }
 
-  useEffect(() => { void carregar().catch(() => setErro("Não foi possível carregar suas caixinhas.")); }, [carregar]);
+  useEffect(() => {
+    let ativo = true;
+
+    async function carregarInicial() {
+      try {
+        const db = getDatabase();
+        await db.open();
+        const caixinhas = await listarCaixinhasComSaldo(db);
+
+        if (ativo) {
+          setItens(caixinhas);
+        }
+      } catch {
+        if (ativo) {
+          setErro("Não foi possível carregar suas caixinhas.");
+        }
+      }
+    }
+
+    void carregarInicial();
+
+    return () => {
+      ativo = false;
+    };
+  }, []);
 
   const totalAlocado = useMemo(
     () => itens?.filter(({ caixinha }) => caixinha.ativa).reduce((t, item) => t + item.saldoAtualCentavos, 0) ?? 0,
