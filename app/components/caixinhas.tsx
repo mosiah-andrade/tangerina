@@ -144,7 +144,7 @@ export function Caixinhas() {
           <label className="field-group"><span className="field-label">Nome</span><input className="text-input" value={form.nome} onChange={(e) => setForm({ ...form, nome: e.target.value })} autoFocus placeholder="Ex.: Reserva de emergência" /></label>
           <label className="field-group"><span className="field-label">Descrição <span className="field-hint">(opcional)</span></span><textarea className="text-area" value={form.descricao} onChange={(e) => setForm({ ...form, descricao: e.target.value })} placeholder="Para que você está organizando este valor?" /></label>
           {!editando && <label className="field-group"><span className="field-label">Saldo inicial</span><input className="text-input" inputMode="decimal" value={form.saldo} onChange={(e) => setForm({ ...form, saldo: e.target.value })} /><span className="field-hint">Use vírgula para os centavos.</span></label>}
-          <p className="caixinhas-note">Caixinhas organizam seu patrimônio. O valor alocado não é somado novamente ao saldo das contas.</p>
+          <p className="caixinhas-note">Caixinhas organizam seu patrimônio. O valor alocado não é somado novamente ao saldo das contas.</p>\n          {erro && <p className="modal-form-error" role="alert">{erro}</p>}
           <div className="caixinhas-modal__actions"><button className="button-secondary" type="button" onClick={() => setMostrarForm(false)} disabled={salvando}>Cancelar</button><button className="button-primary" type="submit" disabled={salvando}>{salvando ? "Salvando..." : "Salvar caixinha"}</button></div>
         </form>
       </section>
