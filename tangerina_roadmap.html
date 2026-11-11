@@ -153,7 +153,7 @@ const milestones = [
   ["T15","Criar dados de demonstração e reset seguro","CONCLUÍDA E INTEGRADA À MAIN (PR #34, merge confirmado). Implementado cenário de demonstração persistido com carregamento e reset atômicos, rollback em falhas, metadados de estado e controles na seção Mais. O dashboard passou a calcular os valores diretamente dos dados persistidos e a se atualizar após carregar/resetar por meio do evento `tangerina:dados-financeiros-atualizados`. Validação final: Prettier, typecheck, ESLint, build e 89 testes automatizados aprovados. Documentação: docs/arquitetura/T15-dados-demonstracao-reset.md.","DevEx",2],
   ["T16","Implementar contas bancárias","CONCLUÍDA E INTEGRADA À MAIN. Implementados cadastro e edição de contas bancárias, instituição opcional, saldo inicial em centavos, cálculo do saldo atual a partir dos efeitos de saldo ativos e listagem com navegação para edição. A edição preserva os campos financeiros e suporta remoção da instituição. A navegação mobile foi refinada após revisão visual para seguir padrões cognitivos de aplicativos conhecidos: cinco ações na mesma linha, destaque hierárquico para a ação central Registrar, curva integrada à barra, estado ativo correto e comportamento responsivo preservado em telas maiores. Validação final da T16: ESLint, typecheck, build e 102 testes automatizados aprovados; Prettier aprovado nos arquivos alterados. Documentação: docs/arquitetura/T16-contas-bancarias.md.","Funcionalidade",4],
   ["T17","Implementar caixinhas","CONCLUÍDA E INTEGRADA À MAIN (PR #48). Implementados criação, edição e arquivamento de caixinhas, persistência local e cálculo de saldo por caixinha sem dupla contagem do patrimônio. Interface responsiva validada em mobile e desktop, com composição Bento em telas maiores e navegação desktop integrada ao layout sem sobreposição do conteúdo. Validação final: ESLint sem erros ou warnings, typecheck aprovado, build de produção aprovado e 104/104 testes automatizados aprovados.","Funcionalidade",4],
-  ["T18","Testar persistência e cálculos-base","Recarregar, editar e excluir dados; conferir saldo consolidado e saldo não alocado.","Qualidade",2]
+  ["T18","Testar persistência e cálculos-base","CONCLUÍDA E VALIDADA MANUALMENTE. Testados recarregamento e persistência de contas e caixinhas, edição e arquivamento, saldo consolidado e saldo não alocado sem dupla contagem. A validação final incluiu 107/107 testes automatizados aprovados, ESLint, typecheck e build de produção aprovados, além de testes manuais dos fluxos principais e correções de regressões de navegação, criação de contas e carregamento global de estilos.","Qualidade",2]
  ]},
  {id:"M4",title:"Receitas e distribuição por caixinhas",desc:"Entregar o fluxo central que diferencia o Tangerina.",weeks:"Semanas 5–6",hours:28,outcome:"Saída: registrar uma receita, sugerir distribuição, revisar e confirmar sem perda de valores.",tasks:[
   ["T19","Criar cadastro de regras de distribuição","Regras fixas e percentuais, ordem, ativação e base de cálculo explícita.","Financeiro",5],
@@ -200,15 +200,16 @@ const milestones = [
  ]}
 ];
 const STORAGE_KEY="tangerina-roadmap-v1";
-let completed = {T1:true,T2:true,T3:true,T4:true,T5:true,T6:true,T7:true,T8:true,T9:true,T10:true,UX1:true,UX2:true,UX3:true,T11:true,T12:true,T13:true,T14:true,T15:true,T16:true,T17:true};
-try { const saved = localStorage.getItem(STORAGE_KEY); completed = saved ? {...{T1:true,T2:true,T3:true,T4:true,T5:true,T6:true,T7:true,T8:true,T9:true,T10:true,UX1:true,UX2:true,UX3:true,T11:true,T12:true,T13:true,T14:true,T15:true,T16:true,T17:true}, ...(JSON.parse(saved) || {})} : {T1:true,T2:true,T3:true,T4:true,T5:true,T6:true,T7:true,T8:true,T9:true,T10:true,UX1:true,UX2:true,UX3:true,T11:true,T12:true,T13:true,T14:true,T15:true,T16:true,T17:true}; } catch(e) { completed = {T1:true,T2:true,T3:true,T4:true,T5:true,T6:true,T7:true,T8:true,T9:true,T10:true,UX1:true,UX2:true,UX3:true,T11:true,T12:true,T13:true,T14:true,T15:true,T16:true,T17:true}; }
+let completed = {T1:true,T2:true,T3:true,T4:true,T5:true,T6:true,T7:true,T8:true,T9:true,T10:true,UX1:true,UX2:true,UX3:true,T11:true,T12:true,T13:true,T14:true,T15:true,T16:true,T17:true,T18:true};
+try { const saved = localStorage.getItem(STORAGE_KEY); completed = saved ? {...{T1:true,T2:true,T3:true,T4:true,T5:true,T6:true,T7:true,T8:true,T9:true,T10:true,UX1:true,UX2:true,UX3:true,T11:true,T12:true,T13:true,T14:true,T15:true,T16:true,T17:true,T18:true}, ...(JSON.parse(saved) || {})} : {T1:true,T2:true,T3:true,T4:true,T5:true,T6:true,T7:true,T8:true,T9:true,T10:true,UX1:true,UX2:true,UX3:true,T11:true,T12:true,T13:true,T14:true,T15:true,T16:true,T17:true}; } catch(e) { completed = {T1:true,T2:true,T3:true,T4:true,T5:true,T6:true,T7:true,T8:true,T9:true,T10:true,UX1:true,UX2:true,UX3:true,T11:true,T12:true,T13:true,T14:true,T15:true,T16:true,T17:true}; }
 // T10 e T15 foram concluídas e integradas à main; preservar o status oficial mesmo se houver progresso antigo salvo neste navegador.
 completed.T10 = true;
 completed.T15 = true;
 const allTasks = () => milestones.flatMap(m => m.tasks.map(t => ({m,t})));
-// T16 e T17 concluídas e integradas à main: manter marcadas mesmo com localStorage antigo.
+// T16, T17 e T18 concluídas: manter marcadas mesmo com localStorage antigo.
 completed.T16 = true;
 completed.T17 = true;
+completed.T18 = true;
 function save(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(completed));}catch(e){}}
 function render(){
  const filter=document.getElementById("filterStatus").value;
