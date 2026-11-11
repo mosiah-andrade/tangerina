@@ -1,4 +1,5 @@
 import type { Alocacao, Caixinha, Conta, EfeitoSaldo } from "../entities.ts";
+import { calcularSaldoConta } from "../contas/saldo.ts";
 
 export interface ResumoDashboard {
   patrimonioCentavos: number;
@@ -10,19 +11,7 @@ function somarValores(valores: number[]): number {
   return valores.reduce((total, valor) => total + valor, 0);
 }
 
-function calcularSaldoConta(conta: Conta, efeitosSaldo: EfeitoSaldo[]): number {
-  const efeitosAtivos = efeitosSaldo.filter(
-    (efeito) =>
-      efeito.tipoAlvo === "conta" &&
-      efeito.alvoId === conta.id &&
-      efeito.estado === "ativo",
-  );
 
-  return (
-    conta.saldoInicialCentavos +
-    somarValores(efeitosAtivos.map((efeito) => efeito.valorCentavosAssinado))
-  );
-}
 
 function calcularSaldoCaixinha(
   caixinha: Caixinha,
