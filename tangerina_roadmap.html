@@ -156,7 +156,7 @@ const milestones = [
   ["T18","Testar persistência e cálculos-base","CONCLUÍDA E VALIDADA MANUALMENTE. Testados recarregamento e persistência de contas e caixinhas, edição e arquivamento, saldo consolidado e saldo não alocado sem dupla contagem. A validação final incluiu 107/107 testes automatizados aprovados, ESLint, typecheck e build de produção aprovados, além de testes manuais dos fluxos principais e correções de regressões de navegação, criação de contas e carregamento global de estilos.","Qualidade",2]
  ]},
  {id:"M4",title:"Receitas e distribuição por caixinhas",desc:"Entregar o fluxo central que diferencia o Tangerina.",weeks:"Semanas 5–6",hours:28,outcome:"Saída: registrar uma receita, sugerir distribuição, revisar e confirmar sem perda de valores.",tasks:[
-  ["T19","Criar cadastro de regras de distribuição","Regras fixas e percentuais, ordem, ativação e base de cálculo explícita.","Financeiro",5],
+  ["T19","Criar cadastro de regras de distribuição","CONCLUÍDA E INTEGRADA À MAIN. Implementado cadastro persistido de regras de distribuição vinculadas às caixinhas, com valor fixo, percentual da receita bruta e percentual do saldo restante, ordem explícita e ativação/desativação. Interface visual em /regras-distribuicao seguindo a identidade Tangerina e Bento Design, com criação por modal responsivo e mensagens de erro exibidas dentro do modal. Validação automatizada: ESLint, typecheck, build e 108/108 testes aprovados; validação manual dos fluxos de criação e responsividade concluída.","Financeiro",5],
   ["T20","Implementar motor de distribuição","Calcular sugestões em centavos, respeitar ordem/base e sinalizar excesso ou saldo restante.","Financeiro",6],
   ["T21","Criar formulário de receita","Valor, descrição, data, conta bancária e validações amigáveis.","UI",4],
   ["T22","Construir etapa de revisão da distribuição","Editar sugestões, mostrar distribuído e não alocado e impedir confirmação inconsistente.","UI",4],
@@ -200,8 +200,8 @@ const milestones = [
  ]}
 ];
 const STORAGE_KEY="tangerina-roadmap-v1";
-let completed = {T1:true,T2:true,T3:true,T4:true,T5:true,T6:true,T7:true,T8:true,T9:true,T10:true,UX1:true,UX2:true,UX3:true,T11:true,T12:true,T13:true,T14:true,T15:true,T16:true,T17:true,T18:true};
-try { const saved = localStorage.getItem(STORAGE_KEY); completed = saved ? {...{T1:true,T2:true,T3:true,T4:true,T5:true,T6:true,T7:true,T8:true,T9:true,T10:true,UX1:true,UX2:true,UX3:true,T11:true,T12:true,T13:true,T14:true,T15:true,T16:true,T17:true,T18:true}, ...(JSON.parse(saved) || {})} : {T1:true,T2:true,T3:true,T4:true,T5:true,T6:true,T7:true,T8:true,T9:true,T10:true,UX1:true,UX2:true,UX3:true,T11:true,T12:true,T13:true,T14:true,T15:true,T16:true,T17:true}; } catch(e) { completed = {T1:true,T2:true,T3:true,T4:true,T5:true,T6:true,T7:true,T8:true,T9:true,T10:true,UX1:true,UX2:true,UX3:true,T11:true,T12:true,T13:true,T14:true,T15:true,T16:true,T17:true}; }
+let completed = {T1:true,T2:true,T3:true,T4:true,T5:true,T6:true,T7:true,T8:true,T9:true,T10:true,UX1:true,UX2:true,UX3:true,T11:true,T12:true,T13:true,T14:true,T15:true,T16:true,T17:true,T18:true,T19:true};
+try { const saved = localStorage.getItem(STORAGE_KEY); completed = saved ? {...{T1:true,T2:true,T3:true,T4:true,T5:true,T6:true,T7:true,T8:true,T9:true,T10:true,UX1:true,UX2:true,UX3:true,T11:true,T12:true,T13:true,T14:true,T15:true,T16:true,T17:true,T18:true}, ...(JSON.parse(saved) || {})} : {T1:true,T2:true,T3:true,T4:true,T5:true,T6:true,T7:true,T8:true,T9:true,T10:true,UX1:true,UX2:true,UX3:true,T11:true,T12:true,T13:true,T14:true,T15:true,T16:true,T17:true,T19:true}; } catch(e) { completed = {T1:true,T2:true,T3:true,T4:true,T5:true,T6:true,T7:true,T8:true,T9:true,T10:true,UX1:true,UX2:true,UX3:true,T11:true,T12:true,T13:true,T14:true,T15:true,T16:true,T17:true}; }
 // T10 e T15 foram concluídas e integradas à main; preservar o status oficial mesmo se houver progresso antigo salvo neste navegador.
 completed.T10 = true;
 completed.T15 = true;
@@ -210,6 +210,8 @@ const allTasks = () => milestones.flatMap(m => m.tasks.map(t => ({m,t})));
 completed.T16 = true;
 completed.T17 = true;
 completed.T18 = true;
+// T19 concluída e integrada à main; preservar o status oficial mesmo com localStorage antigo.
+completed.T19 = true;
 function save(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(completed));}catch(e){}}
 function render(){
  const filter=document.getElementById("filterStatus").value;
