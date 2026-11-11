@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { FiArrowLeft, FiPlus, FiX } from "react-icons/fi";
+import { FiPlus, FiX } from "react-icons/fi";
 import { AppBrand } from "@/components/app-brand";
 import { BottomNavigation } from "@/components/bottom-navigation";
 import { getDatabase } from "@/lib/persistence/database";
@@ -114,7 +114,7 @@ export default function RegrasDistribuicaoPage() {
             <strong>{regras.length} {regras.length === 1 ? "regra" : "regras"} cadastradas</strong>
             <small>A ordem será usada na distribuição da receita.</small>
           </div>
-          <button className="button-primary" type="button" onClick={() => setAberto(true)}>
+          <button className="button-primary regras-nova-regra" type="button" onClick={() => { setErro(""); setAberto(true); }}>
             <FiPlus aria-hidden="true" /> Nova regra
           </button>
         </section>
@@ -158,7 +158,7 @@ export default function RegrasDistribuicaoPage() {
       </main>
 
       {aberto && (
-        <div className="modal-backdrop" role="presentation">
+        <div className="modal-backdrop" role="dialog" aria-modal="true" aria-label="Nova regra de distribuição">
           <form className="modal-card regras-form" onSubmit={salvar}>
             <button className="modal-close" type="button" onClick={() => setAberto(false)} aria-label="Fechar">
               <FiX />
