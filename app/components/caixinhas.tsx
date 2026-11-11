@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { FiArchive, FiBox, FiEdit3, FiPlus, FiX } from "react-icons/fi";
+import { FiArchive, FiBox, FiEdit3, FiPlus, FiRefreshCw, FiX } from "react-icons/fi";
 import { AppBrand } from "@/components/app-brand";
 import { BottomNavigation } from "@/components/bottom-navigation";
 import { formatMoneyFromCents } from "@/lib/format-money";
@@ -98,11 +98,11 @@ export function Caixinhas() {
   return <>
     <main className="app-shell caixinhas-page">
       <header className="app-header"><span className="contas-header-space" /><AppBrand /><span className="contas-header-space" /></header>
-      <section className="dashboard-greeting contas-intro">
+      <section className="dashboard-greeting caixinhas-intro">
         <p>ORGANIZAÇÃO</p><h1>Suas <em>caixinhas</em></h1>
         <span>Organize seu dinheiro sem duplicar seu patrimônio.</span>
       </section>
-      <section className="balance-card contas-total">
+      <section className="balance-card caixinhas-total">
         <div className="balance-topline"><p className="balance-label">Total alocado</p><FiBox className="balance-eye" aria-hidden="true" /></div>
         <strong className="balance-value">{formatMoneyFromCents(totalAlocado)}</strong>
         <p className="balance-caption">Alocações virtuais dentro do seu patrimônio, não um novo saldo bancário.</p>
@@ -111,30 +111,30 @@ export function Caixinhas() {
       {erro && <p className="caixinhas-error" role="alert">{erro}</p>}
       <div className="contas-section-heading"><h2>Suas caixinhas</h2><button className="button-secondary caixinhas-add-small" onClick={abrirNova}><FiPlus /> Adicionar</button></div>
 
-      {itens === null ? <p className="caixinhas-loading">Carregando caixinhas...</p> : itens.length === 0 ? (
-        <section className="contas-empty"><span className="contas-empty__icon"><FiBox size={22} /></span><strong>Nenhuma caixinha criada.</strong><p>Crie caixinhas para organizar partes do seu dinheiro por objetivo.</p></section>
+      {itens === null && !erro ? <section className="caixinhas-state" aria-live="polite"><p className="field-hint">Carregando suas caixinhas...</p></section> : itens === null ? null : itens.length === 0 ? (
+        <section className="caixinhas-empty surface-card"><span className="caixinhas-empty__icon"><FiBox size={22} /></span><strong>Você ainda não criou uma caixinha.</strong><p>Crie caixinhas para organizar partes do seu dinheiro por objetivo, sem duplicar seu saldo real.</p></section>
       ) : (
         <section className="caixinhas-lista" aria-label="Caixinhas">
           {itens.map((item) => <article className={item.caixinha.ativa ? "caixinha-card" : "caixinha-card caixinha-card--inactive"} key={item.caixinha.id}>
-            <div className="caixinha-card__main"><span className="caixinha-card__icon"><FiBox size={19} /></span><div><strong>{item.caixinha.nome}</strong>{item.caixinha.descricao && <p>{item.caixinha.descricao}</p>}<span>{formatMoneyFromCents(item.saldoAtualCentavos)}</span></div></div>
+            <div className="caixinha-card__main"><span className="caixinha-card__icon"><FiBox size={19} /></span><div><strong>{item.caixinha.nome}</strong>{item.caixinha.descricao && <p>{item.caixinha.descricao}</p>}<span className="caixinha-card__value">{formatMoneyFromCents(item.saldoAtualCentavos)}</span><span className={item.caixinha.ativa ? "caixinha-card__status" : "caixinha-card__status caixinha-card__status--inactive"}>{item.caixinha.ativa ? "Ativa" : "Arquivada"}</span></div></div>
             <div className="caixinha-card__actions"><button type="button" onClick={() => abrirEdicao(item)} aria-label={`Editar ${item.caixinha.nome}`}><FiEdit3 /></button>{item.caixinha.ativa && <button type="button" onClick={() => void arquivar(item.caixinha.id)} aria-label={`Arquivar ${item.caixinha.nome}`}><FiArchive /></button>}</div>
           </article>)}
         </section>
       )}
 
-      <button className="button-primary contas-add" type="button" onClick={abrirNova}><span>Adicionar caixinha</span><FiPlus size={19} /></button>
+      <button className="button-primary caixinhas-add" type="button" onClick={abrirNova}><span>Adicionar caixinha</span><FiPlus size={19} /></button>
     </main>
 
     {mostrarForm && <div className="caixinhas-modal-backdrop" role="presentation">
       <section className="caixinhas-modal" role="dialog" aria-modal="true" aria-labelledby="caixinha-form-title">
         <button className="caixinhas-modal__close" type="button" onClick={() => setMostrarForm(false)} aria-label="Fechar"><FiX /></button>
-        <h2 id="caixinha-form-title">{editando ? "Editar caixinha" : "Nova caixinha"}</h2>
+        <p className="caixinhas-modal__eyebrow">ORGANIZAÇÃO</p><h2 id="caixinha-form-title">{editando ? "Editar caixinha" : "Nova caixinha"}</h2>
         <form onSubmit={salvar}>
-          <label>Nome<input value={form.nome} onChange={(e) => setForm({ ...form, nome: e.target.value })} autoFocus /></label>
-          <label>Descrição <small>(opcional)</small><textarea value={form.descricao} onChange={(e) => setForm({ ...form, descricao: e.target.value })} /></label>
-          {!editando && <label>Saldo inicial<input inputMode="decimal" value={form.saldo} onChange={(e) => setForm({ ...form, saldo: e.target.value })} /></label>}
+          <label className="field-group"><span className="field-label">Nome</span><input className="text-input" value={form.nome} onChange={(e) => setForm({ ...form, nome: e.target.value })} autoFocus placeholder="Ex.: Reserva de emergência" /></label>
+          <label className="field-group"><span className="field-label">Descrição <span className="field-hint">(opcional)</span></span><textarea className="text-area" value={form.descricao} onChange={(e) => setForm({ ...form, descricao: e.target.value })} placeholder="Para que você está organizando este valor?" /></label>
+          {!editando && <label className="field-group"><span className="field-label">Saldo inicial</span><input className="text-input" inputMode="decimal" value={form.saldo} onChange={(e) => setForm({ ...form, saldo: e.target.value })} /><span className="field-hint">Use vírgula para os centavos.</span></label>}
           <p className="caixinhas-note">Caixinhas organizam seu patrimônio. O valor alocado não é somado novamente ao saldo das contas.</p>
-          <button className="button-primary" type="submit" disabled={salvando}>{salvando ? "Salvando..." : "Salvar caixinha"}</button>
+          <div className="caixinhas-modal__actions"><button className="button-secondary" type="button" onClick={() => setMostrarForm(false)} disabled={salvando}>Cancelar</button><button className="button-primary" type="submit" disabled={salvando}>{salvando ? "Salvando..." : "Salvar caixinha"}</button></div>
         </form>
       </section>
     </div>}
