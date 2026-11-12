@@ -8,7 +8,7 @@ export type ConfirmarDespesaInput = {
   valorCentavos: number;
   dataMovimento: string;
   contaOrigemId: string;
-  caixinhaId: string;
+  caixinhaId?: string;
   idempotencyKey: string;
 };
 
@@ -21,7 +21,6 @@ export async function confirmarDespesa(
   if (!Number.isInteger(input.valorCentavos) || input.valorCentavos <= 0) throw new Error("O valor da despesa deve ser maior que zero.");
   if (!/^\d{4}-\d{2}-\d{2}$/.test(input.dataMovimento)) throw new Error("A data da despesa é inválida.");
   if (!input.contaOrigemId) throw new Error("A conta bancária de origem é obrigatória.");
-  if (!input.caixinhaId) throw new Error("A caixinha de origem é obrigatória.");
 
   const existente = await db.movimentos.where("idempotencyKey").equals(input.idempotencyKey).first();
   if (existente) return { movimentoId: existente.id };
@@ -36,9 +35,9 @@ export async function confirmarDespesa(
       const conta = await db.contas.get(input.contaOrigemId);
       if (!conta || !conta.ativa || conta.tipo !== "bancaria") throw new Error("A conta bancária de origem não está disponível.");
 
-      const caixinha = await db.caixinhas.get(input.caixinhaId);
-      if (!caixinha) throw new Error("A caixinha de origem não foi encontrada.");
-      if (!caixinha.ativa) throw new Error(`A caixinha "${caixinha.nome}" está arquivada e não pode registrar uma despesa.`);
+      const caixinha = input.caixinhaId ? await db.caixinhas.get(input.caixinhaId) : undefined;
+      if (input.caixinhaId && !caixinha) throw new Error("A caixinha de origem não foi encontrada.");
+      if (caixinha && !caixinha.ativa) throw new Error(`A caixinha "${caixinha.nome}" está arquivada e não pode registrar uma despesa.`);
 
       const movimento: Movimento = {
         id: movimentoId,
@@ -55,22 +54,24 @@ export async function confirmarDespesa(
         confirmedAt: agora,
       };
 
-      const alocacao: Alocacao = {
-        id: crypto.randomUUID(),
-        createdAt: agora,
-        movimentoId,
-        caixinhaId: input.caixinhaId,
-        tipo: "debito_despesa",
-        valorCentavos: input.valorCentavos,
-      };
+      const alocacao = input.caixinhaId
+        ? {
+            id: crypto.randomUUID(),
+            createdAt: agora,
+            movimentoId,
+            caixinhaId: input.caixinhaId,
+            tipo: "debito_despesa" as const,
+            valorCentavos: input.valorCentavos,
+          }
+        : null;
 
       const efeitos: EfeitoSaldo[] = [
         { id: crypto.randomUUID(), createdAt: agora, movimentoId, tipoAlvo: "conta", alvoId: input.contaOrigemId, valorCentavosAssinado: -input.valorCentavos, estado: "ativo" },
-        { id: crypto.randomUUID(), createdAt: agora, movimentoId, tipoAlvo: "caixinha", alvoId: input.caixinhaId, valorCentavosAssinado: -input.valorCentavos, estado: "ativo" },
+        ...(input.caixinhaId ? [{ id: crypto.randomUUID(), createdAt: agora, movimentoId, tipoAlvo: "caixinha" as const, alvoId: input.caixinhaId, valorCentavosAssinado: -input.valorCentavos, estado: "ativo" as const }] : []),
       ];
 
       await db.movimentos.add(movimento);
-      await db.alocacoes.add(alocacao);
+      if (alocacao) await db.alocacoes.add(alocacao);
       await db.efeitosSaldo.bulkAdd(efeitos);
 
       const auditoria: Auditoria = {
