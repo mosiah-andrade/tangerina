@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { AppStartup } from "@/components/app-startup";
 import "./globals.css";
-import "./styles/receitas.css";
 
 export const metadata: Metadata = {
   title: "Tangerina Financeiro",
