@@ -86,8 +86,8 @@ export async function confirmarDespesa(
           categoria: input.categoria.trim(),
           valorCentavos: movimento.valorCentavos,
           dataMovimento: movimento.dataMovimento,
-          contaOrigemId: movimento.contaOrigemId,
-          caixinhaId: movimento.caixinhaId,
+          contaOrigemId: movimento.contaOrigemId ?? null,
+          caixinhaId: movimento.caixinhaId ?? null,
         },
       };
       await db.auditorias.add(auditoria);
