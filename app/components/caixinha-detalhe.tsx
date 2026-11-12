@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { FiArrowLeft, FiCheck, FiEdit3, FiPlus } from "react-icons/fi";
@@ -30,13 +30,13 @@ export function CaixinhaDetalhe(){
  const [carregando,setCarregando]=useState(true);
  const [salvando,setSalvando]=useState(false);
 
- async function carregar(){
+ const carregar=useCallback(async()=>{
   const db=getDatabase(); await db.open();
   const [caixinhas,todasRegras]=await Promise.all([listarCaixinhasComSaldo(db),listarRegrasDistribuicao(db)]);
   setItem(caixinhas.find((atual)=>atual.caixinha.id===id)??null);
   setRegras(todasRegras.filter((regra)=>regra.caixinhaId===id));
- }
- useEffect(()=>{let ativo=true; async function iniciar(){try{await carregar();}catch{if(ativo)setErro("Não foi possível carregar esta caixinha.");}finally{if(ativo)setCarregando(false);}} void iniciar(); return()=>{ativo=false;};},[id]);
+ },[id]);
+ useEffect(()=>{let ativo=true; async function iniciar(){try{await carregar();}catch{if(ativo)setErro("Não foi possível carregar esta caixinha.");}finally{if(ativo)setCarregando(false);}} void iniciar(); return()=>{ativo=false;};},[carregar]);
 
  async function salvar(e:React.FormEvent<HTMLFormElement>){
   e.preventDefault(); if(!form) return; setErro(null);
