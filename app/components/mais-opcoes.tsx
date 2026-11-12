@@ -1,6 +1,5 @@
 import Link from "next/link";
 import {
-  FiArchive,
   FiChevronRight,
   FiCreditCard,
   FiDatabase,
@@ -16,13 +15,6 @@ const opcoes = [
     label: "Contas bancárias",
     description: "Gerencie onde seu dinheiro está guardado.",
     Icon: FiCreditCard,
-    disponivel: true,
-  },
-  {
-    href: "/regras-distribuicao",
-    label: "Regras de distribuição",
-    description: "Organize como suas receitas serão distribuídas.",
-    Icon: FiArchive,
     disponivel: true,
   },
   {
