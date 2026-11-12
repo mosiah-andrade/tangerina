@@ -12,6 +12,7 @@ type Revisao = {
   descricao: string;
   valorCentavos: number;
   dataMovimento: string;
+  contaDestinoId: string;
   alocacoes: Array<{ id: string; regraDistribuicaoId?: string; caixinhaId: string; nome: string; valorCentavos: number }>;
 };
 
@@ -49,6 +50,7 @@ export function ConfirmarReceita() {
         descricao: revisao.descricao,
         valorCentavos: revisao.valorCentavos,
         dataMovimento: revisao.dataMovimento,
+        contaDestinoId: revisao.contaDestinoId,
         alocacoes: revisao.alocacoes.map((item) => ({
           caixinhaId: item.caixinhaId,
           valorCentavos: item.valorCentavos,
