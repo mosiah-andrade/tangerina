@@ -25,7 +25,7 @@ type ReceitaRascunho = {
 export function RegistrarReceita() {
   const [descricao, setDescricao] = useState("");
   const [valor, setValor] = useState("");
-  const [data, setData] = useState("");
+  const [data, setData] = useState(() => new Date().toISOString().slice(0, 10));
   const [contas, setContas] = useState<Conta[]>([]);
   const [contaDestinoId, setContaDestinoId] = useState("");
   const [carregandoContas, setCarregandoContas] = useState(true);
@@ -77,7 +77,7 @@ export function RegistrarReceita() {
       const rascunho: ReceitaRascunho = {
         descricao: textoDescricao,
         valorCentavos,
-        dataMovimento: data || new Date().toISOString().slice(0, 10),
+        dataMovimento: data,
         contaDestinoId,
       };
 
