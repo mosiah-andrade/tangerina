@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import {
   FiArrowLeft,
@@ -23,10 +24,7 @@ export function RegistrarReceita() {
   const [valor, setValor] = useState("");
   const [data, setData] = useState("");
   const [erro, setErro] = useState<string | null>(null);
-
-  useEffect(() => {
-    setData(new Date().toISOString().slice(0, 10));
-  }, []);
+  const router = useRouter();
 
   function continuar(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -48,11 +46,11 @@ export function RegistrarReceita() {
       const rascunho: ReceitaRascunho = {
         descricao: textoDescricao,
         valorCentavos,
-        dataMovimento: data,
+        dataMovimento: data || new Date().toISOString().slice(0, 10),
       };
 
       sessionStorage.setItem("tangerina.receita.rascunho", JSON.stringify(rascunho));
-      window.location.assign("/receitas/revisar");
+      router.push("/receitas/revisar");
     } catch {
       setErro("Informe um valor válido, usando vírgula para os centavos.");
     }
