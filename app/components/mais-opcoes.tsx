@@ -19,11 +19,11 @@ const opcoes = [
     disponivel: true,
   },
   {
-    href: "#",
+    href: "/regras-distribuicao",
     label: "Regras de distribuição",
     description: "Organize como suas receitas serão distribuídas.",
     Icon: FiArchive,
-    disponivel: false,
+    disponivel: true,
   },
   {
     href: "#",
