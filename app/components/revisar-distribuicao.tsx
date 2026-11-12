@@ -11,7 +11,7 @@ import { getDatabase } from "@/lib/persistence/database";
 import { criarRepositorioRegrasDistribuicao } from "@/lib/persistence/repositories";
 import type { RegraDistribuicao } from "@/lib/persistence/entities";
 
-type ReceitaRascunho = { descricao: string; valorCentavos: number; dataMovimento: string };
+type ReceitaRascunho = { descricao: string; valorCentavos: number; dataMovimento: string; contaDestinoId: string };
 type Linha = { id: string; regraDistribuicaoId?: string; caixinhaId: string; nome: string; valorCentavos: number; sugestaoCentavos: number };
 const KEY = "tangerina.receita.rascunho";
 
