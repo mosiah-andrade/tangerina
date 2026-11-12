@@ -12,7 +12,7 @@ type Revisao = {
   descricao: string;
   valorCentavos: number;
   dataMovimento: string;
-  alocacoes: Array<{ id: string; caixinhaId: string; nome: string; valorCentavos: number }>;
+  alocacoes: Array<{ id: string; regraDistribuicaoId?: string; caixinhaId: string; nome: string; valorCentavos: number }>;
 };
 
 const REVISAO_KEY = "tangerina.receita.revisao";
@@ -52,7 +52,7 @@ export function ConfirmarReceita() {
         alocacoes: revisao.alocacoes.map((item) => ({
           caixinhaId: item.caixinhaId,
           valorCentavos: item.valorCentavos,
-          regraDistribuicaoId: item.id,
+          regraDistribuicaoId: item.regraDistribuicaoId,
         })),
         idempotencyKey: crypto.randomUUID(),
       });
