@@ -224,3 +224,30 @@
     font-size: 2.75rem;
   }
 }
+
+
+/* T22 — revisão da distribuição */
+.revisao-page { padding-bottom: 7rem; }
+.revisao-layout { display:grid; gap:1.25rem; }
+.revisao-main,.revisao-resumo { display:grid; gap:1rem; }
+.revisao-receita-card { display:grid; gap:.35rem; padding:1.35rem; border-radius:1.5rem; background:#0B3C2A; color:#fff; }
+.revisao-receita-card span,.revisao-resumo>p,.revisao-section-head p { font-size:.7rem; font-weight:700; letter-spacing:.12em; opacity:.72; }
+.revisao-receita-card strong,.revisao-section-head h2 { font-family:"Cormorant Garamond",serif; }
+.revisao-receita-card strong { font-size:1.6rem; }
+.revisao-receita-card b { color:#E5C05B; font-size:1.45rem; }
+.revisao-lista,.revisao-resumo { padding:1.2rem; border:1px solid rgba(11,60,42,.12); border-radius:1.5rem; background:#fff; }
+.revisao-section-head { display:flex; justify-content:space-between; align-items:center; margin-bottom:.75rem; }
+.revisao-section-head h2 { margin:0; font-size:1.8rem; color:#0B3C2A; }
+.revisao-linha { display:flex; align-items:center; justify-content:space-between; gap:1rem; padding:1rem 0; border-top:1px solid rgba(11,60,42,.09); }
+.revisao-linha span { display:grid; gap:.2rem; }
+.revisao-linha small,.revisao-note,.receita-loading { color:#66756f; }
+.revisao-linha input { width:7.5rem; padding:.7rem .8rem; border:1px solid rgba(11,60,42,.18); border-radius:.8rem; text-align:right; font:inherit; }
+.revisao-resumo>div { display:flex; justify-content:space-between; padding:.85rem 0; border-top:1px solid rgba(11,60,42,.09); }
+.revisao-resumo .highlight strong { color:#0B3C2A; }
+.revisao-resumo .danger strong,.revisao-alert { color:#9d3028; }
+.revisao-alert,.revisao-note { margin:.5rem 0; font-size:.85rem; line-height:1.45; }
+.revisao-note { text-align:center; }
+.revisao-empty { display:flex; gap:.75rem; align-items:flex-start; padding:1rem; background:#E2ECE9; border-radius:1rem; color:#274a3b; }
+.revisao-empty p { margin:0; }
+.receita-loading { padding:3rem 0; text-align:center; }
+@media (min-width:900px){.revisao-layout{grid-template-columns:minmax(0,1.55fr) minmax(280px,.8fr);align-items:start}.revisao-resumo{position:sticky;top:1.5rem}.revisao-page{max-width:1100px}}
