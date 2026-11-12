@@ -159,7 +159,7 @@ const milestones = [
   ["T19","Criar cadastro de regras de distribuição","CONCLUÍDA E INTEGRADA À MAIN. Implementado cadastro persistido de regras de distribuição vinculadas às caixinhas, com valor fixo, percentual da receita bruta e percentual do saldo restante, ordem explícita e ativação/desativação. Interface visual em /regras-distribuicao seguindo a identidade Tangerina e Bento Design, com criação por modal responsivo e mensagens de erro exibidas dentro do modal. Validação automatizada: ESLint, typecheck, build e 108/108 testes aprovados; validação manual dos fluxos de criação e responsividade concluída.","Financeiro",5],
   ["T20","Implementar motor de distribuição","CONCLUÍDA E INTEGRADA À MAIN. Implementado motor determinístico de distribuição em centavos, sem persistir dados ou gerar efeitos financeiros. Aplica regras por ordem: valor fixo, percentual da receita bruta e percentual do saldo restante, respeitando a ordem explícita dentro de cada categoria. Mantém valor não alocado, ignora regras inativas e detecta excedentes para bloquear confirmação inconsistente. Critérios de integridade e testes documentados em docs/t20-motor-distribuicao.md.","Financeiro",6],
   ["T21","Criar formulário de receita","CONCLUÍDA E INTEGRADA À MAIN. Implementado formulário de receita com descrição, valor e data, validações amigáveis e conversão do valor para centavos com a função oficial do domínio. O rascunho temporário é mantido no navegador e o fluxo segue para /receitas/revisar sem persistir movimentação, saldo ou alocações nesta etapa. Layout responsivo alinhado à identidade visual Tangerina e composição Bento no desktop. Corrigidos hydration mismatch e regras de lint relacionadas à data inicial e à navegação interna. Validação manual aprovada e checks automatizados aprovados antes do merge.","UI",4],
-  ["T22","Construir etapa de revisão da distribuição","Editar sugestões, mostrar distribuído e não alocado e impedir confirmação inconsistente.","UI",4],
+  ["T22","Construir etapa de revisão da distribuição","CONCLUÍDA E INTEGRADA À MAIN (PR #55). Implementada rota de revisão da receita, leitura do rascunho temporário, cálculo pelo motor da T20, sugestões por caixinha, edição manual, resumo de receita/distribuído/não alocado e bloqueio de confirmação inconsistente. A T22 não persiste receita, saldo ou alocações definitivas; essa responsabilidade permanece para a T23. Testes manuais aprovados.","UI",4],
   ["T23","Confirmar e persistir receita e alocações","Salvar operação de forma consistente; evitar duplicidade em duplo clique/retentativa.","Funcionalidade",3],
   ["T24","Permitir alocação manual e exceção pontual","Alteração de uma receita não modifica as regras padrão salvas.","Funcionalidade",2],
   ["T25","Testar cenários de distribuição","100%, menos de 100%, mais de 100%, valores pequenos, regra fixa, alteração e cancelamento.","Qualidade",4]
@@ -200,8 +200,8 @@ const milestones = [
  ]}
 ];
 const STORAGE_KEY="tangerina-roadmap-v1";
-let completed = {T1:true,T2:true,T3:true,T4:true,T5:true,T6:true,T7:true,T8:true,T9:true,T10:true,UX1:true,UX2:true,UX3:true,T11:true,T12:true,T13:true,T14:true,T15:true,T16:true,T17:true,T18:true,T19:true,T20:true,T21:true};
-try { const saved = localStorage.getItem(STORAGE_KEY); completed = saved ? {...{T1:true,T2:true,T3:true,T4:true,T5:true,T6:true,T7:true,T8:true,T9:true,T10:true,UX1:true,UX2:true,UX3:true,T11:true,T12:true,T13:true,T14:true,T15:true,T16:true,T17:true,T18:true,T19:true,T20:true,T21:true}, ...(JSON.parse(saved) || {})} : {T1:true,T2:true,T3:true,T4:true,T5:true,T6:true,T7:true,T8:true,T9:true,T10:true,UX1:true,UX2:true,UX3:true,T11:true,T12:true,T13:true,T14:true,T15:true,T16:true,T17:true,T19:true,T20:true,T21:true}; } catch(e) { completed = {T1:true,T2:true,T3:true,T4:true,T5:true,T6:true,T7:true,T8:true,T9:true,T10:true,UX1:true,UX2:true,UX3:true,T11:true,T12:true,T13:true,T14:true,T15:true,T16:true,T17:true}; }
+let completed = {T1:true,T2:true,T3:true,T4:true,T5:true,T6:true,T7:true,T8:true,T9:true,T10:true,UX1:true,UX2:true,UX3:true,T11:true,T12:true,T13:true,T14:true,T15:true,T16:true,T17:true,T18:true,T19:true,T20:true,T21:true,T22:true};
+try { const saved = localStorage.getItem(STORAGE_KEY); completed = saved ? {...{T1:true,T2:true,T3:true,T4:true,T5:true,T6:true,T7:true,T8:true,T9:true,T10:true,UX1:true,UX2:true,UX3:true,T11:true,T12:true,T13:true,T14:true,T15:true,T16:true,T17:true,T18:true,T19:true,T20:true,T21:true,T22:true}, ...(JSON.parse(saved) || {})} : {T1:true,T2:true,T3:true,T4:true,T5:true,T6:true,T7:true,T8:true,T9:true,T10:true,UX1:true,UX2:true,UX3:true,T11:true,T12:true,T13:true,T14:true,T15:true,T16:true,T17:true,T19:true,T20:true,T21:true}; } catch(e) { completed = {T1:true,T2:true,T3:true,T4:true,T5:true,T6:true,T7:true,T8:true,T9:true,T10:true,UX1:true,UX2:true,UX3:true,T11:true,T12:true,T13:true,T14:true,T15:true,T16:true,T17:true}; }
 // T10 e T15 foram concluídas e integradas à main; preservar o status oficial mesmo se houver progresso antigo salvo neste navegador.
 completed.T10 = true;
 completed.T15 = true;
@@ -210,10 +210,11 @@ const allTasks = () => milestones.flatMap(m => m.tasks.map(t => ({m,t})));
 completed.T16 = true;
 completed.T17 = true;
 completed.T18 = true;
-// T19, T20 e T21 concluídas e integradas à main; preservar o status oficial mesmo com localStorage antigo.
+// T19, T20, T21 e T22 concluídas e integradas à main; preservar o status oficial mesmo com localStorage antigo.
 completed.T19 = true;
 completed.T20 = true;
 completed.T21 = true;
+completed.T22 = true;
 function save(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(completed));}catch(e){}}
 function render(){
  const filter=document.getElementById("filterStatus").value;
