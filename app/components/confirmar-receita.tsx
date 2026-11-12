@@ -51,11 +51,21 @@ export function ConfirmarReceita() {
         valorCentavos: revisao.valorCentavos,
         dataMovimento: revisao.dataMovimento,
         contaDestinoId: revisao.contaDestinoId,
-        alocacoes: revisao.alocacoes.map((item) => ({
-          caixinhaId: item.caixinhaId,
-          valorCentavos: item.valorCentavos,
-          regraDistribuicaoId: item.regraDistribuicaoId,
-        })),
+        // A revisão pode mostrar várias regras da mesma caixinha separadamente.
+        // Na persistência, porém, a caixinha recebe uma única alocação com a soma final.
+        alocacoes: Array.from(
+          revisao.alocacoes.reduce((porCaixinha, item) => {
+            const atual = porCaixinha.get(item.caixinhaId);
+            porCaixinha.set(item.caixinhaId, {
+              caixinhaId: item.caixinhaId,
+              valorCentavos: (atual?.valorCentavos ?? 0) + item.valorCentavos,
+              regraDistribuicaoId:
+                atual?.regraDistribuicaoId ??
+                item.regraDistribuicaoId,
+            });
+            return porCaixinha;
+          }, new Map<string, { caixinhaId: string; valorCentavos: number; regraDistribuicaoId?: string }>()),
+        ).map(([, item]) => item),
         idempotencyKey: crypto.randomUUID(),
       });
       void resultado;
