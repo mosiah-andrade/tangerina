@@ -1,0 +1,226 @@
+/* T21 — Registro de receita: identidade Tangerina + composição Bento */
+.receita-page {
+  padding-bottom: calc(var(--navigation-height) + var(--space-10));
+}
+
+.receita-header {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-4);
+  margin-bottom: var(--space-6);
+}
+
+.receita-back {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  flex: 0 0 auto;
+  border: 1px solid var(--color-border);
+  border-radius: 50%;
+  background: rgba(253, 252, 248, 0.82);
+  color: var(--color-emerald);
+  box-shadow: var(--shadow-card);
+}
+
+.receita-eyebrow {
+  margin: 2px 0 var(--space-1);
+  color: var(--color-gold-dark);
+  font-size: var(--text-xs);
+  font-weight: 800;
+  letter-spacing: 0.14em;
+}
+
+.receita-header h1 {
+  margin: 0;
+  color: var(--color-emerald);
+  font-family: var(--font-brand);
+  font-size: clamp(2.6rem, 7vw, 4.5rem);
+  font-weight: 700;
+  line-height: 0.92;
+}
+
+.receita-header h1 em {
+  color: var(--color-gold-dark);
+  font-weight: 500;
+}
+
+.receita-layout {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.receita-hero {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-5);
+  border: 1px solid rgba(197, 155, 39, 0.28);
+  border-radius: var(--radius-xl);
+  background:
+    radial-gradient(circle at 92% 12%, rgba(229, 192, 91, 0.18), transparent 34%),
+    linear-gradient(135deg, var(--color-emerald), var(--color-emerald-dark));
+  color: var(--color-silk);
+  box-shadow: var(--shadow-card);
+}
+
+.receita-hero__icon {
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  border: 1px solid rgba(229, 192, 91, 0.5);
+  border-radius: 18px;
+  background: rgba(197, 155, 39, 0.14);
+  color: var(--color-gold-light);
+  font-size: 1.5rem;
+}
+
+.receita-hero strong {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-family: var(--font-brand);
+  font-size: 1.6rem;
+  line-height: 1;
+}
+
+.receita-hero p {
+  margin: 0;
+  color: rgba(249, 248, 243, 0.78);
+  font-size: var(--text-sm);
+  line-height: 1.55;
+}
+
+.receita-form {
+  display: grid;
+  gap: var(--space-5);
+  padding: var(--space-6);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  background: rgba(253, 252, 248, 0.9);
+  box-shadow: var(--shadow-card);
+}
+
+.receita-form .field-label {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--color-emerald);
+  font-size: var(--text-sm);
+}
+
+.receita-form .field-label svg {
+  color: var(--color-gold-dark);
+}
+
+.receita-value-input {
+  font-size: 1.35rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.receita-submit {
+  width: 100%;
+  justify-content: center;
+  min-height: 52px;
+}
+
+.receita-note {
+  margin: 0;
+  padding: var(--space-4) var(--space-5);
+  border-left: 3px solid var(--color-gold);
+  border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+  background: #f8f2df;
+  color: #4f5b53;
+  font-size: var(--text-xs);
+  line-height: 1.6;
+}
+
+.receita-side-card {
+  display: grid;
+  gap: var(--space-3);
+  padding: var(--space-5);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  background: var(--color-cream);
+}
+
+.receita-side-card__label {
+  margin: 0;
+  color: var(--color-muted);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}
+
+.receita-side-card__value {
+  margin: 0;
+  color: var(--color-emerald);
+  font-family: var(--font-brand);
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 700;
+  line-height: 1;
+}
+
+.receita-side-card__hint {
+  margin: 0;
+  color: var(--color-muted);
+  font-size: var(--text-xs);
+  line-height: 1.55;
+}
+
+@media (min-width: 900px) {
+  .receita-page {
+    max-width: 1320px;
+    margin: 0 auto;
+  }
+
+  .receita-layout {
+    grid-template-columns: minmax(0, 1.35fr) minmax(280px, 0.65fr);
+    grid-template-areas:
+      "hero hero"
+      "form side";
+    align-items: start;
+    gap: 20px;
+  }
+
+  .receita-hero {
+    grid-area: hero;
+    min-height: 170px;
+    padding: 32px;
+  }
+
+  .receita-form {
+    grid-area: form;
+    padding: 32px;
+  }
+
+  .receita-side {
+    grid-area: side;
+    display: grid;
+    gap: 20px;
+  }
+
+  .receita-note {
+    min-height: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .receita-header {
+    gap: var(--space-3);
+  }
+
+  .receita-form {
+    padding: var(--space-5);
+  }
+
+  .receita-hero {
+    padding: var(--space-4);
+  }
+
+  .receita-header h1 {
+    font-size: 2.75rem;
+  }
+}
