@@ -6,6 +6,7 @@ export type ConfirmarReceitaInput = {
   descricao: string;
   valorCentavos: number;
   dataMovimento: string;
+  contaDestinoId: string;
   alocacoes: Array<{ caixinhaId: string; valorCentavos: number; regraDistribuicaoId?: string }>;
   idempotencyKey: string;
 };
@@ -17,6 +18,7 @@ export async function confirmarReceita(
   if (!input.descricao.trim()) throw new Error("A descrição da receita é obrigatória.");
   if (!Number.isInteger(input.valorCentavos) || input.valorCentavos <= 0) throw new Error("O valor da receita deve ser maior que zero.");
   if (!/^\d{4}-\d{2}-\d{2}$/.test(input.dataMovimento)) throw new Error("A data da receita é inválida.");
+  if (!input.contaDestinoId) throw new Error("A conta bancária de destino é obrigatória.");
 
   const totalAlocado = input.alocacoes.reduce((total, item) => {
     if (!Number.isInteger(item.valorCentavos) || item.valorCentavos < 0) throw new Error("Uma alocação possui valor inválido.");
@@ -39,8 +41,13 @@ export async function confirmarReceita(
 
   await executarTransacaoPersistencia(
     db,
-    [db.movimentos, db.alocacoes, db.efeitosSaldo, db.auditorias, db.caixinhas],
+    [db.movimentos, db.alocacoes, db.efeitosSaldo, db.auditorias, db.caixinhas, db.contas],
     async () => {
+      const contaDestino = await db.contas.get(input.contaDestinoId);
+      if (!contaDestino || !contaDestino.ativa || contaDestino.tipo !== "bancaria") {
+        throw new Error("A conta bancária de destino não está disponível.");
+      }
+
       for (const item of input.alocacoes) {
         if (item.valorCentavos === 0) continue;
         if (!item.caixinhaId) throw new Error("Uma distribuição não possui caixinha de destino.");
@@ -58,13 +65,22 @@ export async function confirmarReceita(
         descricao: input.descricao.trim(),
         valorCentavos: input.valorCentavos,
         dataMovimento: input.dataMovimento,
+        contaDestinoId: input.contaDestinoId,
         idempotencyKey: input.idempotencyKey,
         confirmedAt: agora,
       };
 
       await db.movimentos.add(movimento);
 
-      const efeitos: EfeitoSaldo[] = [];
+      const efeitos: EfeitoSaldo[] = [{
+        id: crypto.randomUUID(),
+        createdAt: agora,
+        movimentoId,
+        tipoAlvo: "conta",
+        alvoId: input.contaDestinoId,
+        valorCentavosAssinado: input.valorCentavos,
+        estado: "ativo",
+      }];
       const alocacoes: Alocacao[] = [];
       for (const item of input.alocacoes) {
         if (item.valorCentavos === 0) continue;
