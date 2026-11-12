@@ -50,7 +50,7 @@ export function ConfirmarReceita() {
         valorCentavos: revisao.valorCentavos,
         dataMovimento: revisao.dataMovimento,
         alocacoes: revisao.alocacoes.map((item) => ({
-          caixinhaId: item.id,
+          caixinhaId: item.caixinhaId,
           valorCentavos: item.valorCentavos,
           regraDistribuicaoId: item.id,
         })),
