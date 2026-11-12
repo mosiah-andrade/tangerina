@@ -251,3 +251,146 @@
 .revisao-empty p { margin:0; }
 .receita-loading { padding:3rem 0; text-align:center; }
 @media (min-width:900px){.revisao-layout{grid-template-columns:minmax(0,1.55fr) minmax(280px,.8fr);align-items:start}.revisao-resumo{position:sticky;top:1.5rem}.revisao-page{max-width:1100px}}
+
+
+/* Participação das caixinhas na revisão */
+.revisao-caixinhas-checklist {
+  margin: 1.25rem 0 1.5rem;
+  padding: 1rem;
+  border: 1px solid rgba(197, 155, 39, 0.22);
+  border-radius: 1.25rem;
+  background: rgba(253, 252, 248, 0.72);
+}
+
+.revisao-checklist-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.revisao-checklist-eyebrow {
+  margin: 0 0 0.25rem;
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--color-gold, #c59b27);
+}
+
+.revisao-checklist-head h3 {
+  margin: 0;
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.45rem;
+  line-height: 1;
+  color: var(--color-green-dark, #06261a);
+}
+
+.revisao-checklist-count {
+  display: inline-flex;
+  min-width: 2.4rem;
+  min-height: 2.4rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: var(--color-green-dark, #06261a);
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.revisao-checklist-description {
+  margin: 0.65rem 0 1rem;
+  font-size: 0.78rem;
+  line-height: 1.5;
+  color: #68736d;
+}
+
+.revisao-checklist-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+  gap: 0.65rem;
+}
+
+.revisao-caixinha-check {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-height: 4.5rem;
+  padding: 0.8rem;
+  border: 1px solid rgba(6, 38, 26, 0.12);
+  border-radius: 0.95rem;
+  background: #fff;
+  cursor: pointer;
+  transition: border-color 160ms ease, transform 160ms ease, box-shadow 160ms ease;
+}
+
+.revisao-caixinha-check:hover {
+  transform: translateY(-1px);
+  border-color: rgba(197, 155, 39, 0.65);
+  box-shadow: 0 0.4rem 1.2rem rgba(6, 38, 26, 0.06);
+}
+
+.revisao-caixinha-check.is-selected {
+  border-color: var(--color-gold, #c59b27);
+  background: rgba(229, 192, 91, 0.08);
+}
+
+.revisao-caixinha-check input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.revisao-caixinha-checkmark {
+  display: inline-flex;
+  width: 1.45rem;
+  height: 1.45rem;
+  flex: 0 0 1.45rem;
+  align-items: center;
+  justify-content: center;
+  border: 1.5px solid rgba(6, 38, 26, 0.28);
+  border-radius: 0.45rem;
+  color: transparent;
+  transition: background 160ms ease, border-color 160ms ease, color 160ms ease;
+}
+
+.revisao-caixinha-check.is-selected .revisao-caixinha-checkmark {
+  border-color: var(--color-gold, #c59b27);
+  background: var(--color-gold, #c59b27);
+  color: #fff;
+}
+
+.revisao-caixinha-checkmark svg {
+  width: 0.9rem;
+  height: 0.9rem;
+}
+
+.revisao-caixinha-copy {
+  display: grid;
+  gap: 0.2rem;
+  min-width: 0;
+}
+
+.revisao-caixinha-copy strong {
+  overflow: hidden;
+  color: var(--color-green-dark, #06261a);
+  font-size: 0.82rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.revisao-caixinha-copy small {
+  color: #7b857f;
+  font-size: 0.68rem;
+}
+
+.revisao-caixinha-check:has(input:focus-visible) {
+  outline: 3px solid rgba(197, 155, 39, 0.35);
+  outline-offset: 2px;
+}
+
+@media (max-width: 560px) {
+  .revisao-caixinhas-checklist { padding: 0.9rem; }
+  .revisao-checklist-grid { grid-template-columns: 1fr; }
+}

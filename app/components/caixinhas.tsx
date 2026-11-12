@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import Link from "next/link";
 import Image from "next/image";
 import { FiArchive, FiBox, FiEdit3, FiPlus, FiX } from "react-icons/fi";
 import { BottomNavigation } from "@/components/bottom-navigation";
@@ -127,7 +128,7 @@ export function Caixinhas() {
       ) : (
         <section className="caixinhas-lista caixinhas-bento" aria-label="Caixinhas">
           {itens.map((item) => <article className={item.caixinha.ativa ? "caixinha-card" : "caixinha-card caixinha-card--inactive"} key={item.caixinha.id}>
-            <div className="caixinha-card__main"><span className="caixinha-card__icon"><FiBox size={19} /></span><div><strong>{item.caixinha.nome}</strong>{item.caixinha.descricao && <p>{item.caixinha.descricao}</p>}<span className="caixinha-card__value">{formatMoneyFromCents(item.saldoAtualCentavos)}</span><span className={item.caixinha.ativa ? "caixinha-card__status" : "caixinha-card__status caixinha-card__status--inactive"}>{item.caixinha.ativa ? "Ativa" : "Arquivada"}</span></div></div>
+            <Link className="caixinha-card__main" href={`/caixinhas/${item.caixinha.id}`}><span className="caixinha-card__icon"><FiBox size={19} /></span><div><strong>{item.caixinha.nome}</strong>{item.caixinha.descricao && <p>{item.caixinha.descricao}</p>}<span className="caixinha-card__value">{formatMoneyFromCents(item.saldoAtualCentavos)}</span><span className={item.caixinha.ativa ? "caixinha-card__status" : "caixinha-card__status caixinha-card__status--inactive"}>{item.caixinha.ativa ? "Ativa" : "Arquivada"}</span></div></Link>
             <div className="caixinha-card__actions"><button type="button" onClick={() => abrirEdicao(item)} aria-label={`Editar ${item.caixinha.nome}`}><FiEdit3 /></button>{item.caixinha.ativa && <button type="button" onClick={() => void arquivar(item.caixinha.id)} aria-label={`Arquivar ${item.caixinha.nome}`}><FiArchive /></button>}</div>
           </article>)}
         </section>
