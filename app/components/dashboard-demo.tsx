@@ -30,11 +30,12 @@ export function DashboardDemo() {
 
       await db.open();
 
-      const [contas, caixinhas, efeitosSaldo, alocacoes] = await Promise.all([
+      const [contas, caixinhas, efeitosSaldo, alocacoes, movimentos] = await Promise.all([
         db.contas.toArray(),
         db.caixinhas.toArray(),
         db.efeitosSaldo.toArray(),
         db.alocacoes.toArray(),
+        db.movimentos.toArray(),
       ]);
 
       setResumo(
@@ -43,6 +44,7 @@ export function DashboardDemo() {
           caixinhas,
           efeitosSaldo,
           alocacoes,
+          movimentos,
         }),
       );
     }
