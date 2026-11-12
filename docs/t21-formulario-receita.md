@@ -26,3 +26,17 @@ Permitir iniciar o fluxo de registro de uma receita sem persistir efeitos financ
 - Erros aparecem no próprio formulário.
 - Layout responsivo e consistente com a marca.
 - Nenhuma alteração financeira ocorre antes da confirmação posterior.
+
+
+## Implementação concluída
+
+A T21 foi concluída e integrada à main.
+
+- Formulário implementado em `/receitas` com descrição, valor e data.
+- Valor validado e convertido para centavos inteiros com `parseMoneyToCents`.
+- Rascunho temporário armazenado no navegador para continuidade do fluxo em `/receitas/revisar`.
+- Nenhuma movimentação, saldo ou alocação é persistido nesta etapa.
+- Interface alinhada à identidade visual Tangerina, responsiva e com composição Bento em telas maiores.
+- Corrigido o hydration mismatch relacionado ao valor inicial da data.
+- Corrigido o lint substituindo a navegação direta do navegador pelo roteamento interno do Next.js.
+- Validação manual aprovada e checks de qualidade executados antes do merge.
