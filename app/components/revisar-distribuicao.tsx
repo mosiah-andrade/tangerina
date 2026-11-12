@@ -136,16 +136,30 @@ export function RevisarDistribuicao() {
           <section className="revisao-lista" aria-label="Sugestões de distribuição">
             <div className="revisao-section-head"><div><p>SUAS CAIXINHAS E REGRAS</p><h2>Como distribuir?</h2></div><FiEdit3 aria-hidden="true" /></div>
             <p className="revisao-note">Escolha primeiro quais caixinhas participarão desta receita. Somente as caixinhas marcadas terão suas regras aplicadas. Cada linha representa uma regra específica; editar aqui não altera a regra salva.</p>
-            <fieldset className="revisao-caixinhas-checklist">
-              <legend>Caixinhas que vão receber nesta receita</legend>
-              {caixinhasDisponiveis.map((caixinha) => {
-                const marcada = caixinhasSelecionadas.includes(caixinha.id);
-                return <label key={caixinha.id} className="revisao-caixinha-check">
-                  <input type="checkbox" checked={marcada} onChange={() => setCaixinhasSelecionadas((atuais) => marcada ? atuais.filter((id) => id !== caixinha.id) : [...atuais, caixinha.id])} />
-                  <span>{caixinha.nome}</span>
-                </label>;
-              })}
-            </fieldset>
+            <section className="revisao-caixinhas-checklist" aria-labelledby="caixinhas-participantes">
+              <div className="revisao-checklist-head">
+                <div>
+                  <p className="revisao-checklist-eyebrow">PARTICIPAÇÃO NESTA RECEITA</p>
+                  <h3 id="caixinhas-participantes">Quais caixinhas vão receber?</h3>
+                </div>
+                <span className="revisao-checklist-count">{caixinhasSelecionadas.length}/{caixinhasDisponiveis.length}</span>
+              </div>
+              <p className="revisao-checklist-description">Selecione apenas as caixinhas que devem participar desta distribuição. As regras das demais serão ignoradas somente nesta receita.</p>
+              <div className="revisao-checklist-grid">
+                {caixinhasDisponiveis.map((caixinha) => {
+                  const marcada = caixinhasSelecionadas.includes(caixinha.id);
+                  const quantidadeRegras = linhas.filter((linha) => linha.caixinhaId === caixinha.id && linha.regraDistribuicaoId).length;
+                  return <label key={caixinha.id} className={"revisao-caixinha-check" + (marcada ? " is-selected" : "")}>
+                    <input type="checkbox" checked={marcada} onChange={() => setCaixinhasSelecionadas((atuais) => marcada ? atuais.filter((id) => id !== caixinha.id) : [...atuais, caixinha.id])} />
+                    <span className="revisao-caixinha-checkmark" aria-hidden="true"><FiCheck /></span>
+                    <span className="revisao-caixinha-copy">
+                      <strong>{caixinha.nome}</strong>
+                      <small>{quantidadeRegras > 0 ? quantidadeRegras + (quantidadeRegras === 1 ? " regra ativa" : " regras ativas") : "Sem regra automática"}</small>
+                    </span>
+                  </label>;
+                })}
+              </div>
+            </section>
             {linhasVisiveis.length === 0 ? <div className="revisao-empty"><FiInfo /><p>Nenhuma caixinha ativa está disponível para distribuição.</p></div> :
               linhasVisiveis.map((linha) => <label className="revisao-linha" key={linha.id}><span><strong>{linha.nomeCaixinha}</strong><small>{linha.nomeRegra}</small><small>Sugestão desta regra: {formatMoney(linha.sugestaoCentavos)}</small></span><input aria-label={"Valor da regra " + linha.nomeRegra + " para " + linha.nomeCaixinha} inputMode="decimal" defaultValue={(linha.valorCentavos / 100).toFixed(2).replace(".", ",")} onBlur={(event) => editarValor(linha.id, event.target.value)} /></label>)}
           </section>
