@@ -12,7 +12,7 @@ import { criarRepositorioRegrasDistribuicao } from "@/lib/persistence/repositori
 import type { RegraDistribuicao } from "@/lib/persistence/entities";
 
 type ReceitaRascunho = { descricao: string; valorCentavos: number; dataMovimento: string; contaDestinoId: string };
-type Linha = { id: string; regraDistribuicaoId?: string; caixinhaId: string; nome: string; valorCentavos: number; sugestaoCentavos: number };
+type Linha = { id: string; regraDistribuicaoId?: string; caixinhaId: string; nomeCaixinha: string; nomeRegra: string; valorCentavos: number; sugestaoCentavos: number };
 const KEY = "tangerina.receita.rascunho";
 
 function formatMoney(value: number) {
@@ -45,34 +45,46 @@ export function RevisarDistribuicao() {
         }));
         const resultado = calcularDistribuicao(receita.valorCentavos, inputs);
         const porRegra = new Map(regras.map((regra) => [regra.id, regra]));
-        const sugestoesPorCaixinha = new Map<string, { valorCentavos: number; regraDistribuicaoId?: string }>();
-        for (const alocacao of resultado.alocacoes) {
-          const regra = porRegra.get(alocacao.regraDistribuicaoId);
-          if (!regra) continue;
-          const atual = sugestoesPorCaixinha.get(regra.caixinhaId);
-          sugestoesPorCaixinha.set(regra.caixinhaId, {
-            valorCentavos: (atual?.valorCentavos ?? 0) + alocacao.valorCentavos,
-            regraDistribuicaoId: atual?.regraDistribuicaoId ?? alocacao.regraDistribuicaoId,
-          });
-        }
+        const sugestaoPorRegra = new Map(
+          resultado.alocacoes.map((alocacao) => [
+            alocacao.regraDistribuicaoId,
+            alocacao.valorCentavos,
+          ]),
+        );
+        const caixinhasAtivas = caixinhas.filter((caixinha) => caixinha.ativa);
+        const regrasAtivas = regras
+          .filter((regra) => regra.ativa && caixinhasAtivas.some((caixinha) => caixinha.id === regra.caixinhaId))
+          .sort((a, b) => a.ordem - b.ordem || a.createdAt.localeCompare(b.createdAt));
+        const caixinhasComRegra = new Set(regrasAtivas.map((regra) => regra.caixinhaId));
+
         if (!ativo) return;
         setRascunho(receita);
         setExcedenteRegras(resultado.excedenteCentavos);
-        setLinhas(
-          caixinhas
-            .filter((caixinha) => caixinha.ativa)
-            .map((caixinha) => {
-              const sugestao = sugestoesPorCaixinha.get(caixinha.id);
-              return {
-                id: caixinha.id,
-                regraDistribuicaoId: sugestao?.regraDistribuicaoId,
-                caixinhaId: caixinha.id,
-                nome: caixinha.nome,
-                valorCentavos: sugestao?.valorCentavos ?? 0,
-                sugestaoCentavos: sugestao?.valorCentavos ?? 0,
-              };
-            }),
-        );
+        setLinhas([
+          ...regrasAtivas.map((regra) => {
+            const caixinha = caixinhasAtivas.find((item) => item.id === regra.caixinhaId);
+            const sugestaoCentavos = sugestaoPorRegra.get(regra.id) ?? 0;
+            return {
+              id: regra.id,
+              regraDistribuicaoId: regra.id,
+              caixinhaId: regra.caixinhaId,
+              nomeCaixinha: caixinha?.nome ?? "Caixinha",
+              nomeRegra: regra.nome,
+              valorCentavos: sugestaoCentavos,
+              sugestaoCentavos,
+            };
+          }),
+          ...caixinhasAtivas
+            .filter((caixinha) => !caixinhasComRegra.has(caixinha.id))
+            .map((caixinha) => ({
+              id: `manual-${caixinha.id}`,
+              caixinhaId: caixinha.id,
+              nomeCaixinha: caixinha.nome,
+              nomeRegra: "Sem regra automática",
+              valorCentavos: 0,
+              sugestaoCentavos: 0,
+            })),
+        ]);
       } catch { if (ativo) setErro("Não foi possível carregar as sugestões de distribuição."); }
       finally { if (ativo) setCarregando(false); }
     }
@@ -115,9 +127,10 @@ export function RevisarDistribuicao() {
         <section className="revisao-main">
           <article className="revisao-receita-card"><span>RECEITA</span><strong>{rascunho.descricao}</strong><b>{formatMoney(rascunho.valorCentavos)}</b></article>
           <section className="revisao-lista" aria-label="Sugestões de distribuição">
-            <div className="revisao-section-head"><div><p>SUAS CAIXINHAS</p><h2>Como distribuir?</h2></div><FiEdit3 aria-hidden="true" /></div>
-            {linhas.length === 0 ? <div className="revisao-empty"><FiInfo /><p>Nenhuma regra ativa sugeriu uma alocação. O valor permanecerá não alocado.</p></div> :
-              linhas.map((linha) => <label className="revisao-linha" key={linha.id}><span><strong>{linha.nome}</strong><small>Sugestão: {formatMoney(linha.sugestaoCentavos)}</small></span><input aria-label={"Valor para " + linha.nome} inputMode="decimal" defaultValue={(linha.valorCentavos / 100).toFixed(2).replace(".", ",")} onBlur={(event) => editarValor(linha.id, event.target.value)} /></label>)}
+            <div className="revisao-section-head"><div><p>SUAS CAIXINHAS E REGRAS</p><h2>Como distribuir?</h2></div><FiEdit3 aria-hidden="true" /></div>
+            <p className="revisao-note">Cada linha representa uma regra específica. Se uma caixinha tiver duas regras, ela aparecerá duas vezes com o mesmo nome e com o nome da regra logo abaixo. Você pode alterar qualquer valor individualmente; a edição desta revisão não altera a regra salva.</p>
+            {linhas.length === 0 ? <div className="revisao-empty"><FiInfo /><p>Nenhuma caixinha ativa está disponível para distribuição.</p></div> :
+              linhas.map((linha) => <label className="revisao-linha" key={linha.id}><span><strong>{linha.nomeCaixinha}</strong><small>{linha.nomeRegra}</small><small>Sugestão desta regra: {formatMoney(linha.sugestaoCentavos)}</small></span><input aria-label={"Valor da regra " + linha.nomeRegra + " para " + linha.nomeCaixinha} inputMode="decimal" defaultValue={(linha.valorCentavos / 100).toFixed(2).replace(".", ",")} onBlur={(event) => editarValor(linha.id, event.target.value)} /></label>)}
           </section>
         </section>
         <aside className="revisao-resumo">
