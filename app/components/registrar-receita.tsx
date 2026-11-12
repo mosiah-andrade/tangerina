@@ -69,17 +69,21 @@ export function RegistrarReceita() {
           </div>
         </header>
 
-        <section className="receita-hero">
-          <span className="receita-hero__icon" aria-hidden="true">
-            <FiDollarSign />
-          </span>
-          <div>
-            <strong>Uma entrada de dinheiro.</strong>
-            <p>Informe os dados e, em seguida, revise como ela será distribuída.</p>
-          </div>
-        </section>
+        <div className="receita-layout">
+          <section className="receita-hero">
+            <span className="receita-hero__icon" aria-hidden="true">
+              <FiDollarSign />
+            </span>
+            <div>
+              <strong>Uma entrada de dinheiro.</strong>
+              <p>
+                Informe os dados e, em seguida, revise como ela será distribuída
+                entre suas caixinhas.
+              </p>
+            </div>
+          </section>
 
-        <form className="receita-form" onSubmit={continuar}>
+          <form className="receita-form" onSubmit={continuar}>
           <label className="field-group">
             <span className="field-label"><FiFileText aria-hidden="true" /> Descrição</span>
             <input
@@ -125,11 +129,23 @@ export function RegistrarReceita() {
           <button className="button-primary receita-submit" type="submit">
             Continuar para revisão <FiArrowRight aria-hidden="true" />
           </button>
-        </form>
+          </form>
 
-        <p className="receita-note">
-          Nenhum dinheiro será registrado nesta etapa. Você poderá revisar a distribuição antes de confirmar.
-        </p>
+          <aside className="receita-side" aria-label="Resumo do registro">
+            <section className="receita-side-card">
+              <p className="receita-side-card__label">PRÓXIMA ETAPA</p>
+              <p className="receita-side-card__value">Revisar</p>
+              <p className="receita-side-card__hint">
+                O Tangerina calculará a sugestão usando suas regras de distribuição.
+              </p>
+            </section>
+
+            <p className="receita-note">
+              Nenhum dinheiro será registrado nesta etapa. Você poderá revisar a
+              distribuição antes de confirmar.
+            </p>
+          </aside>
+        </div>
       </main>
       <BottomNavigation active="/movimentacoes" />
     </>
