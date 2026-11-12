@@ -12,7 +12,7 @@ type Revisao = {
   descricao: string;
   valorCentavos: number;
   dataMovimento: string;
-  alocacoes: Array<{ id: string; nome: string; valorCentavos: number }>;
+  alocacoes: Array<{ id: string; caixinhaId: string; nome: string; valorCentavos: number }>;
 };
 
 const REVISAO_KEY = "tangerina.receita.revisao";
