@@ -15,7 +15,7 @@ export type DespesaRascunho = {
   valorCentavos: number;
   dataMovimento: string;
   contaOrigemId: string;
-  caixinhaId: string;
+  caixinhaId?: string;
 };
 
 export function RegistrarDespesa() {
@@ -65,8 +65,6 @@ export function RegistrarDespesa() {
       if (!categoria.trim()) throw new Error("Informe uma categoria para a despesa.");
       if (valorCentavos <= 0) throw new Error("Informe um valor maior que zero.");
       if (!contaOrigemId) throw new Error(contas.length ? "Selecione a conta bancária." : "Cadastre uma conta bancária ativa antes de registrar uma despesa.");
-      if (!caixinhaId) throw new Error(caixinhas.length ? "Selecione a caixinha de origem." : "Cadastre uma caixinha ativa antes de registrar uma despesa.");
-
       const rascunho: DespesaRascunho = { descricao: descricao.trim(), categoria: categoria.trim(), valorCentavos, dataMovimento: data, contaOrigemId, caixinhaId };
       sessionStorage.setItem("tangerina.despesa.rascunho", JSON.stringify(rascunho));
       router.push("/despesas/confirmar");
@@ -84,12 +82,12 @@ export function RegistrarDespesa() {
         <label className="field-group"><span className="field-label"><FiTag /> Categoria</span><input className="text-input" value={categoria} onChange={(e) => setCategoria(e.target.value)} placeholder="Ex.: Alimentação" required /></label>
         <label className="field-group"><span className="field-label"><FiDollarSign /> Valor gasto</span><input className="text-input receita-value-input" inputMode="decimal" value={valor} onChange={(e) => setValor(e.target.value)} placeholder="0,00" required /></label>
         <label className="field-group"><span className="field-label">Conta bancária</span><select className="text-input" value={contaOrigemId} onChange={(e) => setContaOrigemId(e.target.value)} disabled={carregando} required><option value="">Selecione a conta</option>{contas.map((item) => <option key={item.id} value={item.id}>{item.nome}</option>)}</select></label>
-        <label className="field-group"><span className="field-label">Caixinha de origem</span><select className="text-input" value={caixinhaId} onChange={(e) => setCaixinhaId(e.target.value)} disabled={carregando} required><option value="">Selecione a caixinha</option>{caixinhas.map((item) => <option key={item.id} value={item.id}>{item.nome}</option>)}</select></label>
+        <label className="field-group"><span className="field-label">Caixinha de origem</span><select className="text-input" value={caixinhaId} onChange={(e) => setCaixinhaId(e.target.value)} disabled={carregando} required><option value="">Não alocado</option>{caixinhas.map((item) => <option key={item.id} value={item.id}>{item.nome}</option>)}</select></label>
         <label className="field-group"><span className="field-label"><FiCalendar /> Data da despesa</span><input className="text-input" type="date" value={data} onChange={(e) => setData(e.target.value)} required /></label>
         {erro ? <p className="modal-form-error" role="alert">{erro}</p> : null}
         <button className="button-primary receita-submit" type="submit">Continuar para confirmação <FiArrowRight /></button>
       </form>
-      <aside className="receita-side"><section className="receita-side-card"><p className="receita-side-card__label">PRÓXIMA ETAPA</p><p className="receita-side-card__value">Confirmar</p><p className="receita-side-card__hint">Nada será alterado até a confirmação final.</p></section><p className="receita-note">A despesa reduzirá a conta bancária e a alocação virtual da caixinha escolhida.</p></aside>
+      <aside className="receita-side"><section className="receita-side-card"><p className="receita-side-card__label">PRÓXIMA ETAPA</p><p className="receita-side-card__value">Confirmar</p><p className="receita-side-card__hint">Nada será alterado até a confirmação final.</p></section><p className="receita-note">Sem caixinha, a despesa sai do saldo não alocado. Com caixinha, reduz também a alocação virtual escolhida.</p></aside>
     </div>
   </main><BottomNavigation active="/movimentacoes" /></>;
 }
