@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import {
   FiArrowLeft,
@@ -21,10 +21,12 @@ type ReceitaRascunho = {
 export function RegistrarReceita() {
   const [descricao, setDescricao] = useState("");
   const [valor, setValor] = useState("");
-  const [data, setData] = useState(
-    new Date().toISOString().slice(0, 10),
-  );
+  const [data, setData] = useState("");
   const [erro, setErro] = useState<string | null>(null);
+
+  useEffect(() => {
+    setData(new Date().toISOString().slice(0, 10));
+  }, []);
 
   function continuar(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
