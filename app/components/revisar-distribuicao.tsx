@@ -23,6 +23,8 @@ export function RevisarDistribuicao() {
   const router = useRouter();
   const [rascunho, setRascunho] = useState<ReceitaRascunho | null>(null);
   const [linhas, setLinhas] = useState<Linha[]>([]);
+  const [caixinhasDisponiveis, setCaixinhasDisponiveis] = useState<Array<{ id: string; nome: string }>>([]);
+  const [caixinhasSelecionadas, setCaixinhasSelecionadas] = useState<string[]>([]);
   const [excedenteRegras, setExcedenteRegras] = useState(0);
   const [carregando, setCarregando] = useState(true);
   const [erro, setErro] = useState<string | null>(null);
@@ -58,6 +60,8 @@ export function RevisarDistribuicao() {
 
         if (!ativo) return;
         setRascunho(receita);
+        setCaixinhasDisponiveis(caixinhasAtivas.map((caixinha) => ({ id: caixinha.id, nome: caixinha.nome })));
+        setCaixinhasSelecionadas(caixinhasAtivas.map((caixinha) => caixinha.id));
         setExcedenteRegras(resultado.excedenteCentavos);
         setLinhas([
           ...regrasAtivas.map((regra) => {
@@ -91,7 +95,11 @@ export function RevisarDistribuicao() {
     return () => { ativo = false; };
   }, [router]);
 
-  const totalDistribuido = useMemo(() => linhas.reduce((total, linha) => total + linha.valorCentavos, 0), [linhas]);
+  const linhasVisiveis = useMemo(
+    () => linhas.filter((linha) => caixinhasSelecionadas.includes(linha.caixinhaId)),
+    [linhas, caixinhasSelecionadas],
+  );
+  const totalDistribuido = useMemo(() => linhasVisiveis.reduce((total, linha) => total + linha.valorCentavos, 0), [linhasVisiveis]);
   const naoAlocado = rascunho ? rascunho.valorCentavos - totalDistribuido : 0;
   // A confirmação valida a distribuição final editada pelo usuário.
   // Um excedente na sugestão automática é apenas um aviso sobre as regras.
@@ -109,7 +117,7 @@ export function RevisarDistribuicao() {
 
   function continuar() {
     if (!rascunho || inconsistente) return;
-    sessionStorage.setItem("tangerina.receita.revisao", JSON.stringify({ ...rascunho, alocacoes: linhas.filter((linha) => linha.valorCentavos > 0) }));
+    sessionStorage.setItem("tangerina.receita.revisao", JSON.stringify({ ...rascunho, alocacoes: linhasVisiveis.filter((linha) => linha.valorCentavos > 0) }));
     router.push("/receitas/confirmar");
   }
 
@@ -127,9 +135,19 @@ export function RevisarDistribuicao() {
           <article className="revisao-receita-card"><span>RECEITA</span><strong>{rascunho.descricao}</strong><b>{formatMoney(rascunho.valorCentavos)}</b></article>
           <section className="revisao-lista" aria-label="Sugestões de distribuição">
             <div className="revisao-section-head"><div><p>SUAS CAIXINHAS E REGRAS</p><h2>Como distribuir?</h2></div><FiEdit3 aria-hidden="true" /></div>
-            <p className="revisao-note">Cada linha representa uma regra específica. Se uma caixinha tiver duas regras, ela aparecerá duas vezes com o mesmo nome e com o nome da regra logo abaixo. Você pode alterar qualquer valor individualmente; a edição desta revisão não altera a regra salva.</p>
-            {linhas.length === 0 ? <div className="revisao-empty"><FiInfo /><p>Nenhuma caixinha ativa está disponível para distribuição.</p></div> :
-              linhas.map((linha) => <label className="revisao-linha" key={linha.id}><span><strong>{linha.nomeCaixinha}</strong><small>{linha.nomeRegra}</small><small>Sugestão desta regra: {formatMoney(linha.sugestaoCentavos)}</small></span><input aria-label={"Valor da regra " + linha.nomeRegra + " para " + linha.nomeCaixinha} inputMode="decimal" defaultValue={(linha.valorCentavos / 100).toFixed(2).replace(".", ",")} onBlur={(event) => editarValor(linha.id, event.target.value)} /></label>)}
+            <p className="revisao-note">Escolha primeiro quais caixinhas participarão desta receita. Somente as caixinhas marcadas terão suas regras aplicadas. Cada linha representa uma regra específica; editar aqui não altera a regra salva.</p>
+            <fieldset className="revisao-caixinhas-checklist">
+              <legend>Caixinhas que vão receber nesta receita</legend>
+              {caixinhasDisponiveis.map((caixinha) => {
+                const marcada = caixinhasSelecionadas.includes(caixinha.id);
+                return <label key={caixinha.id} className="revisao-caixinha-check">
+                  <input type="checkbox" checked={marcada} onChange={() => setCaixinhasSelecionadas((atuais) => marcada ? atuais.filter((id) => id !== caixinha.id) : [...atuais, caixinha.id])} />
+                  <span>{caixinha.nome}</span>
+                </label>;
+              })}
+            </fieldset>
+            {linhasVisiveis.length === 0 ? <div className="revisao-empty"><FiInfo /><p>Nenhuma caixinha ativa está disponível para distribuição.</p></div> :
+              linhasVisiveis.map((linha) => <label className="revisao-linha" key={linha.id}><span><strong>{linha.nomeCaixinha}</strong><small>{linha.nomeRegra}</small><small>Sugestão desta regra: {formatMoney(linha.sugestaoCentavos)}</small></span><input aria-label={"Valor da regra " + linha.nomeRegra + " para " + linha.nomeCaixinha} inputMode="decimal" defaultValue={(linha.valorCentavos / 100).toFixed(2).replace(".", ",")} onBlur={(event) => editarValor(linha.id, event.target.value)} /></label>)}
           </section>
         </section>
         <aside className="revisao-resumo">
