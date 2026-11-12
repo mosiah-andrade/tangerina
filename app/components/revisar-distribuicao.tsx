@@ -12,7 +12,7 @@ import { criarRepositorioRegrasDistribuicao } from "@/lib/persistence/repositori
 import type { RegraDistribuicao } from "@/lib/persistence/entities";
 
 type ReceitaRascunho = { descricao: string; valorCentavos: number; dataMovimento: string };
-type Linha = { id: string; caixinhaId: string; nome: string; valorCentavos: number; sugestaoCentavos: number };
+type Linha = { id: string; regraDistribuicaoId?: string; caixinhaId: string; nome: string; valorCentavos: number; sugestaoCentavos: number };
 const KEY = "tangerina.receita.rascunho";
 
 function formatMoney(value: number) {
@@ -44,15 +44,35 @@ export function RevisarDistribuicao() {
           percentual: regra.tipoCalculo !== "valor_fixo" ? regra.percentual : undefined,
         }));
         const resultado = calcularDistribuicao(receita.valorCentavos, inputs);
-        const nomes = new Map(caixinhas.map((caixinha) => [caixinha.id, caixinha.nome]));
         const porRegra = new Map(regras.map((regra) => [regra.id, regra]));
+        const sugestoesPorCaixinha = new Map<string, { valorCentavos: number; regraDistribuicaoId?: string }>();
+        for (const alocacao of resultado.alocacoes) {
+          const regra = porRegra.get(alocacao.regraDistribuicaoId);
+          if (!regra) continue;
+          const atual = sugestoesPorCaixinha.get(regra.caixinhaId);
+          sugestoesPorCaixinha.set(regra.caixinhaId, {
+            valorCentavos: (atual?.valorCentavos ?? 0) + alocacao.valorCentavos,
+            regraDistribuicaoId: atual?.regraDistribuicaoId ?? alocacao.regraDistribuicaoId,
+          });
+        }
         if (!ativo) return;
         setRascunho(receita);
         setExcedenteRegras(resultado.excedenteCentavos);
-        setLinhas(resultado.alocacoes.map((alocacao) => {
-          const regra = porRegra.get(alocacao.regraDistribuicaoId);
-          return { id: alocacao.regraDistribuicaoId, caixinhaId: regra?.caixinhaId ?? "", nome: regra ? nomes.get(regra.caixinhaId) ?? regra.nome : "Distribuição", valorCentavos: alocacao.valorCentavos, sugestaoCentavos: alocacao.valorCentavos };
-        }));
+        setLinhas(
+          caixinhas
+            .filter((caixinha) => caixinha.ativa)
+            .map((caixinha) => {
+              const sugestao = sugestoesPorCaixinha.get(caixinha.id);
+              return {
+                id: caixinha.id,
+                regraDistribuicaoId: sugestao?.regraDistribuicaoId,
+                caixinhaId: caixinha.id,
+                nome: caixinha.nome,
+                valorCentavos: sugestao?.valorCentavos ?? 0,
+                sugestaoCentavos: sugestao?.valorCentavos ?? 0,
+              };
+            }),
+        );
       } catch { if (ativo) setErro("Não foi possível carregar as sugestões de distribuição."); }
       finally { if (ativo) setCarregando(false); }
     }
@@ -78,7 +98,7 @@ export function RevisarDistribuicao() {
 
   function continuar() {
     if (!rascunho || inconsistente) return;
-    sessionStorage.setItem("tangerina.receita.revisao", JSON.stringify({ ...rascunho, alocacoes: linhas }));
+    sessionStorage.setItem("tangerina.receita.revisao", JSON.stringify({ ...rascunho, alocacoes: linhas.filter((linha) => linha.valorCentavos > 0) }));
     router.push("/receitas/confirmar");
   }
 
