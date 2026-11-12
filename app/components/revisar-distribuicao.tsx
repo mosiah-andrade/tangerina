@@ -26,6 +26,7 @@ export function RevisarDistribuicao() {
   const [excedenteRegras, setExcedenteRegras] = useState(0);
   const [carregando, setCarregando] = useState(true);
   const [erro, setErro] = useState<string | null>(null);
+  const [revisadaManualmente, setRevisadaManualmente] = useState(false);
 
   useEffect(() => {
     let ativo = true;
@@ -70,6 +71,7 @@ export function RevisarDistribuicao() {
       const valorCentavos = texto.trim() === "" ? 0 : parseMoneyToCents(texto);
       if (valorCentavos < 0) throw new Error();
       setErro(null);
+      setRevisadaManualmente(true);
       setLinhas((atuais) => atuais.map((linha) => linha.id === id ? { ...linha, valorCentavos } : linha));
     } catch { setErro("Informe um valor válido, usando vírgula para os centavos."); }
   }
@@ -103,7 +105,7 @@ export function RevisarDistribuicao() {
           <div><span>Receita</span><strong>{formatMoney(rascunho.valorCentavos)}</strong></div>
           <div><span>Distribuído</span><strong>{formatMoney(totalDistribuido)}</strong></div>
           <div className={naoAlocado < 0 ? "danger" : "highlight"}><span>Não alocado</span><strong>{formatMoney(naoAlocado)}</strong></div>
-          {excedenteRegras > 0 && <p className="revisao-alert">As regras sugeridas ultrapassaram o valor disponível em {formatMoney(excedenteRegras)}. Revise os valores abaixo antes de continuar.</p>}
+          {excedenteRegras > 0 && !revisadaManualmente && <p className="revisao-alert">As sugestões automáticas ultrapassaram o valor disponível em {formatMoney(excedenteRegras)}. Você pode ajustar os valores abaixo para continuar.</p>}
           <button className="button-primary receita-submit" type="button" disabled={inconsistente} onClick={continuar}>Confirmar distribuição <FiCheck aria-hidden="true" /></button>
           <p className="revisao-note">A confirmação definitiva e a gravação da receita acontecem na próxima etapa.</p>
         </aside>
