@@ -61,7 +61,9 @@ export function RevisarDistribuicao() {
 
   const totalDistribuido = useMemo(() => linhas.reduce((total, linha) => total + linha.valorCentavos, 0), [linhas]);
   const naoAlocado = rascunho ? rascunho.valorCentavos - totalDistribuido : 0;
-  // A confirmação valida a distribuição FINAL editada pelo usuário.\n  // Um excedente na sugestão automática é apenas um aviso sobre as regras.\n  const inconsistente = naoAlocado < 0;
+  // A confirmação valida a distribuição final editada pelo usuário.
+  // Um excedente na sugestão automática é apenas um aviso sobre as regras.
+  const inconsistente = naoAlocado < 0;
 
   function editarValor(id: string, texto: string) {
     try {
