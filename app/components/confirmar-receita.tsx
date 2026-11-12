@@ -33,8 +33,10 @@ export function ConfirmarReceita() {
   useEffect(() => {
     const salvo = sessionStorage.getItem(REVISAO_KEY);
     if (!salvo) { router.replace("/receitas"); return; }
-    try { setRevisao(JSON.parse(salvo) as Revisao); }
-    catch { router.replace("/receitas"); }
+    try {
+      const parsed = JSON.parse(salvo) as Revisao;
+      queueMicrotask(() => setRevisao(parsed));
+    } catch { router.replace("/receitas"); }
   }, [router]);
 
   const totalAlocado = useMemo(() => revisao?.alocacoes.reduce((total, item) => total + item.valorCentavos, 0) ?? 0, [revisao]);
