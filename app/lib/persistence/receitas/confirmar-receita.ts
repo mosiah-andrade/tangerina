@@ -43,8 +43,10 @@ export async function confirmarReceita(
     async () => {
       for (const item of input.alocacoes) {
         if (item.valorCentavos === 0) continue;
+        if (!item.caixinhaId) throw new Error("Uma distribuição não possui caixinha de destino.");
         const caixinha = await db.caixinhas.get(item.caixinhaId);
-        if (!caixinha || !caixinha.ativa) throw new Error("Uma caixinha selecionada não está disponível.");
+        if (!caixinha) throw new Error("Uma caixinha selecionada não foi encontrada.");
+        if (!caixinha.ativa) throw new Error(`A caixinha "${caixinha.nome}" está arquivada e não pode receber uma nova receita.`);
       }
 
       const movimento: Movimento = {
