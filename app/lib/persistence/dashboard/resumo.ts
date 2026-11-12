@@ -1,4 +1,4 @@
-import type { Alocacao, Caixinha, Conta, EfeitoSaldo, Movimento } from "../entities.ts";
+import type { Alocacao, Caixinha, Conta, EfeitoSaldo } from "../entities.ts";
 import { calcularSaldoConta } from "../contas/saldo.ts";
 
 export interface ResumoDashboard {
@@ -46,36 +46,19 @@ export function calcularResumoDashboard({
   caixinhas,
   efeitosSaldo,
   alocacoes,
-  movimentos = [],
 }: {
   contas: Conta[];
   caixinhas: Caixinha[];
   efeitosSaldo: EfeitoSaldo[];
   alocacoes: Alocacao[];
-  movimentos?: Movimento[];
 }): ResumoDashboard {
   const contasAtivas = contas.filter((conta) => conta.ativa);
 
   const caixinhasAtivas = caixinhas.filter((caixinha) => caixinha.ativa);
 
-  const saldoContasCentavos = somarValores(
+  const patrimonioCentavos = somarValores(
     contasAtivas.map((conta) => calcularSaldoConta(conta, efeitosSaldo)),
   );
-
-  // Receitas confirmadas sem vínculo a uma conta ainda precisam aparecer no patrimônio.
-  // As alocações em caixinhas são virtuais e não devem ser somadas novamente.
-  const receitasSemContaCentavos = somarValores(
-    movimentos
-      .filter(
-        (movimento) =>
-          movimento.status === "confirmado" &&
-          movimento.tipo === "receita" &&
-          !movimento.contaDestinoId,
-      )
-      .map((movimento) => movimento.valorCentavos),
-  );
-
-  const patrimonioCentavos = saldoContasCentavos + receitasSemContaCentavos;
 
   const emCaixinhasCentavos = somarValores(
     caixinhasAtivas.map((caixinha) =>
