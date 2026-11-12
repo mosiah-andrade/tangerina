@@ -200,11 +200,12 @@ const milestones = [
  ]}
 ];
 const STORAGE_KEY="tangerina-roadmap-v1";
-let completed = {T1:true,T2:true,T3:true,T4:true,T5:true,T6:true,T7:true,T8:true,T9:true,T10:true,UX1:true,UX2:true,UX3:true,T11:true,T12:true,T13:true,T14:true,T15:true,T16:true,T17:true,T18:true,T19:true,T20:true,T21:true,T22:true,T23:true};
-try { const saved = localStorage.getItem(STORAGE_KEY); completed = saved ? {...{T1:true,T2:true,T3:true,T4:true,T5:true,T6:true,T7:true,T8:true,T9:true,T10:true,UX1:true,UX2:true,UX3:true,T11:true,T12:true,T13:true,T14:true,T15:true,T16:true,T17:true,T18:true,T19:true,T20:true,T21:true,T22:true,T23:true}, ...(JSON.parse(saved) || {})} : {T1:true,T2:true,T3:true,T4:true,T5:true,T6:true,T7:true,T8:true,T9:true,T10:true,UX1:true,UX2:true,UX3:true,T11:true,T12:true,T13:true,T14:true,T15:true,T16:true,T17:true,T19:true,T20:true,T21:true}; } catch(e) { completed = {T1:true,T2:true,T3:true,T4:true,T5:true,T6:true,T7:true,T8:true,T9:true,T10:true,UX1:true,UX2:true,UX3:true,T11:true,T12:true,T13:true,T14:true,T15:true,T16:true,T17:true}; }
+let completed = {T1:true,T2:true,T3:true,T4:true,T5:true,T6:true,T7:true,T8:true,T9:true,T10:true,UX1:true,UX2:true,UX3:true,T11:true,T12:true,T13:true,T14:true,T15:true,T16:true,T17:true,T18:true,T19:true,T20:true,T21:true,T22:true,T23:true,T24:true};
+try { const saved = localStorage.getItem(STORAGE_KEY); completed = saved ? {...{T1:true,T2:true,T3:true,T4:true,T5:true,T6:true,T7:true,T8:true,T9:true,T10:true,UX1:true,UX2:true,UX3:true,T11:true,T12:true,T13:true,T14:true,T15:true,T16:true,T17:true,T18:true,T19:true,T20:true,T21:true,T22:true,T23:true,T24:true}, ...(JSON.parse(saved) || {})} : {T1:true,T2:true,T3:true,T4:true,T5:true,T6:true,T7:true,T8:true,T9:true,T10:true,UX1:true,UX2:true,UX3:true,T11:true,T12:true,T13:true,T14:true,T15:true,T16:true,T17:true,T19:true,T20:true,T21:true}; } catch(e) { completed = {T1:true,T2:true,T3:true,T4:true,T5:true,T6:true,T7:true,T8:true,T9:true,T10:true,UX1:true,UX2:true,UX3:true,T11:true,T12:true,T13:true,T14:true,T15:true,T16:true,T17:true}; }
 // T10 e T15 foram concluídas e integradas à main; preservar o status oficial mesmo se houver progresso antigo salvo neste navegador.
 completed.T10 = true;
 completed.T15 = true;
+completed.T24 = true;
 const allTasks = () => milestones.flatMap(m => m.tasks.map(t => ({m,t})));
 // T16, T17 e T18 concluídas: manter marcadas mesmo com localStorage antigo.
 completed.T16 = true;
