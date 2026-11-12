@@ -12,7 +12,7 @@ import { criarRepositorioRegrasDistribuicao } from "@/lib/persistence/repositori
 import type { RegraDistribuicao } from "@/lib/persistence/entities";
 
 type ReceitaRascunho = { descricao: string; valorCentavos: number; dataMovimento: string };
-type Linha = { id: string; nome: string; valorCentavos: number; sugestaoCentavos: number };
+type Linha = { id: string; caixinhaId: string; nome: string; valorCentavos: number; sugestaoCentavos: number };
 const KEY = "tangerina.receita.rascunho";
 
 function formatMoney(value: number) {
@@ -50,7 +50,7 @@ export function RevisarDistribuicao() {
         setExcedenteRegras(resultado.excedenteCentavos);
         setLinhas(resultado.alocacoes.map((alocacao) => {
           const regra = porRegra.get(alocacao.regraDistribuicaoId);
-          return { id: alocacao.regraDistribuicaoId, nome: regra ? nomes.get(regra.caixinhaId) ?? regra.nome : "Distribuição", valorCentavos: alocacao.valorCentavos, sugestaoCentavos: alocacao.valorCentavos };
+          return { id: alocacao.regraDistribuicaoId, caixinhaId: regra?.caixinhaId ?? "", nome: regra ? nomes.get(regra.caixinhaId) ?? regra.nome : "Distribuição", valorCentavos: alocacao.valorCentavos, sugestaoCentavos: alocacao.valorCentavos };
         }));
       } catch { if (ativo) setErro("Não foi possível carregar as sugestões de distribuição."); }
       finally { if (ativo) setCarregando(false); }
