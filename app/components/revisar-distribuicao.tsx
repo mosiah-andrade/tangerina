@@ -61,7 +61,7 @@ export function RevisarDistribuicao() {
 
   const totalDistribuido = useMemo(() => linhas.reduce((total, linha) => total + linha.valorCentavos, 0), [linhas]);
   const naoAlocado = rascunho ? rascunho.valorCentavos - totalDistribuido : 0;
-  const inconsistente = excedenteRegras > 0 || naoAlocado < 0;
+  // A confirmação valida a distribuição FINAL editada pelo usuário.\n  // Um excedente na sugestão automática é apenas um aviso sobre as regras.\n  const inconsistente = naoAlocado < 0;
 
   function editarValor(id: string, texto: string) {
     try {
@@ -101,7 +101,7 @@ export function RevisarDistribuicao() {
           <div><span>Receita</span><strong>{formatMoney(rascunho.valorCentavos)}</strong></div>
           <div><span>Distribuído</span><strong>{formatMoney(totalDistribuido)}</strong></div>
           <div className={naoAlocado < 0 ? "danger" : "highlight"}><span>Não alocado</span><strong>{formatMoney(naoAlocado)}</strong></div>
-          {excedenteRegras > 0 && <p className="revisao-alert">As regras excedem a receita em {formatMoney(excedenteRegras)}. Ajuste antes de confirmar.</p>}
+          {excedenteRegras > 0 && <p className="revisao-alert">As regras sugeridas ultrapassaram o valor disponível em {formatMoney(excedenteRegras)}. Revise os valores abaixo antes de continuar.</p>}
           <button className="button-primary receita-submit" type="button" disabled={inconsistente} onClick={continuar}>Confirmar distribuição <FiCheck aria-hidden="true" /></button>
           <p className="revisao-note">A confirmação definitiva e a gravação da receita acontecem na próxima etapa.</p>
         </aside>
