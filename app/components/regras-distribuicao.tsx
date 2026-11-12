@@ -63,9 +63,13 @@ export function RegrasDistribuicao() {
   }
 
   useEffect(() => {
-    void carregar().catch(() =>
-      setErro("Não foi possível carregar as regras de distribuição."),
-    );
+    let ativo = true;
+    const timer = window.setTimeout(() => {
+      void carregar().catch(() => {
+        if (ativo) setErro("Não foi possível carregar as regras de distribuição.");
+      });
+    }, 0);
+    return () => { ativo = false; window.clearTimeout(timer); };
   }, []);
 
   async function salvar(event: React.FormEvent<HTMLFormElement>) {
