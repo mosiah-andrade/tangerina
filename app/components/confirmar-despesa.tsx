@@ -29,8 +29,8 @@ export function ConfirmarDespesa() {
       queueMicrotask(() => setRascunho(parsed));
       void (async () => {
         const db = getDatabase();
-        const [conta, caixinha] = await Promise.all([db.contas.get(parsed.contaOrigemId), db.caixinhas.get(parsed.caixinhaId)]);
-        queueMicrotask(() => { setContaNome(conta?.nome ?? "Conta"); setCaixinhaNome(caixinha?.nome ?? "Caixinha"); });
+        const [conta, caixinha] = await Promise.all([db.contas.get(parsed.contaOrigemId), parsed.caixinhaId ? db.caixinhas.get(parsed.caixinhaId) : Promise.resolve(undefined)]);
+        queueMicrotask(() => { setContaNome(conta?.nome ?? "Conta"); setCaixinhaNome(caixinha?.nome ?? "Não alocado"); });
       })();
     } catch { router.replace("/despesas"); }
   }, [router]);
