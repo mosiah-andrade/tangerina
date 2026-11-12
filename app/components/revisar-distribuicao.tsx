@@ -44,7 +44,6 @@ export function RevisarDistribuicao() {
           percentual: regra.tipoCalculo !== "valor_fixo" ? regra.percentual : undefined,
         }));
         const resultado = calcularDistribuicao(receita.valorCentavos, inputs);
-        const porRegra = new Map(regras.map((regra) => [regra.id, regra]));
         const sugestaoPorRegra = new Map(
           resultado.alocacoes.map((alocacao) => [
             alocacao.regraDistribuicaoId,
