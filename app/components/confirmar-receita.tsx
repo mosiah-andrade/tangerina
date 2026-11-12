@@ -13,7 +13,7 @@ type Revisao = {
   valorCentavos: number;
   dataMovimento: string;
   contaDestinoId: string;
-  alocacoes: Array<{ id: string; regraDistribuicaoId?: string; caixinhaId: string; nome: string; valorCentavos: number }>;
+  alocacoes: Array<{ id: string; regraDistribuicaoId?: string; caixinhaId: string; nomeCaixinha: string; nomeRegra: string; valorCentavos: number }>;
 };
 
 const REVISAO_KEY = "tangerina.receita.revisao";
@@ -88,7 +88,7 @@ export function ConfirmarReceita() {
             <article className="revisao-receita-card"><span>RECEITA</span><strong>{revisao.descricao}</strong><b>{formatMoney(revisao.valorCentavos)}</b></article>
             <section className="revisao-lista" aria-label="Distribuição confirmada">
               <div className="revisao-section-head"><div><p>CONFERÊNCIA FINAL</p><h2>Distribuição da receita</h2></div><FiCheckCircle aria-hidden="true" /></div>
-              {revisao.alocacoes.length === 0 ? <div className="revisao-empty"><p>Nenhum valor será alocado em caixinhas.</p></div> : revisao.alocacoes.map((item) => <div className="revisao-linha" key={item.id}><span><strong>{item.nome}</strong></span><strong>{formatMoney(item.valorCentavos)}</strong></div>)}
+              {revisao.alocacoes.length === 0 ? <div className="revisao-empty"><p>Nenhum valor será alocado em caixinhas.</p></div> : revisao.alocacoes.map((item) => <div className="revisao-linha" key={item.id}><span><strong>{item.nomeCaixinha}</strong><small>{item.nomeRegra}</small></span><strong>{formatMoney(item.valorCentavos)}</strong></div>)}
             </section>
           </section>
           <aside className="revisao-resumo">
