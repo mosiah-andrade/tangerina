@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import {
@@ -12,19 +12,45 @@ import {
 } from "react-icons/fi";
 import { BottomNavigation } from "@/components/bottom-navigation";
 import { parseMoneyToCents } from "@/domain/finance/money";
+import { getDatabase } from "@/lib/persistence/database";
+import type { Conta } from "@/lib/persistence/entities";
 
 type ReceitaRascunho = {
   descricao: string;
   valorCentavos: number;
   dataMovimento: string;
+  contaDestinoId: string;
 };
 
 export function RegistrarReceita() {
   const [descricao, setDescricao] = useState("");
   const [valor, setValor] = useState("");
   const [data, setData] = useState("");
+  const [contas, setContas] = useState<Conta[]>([]);
+  const [contaDestinoId, setContaDestinoId] = useState("");
+  const [carregandoContas, setCarregandoContas] = useState(true);
   const [erro, setErro] = useState<string | null>(null);
   const router = useRouter();
+
+  useEffect(() => {
+    let ativo = true;
+    async function carregarContas() {
+      try {
+        const db = getDatabase();
+        await db.open();
+        const contasAtivas = await db.contas.filter((conta) => conta.ativa && conta.tipo === "bancaria").toArray();
+        if (!ativo) return;
+        setContas(contasAtivas);
+        if (contasAtivas.length === 1) setContaDestinoId(contasAtivas[0].id);
+      } catch {
+        if (ativo) setErro("Não foi possível carregar as contas bancárias.");
+      } finally {
+        if (ativo) setCarregandoContas(false);
+      }
+    }
+    void carregarContas();
+    return () => { ativo = false; };
+  }, []);
 
   function continuar(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -33,6 +59,11 @@ export function RegistrarReceita() {
     const textoDescricao = descricao.trim();
     if (!textoDescricao) {
       setErro("Informe uma descrição para a receita.");
+      return;
+    }
+
+    if (!contaDestinoId) {
+      setErro(contas.length === 0 ? "Cadastre uma conta bancária ativa antes de registrar uma receita." : "Selecione a conta que recebeu a receita.");
       return;
     }
 
@@ -47,6 +78,7 @@ export function RegistrarReceita() {
         descricao: textoDescricao,
         valorCentavos,
         dataMovimento: data || new Date().toISOString().slice(0, 10),
+        contaDestinoId,
       };
 
       sessionStorage.setItem("tangerina.receita.rascunho", JSON.stringify(rascunho));
@@ -107,6 +139,15 @@ export function RegistrarReceita() {
               required
             />
             <span className="field-hint">Use vírgula para os centavos.</span>
+          </label>
+
+          <label className="field-group">
+            <span className="field-label">Conta que recebeu</span>
+            <select className="text-input" value={contaDestinoId} onChange={(event) => setContaDestinoId(event.target.value)} disabled={carregandoContas || contas.length === 0} required>
+              <option value="">{carregandoContas ? "Carregando contas..." : contas.length === 0 ? "Nenhuma conta bancária disponível" : "Selecione a conta"}</option>
+              {contas.map((conta) => <option key={conta.id} value={conta.id}>{conta.nome}{conta.instituicao ? ` — ${conta.instituicao}` : ""}</option>)}
+            </select>
+            <span className="field-hint">A receita aumenta o saldo desta conta; as caixinhas apenas organizam esse mesmo dinheiro.</span>
           </label>
 
           <label className="field-group">
