@@ -1,5 +1,6 @@
 import type { Alocacao, Caixinha, Conta, EfeitoSaldo } from "../entities.ts";
 import { calcularSaldoConta } from "../contas/saldo.ts";
+import { calcularSaldoCaixinhaPorAlocacoes } from "../caixinhas/saldo.ts";
 
 export interface ResumoDashboard {
   patrimonioCentavos: number;
@@ -12,34 +13,6 @@ function somarValores(valores: number[]): number {
 }
 
 
-
-function calcularSaldoCaixinha(
-  caixinha: Caixinha,
-  alocacoes: Alocacao[],
-): number {
-  const alocacoesDaCaixinha = alocacoes.filter(
-    (alocacao) => alocacao.caixinhaId === caixinha.id,
-  );
-
-  const variacaoCentavos = somarValores(
-    alocacoesDaCaixinha.map((alocacao) => {
-      switch (alocacao.tipo) {
-        case "credito_receita":
-        case "transferencia_entrada":
-          return alocacao.valorCentavos;
-
-        case "debito_despesa":
-        case "transferencia_saida":
-          return -alocacao.valorCentavos;
-
-        case "ajuste":
-          return alocacao.valorCentavos;
-      }
-    }),
-  );
-
-  return caixinha.saldoInicialCentavos + variacaoCentavos;
-}
 
 export function calcularResumoDashboard({
   contas,
@@ -62,7 +35,7 @@ export function calcularResumoDashboard({
 
   const emCaixinhasCentavos = somarValores(
     caixinhasAtivas.map((caixinha) =>
-      calcularSaldoCaixinha(caixinha, alocacoes),
+      calcularSaldoCaixinhaPorAlocacoes(caixinha, alocacoes),
     ),
   );
 
