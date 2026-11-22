@@ -32,6 +32,10 @@ function ehRascunhoDespesa(
   if (typeof valor !== "object" || valor === null) return false;
 
   const item = valor as Record<string, unknown>;
+  if (typeof item.dataMovimento !== "string" || !/^\\d{4}-\\d{2}-\\d{2}$/.test(item.dataMovimento)) return false;
+  const data = new Date(`${item.dataMovimento}T00:00:00.000Z`);
+  if (Number.isNaN(data.getTime()) || data.toISOString().slice(0, 10) !== item.dataMovimento) return false;
+
   return (
     typeof item.descricao === "string" &&
     item.descricao.trim().length > 0 &&
@@ -132,6 +136,9 @@ export function ConfirmarDespesa() {
             setCaixinhaFicaraNegativa(
               saldoAtual - rascunhoValidado.valorCentavos < 0,
             );
+          } else if (rascunhoValidado.caixinhaId) {
+            setCaixinhaNome("Caixinha indisponível");
+            setErro("A caixinha selecionada não está mais disponível. Volte ao formulário e escolha outra origem.");
           } else {
             setCaixinhaNome("Não alocado");
           }
