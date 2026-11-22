@@ -52,7 +52,7 @@ export function ConfirmarDespesa() {
             const alocacoes=await db.alocacoes.where("caixinhaId").equals(caixinha.id).toArray();
             const atual=calcularSaldoCaixinhaPorAlocacoes(caixinha,alocacoes);
             const projetado=atual-valorCaixinha;
-            if(projetado<0) alertasCalculados.push({id:caixinha.id,nome:caixinha.nome,atual,projetado});
+            alertasCalculados.push({id:caixinha.id,nome:caixinha.nome,atual,projetado});
           }
           if(ativo)setAlertas(alertasCalculados);
         }catch(e){if(ativo)setErro(e instanceof Error?e.message:"Não foi possível carregar os dados da despesa.");}
@@ -68,7 +68,7 @@ export function ConfirmarDespesa() {
   const naoAlocado=(revisao?.valorCentavos??0)-totalAlocado;
 
   async function confirmar(){
-    if(!revisao||salvando||carregando||alertas.some(a=>!confirmadas.includes(a.id))||erro)return;
+    if(!revisao||salvando||carregando||alertas.some(a=>a.projetado<0&&!confirmadas.includes(a.id))||erro)return;
     setSalvando(true);setErro(null);
     try{
       await confirmarDespesa(getDatabase(),{
@@ -108,13 +108,20 @@ export function ConfirmarDespesa() {
             <div className="revisao-linha"><span><strong>Data</strong><small>{dataLegivel(revisao.dataMovimento)}</small></span></div>
             {revisao.alocacoes.length===0?<div className="revisao-empty"><p>Nenhuma caixinha participará. O valor permanecerá não alocado.</p></div>:revisao.alocacoes.map(a=><div className="revisao-linha" key={a.id}><span><strong>{a.nomeCaixinha}</strong><small>{a.nomeRegra}</small></span><strong>{money(a.valorCentavos)}</strong></div>)}
           </section>
-          {alertas.length>0?<section className="modal-form-error" role="alert"><strong>Atenção: uma ou mais caixinhas ficarão negativas.</strong>
-            {alertas.map(a=><label key={a.id} style={{display:"block",marginTop:".8rem"}}><span>{a.nome}: {money(a.atual)} → {money(a.projetado)}.</span><br/><input type="checkbox" checked={confirmadas.includes(a.id)} onChange={e=>setConfirmadas(ids=>e.target.checked?[...ids,a.id]:ids.filter(id=>id!==a.id))}/> Confirmo que esta caixinha pode ficar negativa.</label>)}
+          {alertas.length>0?<section className="revisao-saldos-caixinhas" aria-label="Saldos atuais das caixinhas">
+            <div className="revisao-saldos-head"><FiAlertCircle/><div><strong>Conferência dos saldos</strong><p>Veja quanto cada caixinha tem antes e depois desta despesa.</p></div></div>
+            <div className="revisao-saldos-lista">
+              {alertas.map(a=><article className={a.projetado<0?"revisao-saldo-caixinha is-negative":"revisao-saldo-caixinha"} key={a.id}>
+                <div className="revisao-saldo-titulo"><strong>{a.nome}</strong><span>{a.projetado<0?"Saldo ficará negativo":"Saldo após a despesa"}</span></div>
+                <div className="revisao-saldo-valores"><span><small>Saldo atual</small><strong>{money(a.atual)}</strong></span><span><small>Saldo projetado</small><strong>{money(a.projetado)}</strong></span></div>
+                {a.projetado<0?<label className="revisao-saldo-confirmacao"><input type="checkbox" checked={confirmadas.includes(a.id)} onChange={e=>setConfirmadas(ids=>e.target.checked?[...ids,a.id]:ids.filter(id=>id!==a.id))}/> Confirmo que esta caixinha pode ficar negativa.</label>:null}
+              </article>)}
+            </div>
           </section>:null}
         </section>
         <aside className="revisao-resumo"><p>CONFIRMAÇÃO</p><div><span>Despesa</span><strong>{money(revisao.valorCentavos)}</strong></div><div><span>Distribuído</span><strong>{money(totalAlocado)}</strong></div><div className="highlight"><span>Não alocado</span><strong>{money(naoAlocado)}</strong></div>
           {erro?<p className="modal-form-error" role="alert"><FiAlertCircle/> {erro}</p>:null}
-          <button className="button-primary receita-submit" disabled={salvando||carregando||alertas.some(a=>!confirmadas.includes(a.id))||Boolean(erro)} onClick={confirmar}>{salvando?"Confirmando…":carregando?"Carregando…":"Confirmar e registrar"}</button>
+          <button className="button-primary receita-submit" disabled={salvando||carregando||alertas.some(a=>a.projetado<0&&!confirmadas.includes(a.id))||Boolean(erro)} onClick={confirmar}>{salvando?"Confirmando…":carregando?"Carregando…":"Confirmar e registrar"}</button>
           <p className="revisao-note">Nenhum efeito financeiro será gravado até a confirmação final.</p>
         </aside>
       </div>}
