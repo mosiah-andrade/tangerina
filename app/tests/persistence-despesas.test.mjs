@@ -205,3 +205,42 @@ test("rejeita data inexistente e valor monetário inválido", async () => {
     await finalizarBanco(db);
   }
 });
+
+
+test("distribui uma despesa entre várias caixinhas sem duplicar a saída bancária", async () => {
+  const db = await prepararBanco();
+
+  try {
+    const { confirmarDespesa } = await import("../lib/persistence/despesas/confirmar-despesa.ts");
+    const { calcularSaldoCaixinhaPorAlocacoes } = await import("../lib/persistence/caixinhas/saldo.ts");
+    const conta = criarConta("bancaria", 30_000);
+    const reserva = criarCaixinha(8_000);
+    const dizimo = { ...criarCaixinha(4_000), nome: "Dízimo" };
+    await db.contas.add(conta);
+    await db.caixinhas.bulkAdd([reserva, dizimo]);
+
+    const resultado = await confirmarDespesa(db, {
+      ...entradaDespesa(conta.id, { valorCentavos: 10_000 }),
+      alocacoes: [
+        { caixinhaId: reserva.id, valorCentavos: 6_000 },
+        { caixinhaId: dizimo.id, valorCentavos: 2_000 },
+      ],
+    });
+
+    const efeitos = await db.efeitosSaldo.toArray();
+    const alocacoes = await db.alocacoes.toArray();
+    const saldoReserva = calcularSaldoCaixinhaPorAlocacoes(reserva, alocacoes);
+    const saldoDizimo = calcularSaldoCaixinhaPorAlocacoes(dizimo, alocacoes);
+
+    assert.equal(await db.movimentos.count(), 1);
+    assert.equal(efeitos.length, 3);
+    assert.equal(efeitos.filter((item) => item.tipoAlvo === "conta").length, 1);
+    assert.equal(efeitos.find((item) => item.tipoAlvo === "conta").valorCentavosAssinado, -10_000);
+    assert.equal(alocacoes.length, 2);
+    assert.equal(saldoReserva, 2_000);
+    assert.equal(saldoDizimo, 2_000);
+    assert.equal(resultado.movimentoId.length > 0, true);
+  } finally {
+    await finalizarBanco(db);
+  }
+});
