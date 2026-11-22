@@ -1,353 +1,110 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { FiAlertCircle, FiArrowLeft, FiCheckCircle } from "react-icons/fi";
 import { BottomNavigation } from "@/components/bottom-navigation";
 import { getDatabase } from "@/lib/persistence/database";
 import { calcularSaldoCaixinhaPorAlocacoes } from "@/lib/persistence/caixinhas/saldo";
 import { confirmarDespesa } from "@/lib/persistence/despesas/confirmar-despesa";
-import type { DespesaRascunho } from "@/components/registrar-despesa";
 
-const KEY = "tangerina.despesa.rascunho";
+type AlocacaoRevisada = { id:string; caixinhaId:string; nomeCaixinha:string; nomeRegra:string; valorCentavos:number; regraDistribuicaoId?:string };
+type RevisaoDespesa = { descricao:string; categoria:string; valorCentavos:number; dataMovimento:string; contaOrigemId:string; alocacoes:AlocacaoRevisada[]; idempotencyKey:string };
+type AlertaCaixinha = { id:string; nome:string; atual:number; projetado:number };
 
-function money(value: number) {
-  return new Intl.NumberFormat("pt-BR", {
-    style: "currency",
-    currency: "BRL",
-  }).format(value / 100);
-}
-
-function dataLegivel(valor: string) {
-  const [ano, mes, dia] = valor.split("-");
-  return `${dia}/${mes}/${ano}`;
-}
-
-function ehRascunhoDespesa(
-  valor: unknown,
-): valor is Omit<DespesaRascunho, "idempotencyKey"> & {
-  idempotencyKey?: string;
-} {
-  if (typeof valor !== "object" || valor === null) return false;
-
-  const item = valor as Record<string, unknown>;
-  if (typeof item.dataMovimento !== "string") return false;
-  const data = new Date(`${item.dataMovimento}T00:00:00.000Z`);
-  if (Number.isNaN(data.getTime()) || data.toISOString().slice(0, 10) !== item.dataMovimento) return false;
-
-  return (
-    typeof item.descricao === "string" &&
-    item.descricao.trim().length > 0 &&
-    typeof item.categoria === "string" &&
-    item.categoria.trim().length > 0 &&
-    typeof item.valorCentavos === "number" &&
-    Number.isSafeInteger(item.valorCentavos) &&
-    item.valorCentavos > 0 &&
-    typeof item.contaOrigemId === "string" &&
-    item.contaOrigemId.length > 0 &&
-    (item.caixinhaId === undefined ||
-      (typeof item.caixinhaId === "string" && item.caixinhaId.length > 0)) &&
-    (item.idempotencyKey === undefined ||
-      typeof item.idempotencyKey === "string")
-  );
-}
+const KEY = "tangerina.despesa.revisao";
+const RASCUNHO_KEY = "tangerina.despesa.rascunho";
+function money(value:number) { return new Intl.NumberFormat("pt-BR",{style:"currency",currency:"BRL"}).format(value/100); }
+function dataLegivel(value:string) { const [a,m,d]=value.split("-"); return d+"/"+m+"/"+a; }
 
 export function ConfirmarDespesa() {
-  const router = useRouter();
-  const [rascunho, setRascunho] = useState<DespesaRascunho | null>(null);
-  const [contaNome, setContaNome] = useState("");
-  const [caixinhaNome, setCaixinhaNome] = useState("");
-  const [saldoCaixinhaAtual, setSaldoCaixinhaAtual] = useState<number | null>(
-    null,
-  );
-  const [caixinhaFicaraNegativa, setCaixinhaFicaraNegativa] = useState(false);
-  const [confirmouCaixinhaNegativa, setConfirmouCaixinhaNegativa] =
-    useState(false);
-  const [carregandoOrigem, setCarregandoOrigem] = useState(true);
-  const [erro, setErro] = useState<string | null>(null);
-  const [salvando, setSalvando] = useState(false);
-  const [sucesso, setSucesso] = useState(false);
+  const router=useRouter();
+  const [revisao,setRevisao]=useState<RevisaoDespesa|null>(null);
+  const [contaNome,setContaNome]=useState("");
+  const [alertas,setAlertas]=useState<AlertaCaixinha[]>([]);
+  const [confirmadas,setConfirmadas]=useState<string[]>([]);
+  const [carregando,setCarregando]=useState(true);
+  const [erro,setErro]=useState<string|null>(null);
+  const [salvando,setSalvando]=useState(false);
+  const [sucesso,setSucesso]=useState(false);
 
-  useEffect(() => {
-    let ativo = true;
-    const salvo = sessionStorage.getItem(KEY);
-
-    if (!salvo) {
-      router.replace("/despesas");
-      return () => {
-        ativo = false;
-      };
-    }
-
+  useEffect(()=>{
+    let ativo=true;
     try {
-      const parsed: unknown = JSON.parse(salvo);
-      if (!ehRascunhoDespesa(parsed)) {
-        throw new Error("Rascunho inválido.");
-      }
-
-      const rascunhoValidado: DespesaRascunho = {
-        ...parsed,
-        idempotencyKey:
-          parsed.idempotencyKey?.trim() || crypto.randomUUID(),
-      };
-
-      sessionStorage.setItem(KEY, JSON.stringify(rascunhoValidado));
-      queueMicrotask(() => {
-        if (ativo) setRascunho(rascunhoValidado);
-      });
-
-      void (async () => {
+      const salvo=sessionStorage.getItem(KEY);
+      if(!salvo){ router.replace("/despesas"); return ()=>{ativo=false;}; }
+      const parsed=JSON.parse(salvo) as RevisaoDespesa;
+      if(!parsed || !Array.isArray(parsed.alocacoes) || !parsed.idempotencyKey) throw new Error("Revisão inválida");
+      setRevisao(parsed);
+      void (async()=>{
         try {
-          const db = getDatabase();
-          await db.open();
-
-          const [conta, caixinha] = await Promise.all([
-            db.contas.get(rascunhoValidado.contaOrigemId),
-            rascunhoValidado.caixinhaId
-              ? db.caixinhas.get(rascunhoValidado.caixinhaId)
-              : Promise.resolve(undefined),
-          ]);
-
-          if (!ativo) return;
-
-          setContaNome(
-            conta
-              ? `${conta.nome} — ${conta.tipo === "carteira_fisica" ? "Carteira física" : "Conta bancária"}`
-              : "Origem indisponível",
-          );
-
-          if (rascunhoValidado.caixinhaId && caixinha) {
-            const alocacoes = await db.alocacoes
-              .where("caixinhaId")
-              .equals(caixinha.id)
-              .toArray();
-
-            if (!ativo) return;
-
-            const saldoAtual = calcularSaldoCaixinhaPorAlocacoes(
-              caixinha,
-              alocacoes,
-            );
-            setCaixinhaNome(caixinha.nome);
-            setSaldoCaixinhaAtual(saldoAtual);
-            setCaixinhaFicaraNegativa(
-              saldoAtual - rascunhoValidado.valorCentavos < 0,
-            );
-          } else if (rascunhoValidado.caixinhaId) {
-            setCaixinhaNome("Caixinha indisponível");
-            setErro("A caixinha selecionada não está mais disponível. Volte ao formulário e escolha outra origem.");
-          } else {
-            setCaixinhaNome("Não alocado");
+          const db=getDatabase(); await db.open();
+          const conta=await db.contas.get(parsed.contaOrigemId);
+          if(!ativo)return;
+          setContaNome(conta?conta.nome+" — "+(conta.tipo==="carteira_fisica"?"Carteira física":"Conta bancária"):"Origem indisponível");
+          const alertasCalculados:AlertaCaixinha[]=[];
+          for(const item of parsed.alocacoes){
+            const caixinha=await db.caixinhas.get(item.caixinhaId);
+            if(!caixinha) throw new Error("Uma das caixinhas selecionadas não está mais disponível.");
+            const alocacoes=await db.alocacoes.where("caixinhaId").equals(caixinha.id).toArray();
+            const atual=calcularSaldoCaixinhaPorAlocacoes(caixinha,alocacoes);
+            const projetado=atual-item.valorCentavos;
+            if(projetado<0) alertasCalculados.push({id:caixinha.id,nome:caixinha.nome,atual,projetado});
           }
-        } catch {
-          if (ativo) {
-            setErro("Não foi possível carregar os dados da origem do pagamento.");
-          }
-        } finally {
-          if (ativo) setCarregandoOrigem(false);
-        }
+          if(ativo)setAlertas(alertasCalculados);
+        }catch(e){if(ativo)setErro(e instanceof Error?e.message:"Não foi possível carregar os dados da despesa.");}
+        finally{if(ativo)setCarregando(false);}
       })();
-    } catch {
-      sessionStorage.removeItem(KEY);
-      router.replace("/despesas");
+    }catch{
+      sessionStorage.removeItem(KEY); router.replace("/despesas");
     }
+    return ()=>{ativo=false;};
+  },[router]);
 
-    return () => {
-      ativo = false;
-    };
-  }, [router]);
+  const totalAlocado=useMemo(()=>revisao?.alocacoes.reduce((s,a)=>s+a.valorCentavos,0)??0,[revisao]);
+  const naoAlocado=(revisao?.valorCentavos??0)-totalAlocado;
 
-  async function confirmar() {
-    if (!rascunho || salvando || carregandoOrigem) return;
-    if (caixinhaFicaraNegativa && !confirmouCaixinhaNegativa) return;
-
-    setSalvando(true);
-    setErro(null);
-
-    try {
-      const rascunhoComChave: DespesaRascunho = {
-        ...rascunho,
-        idempotencyKey:
-          rascunho.idempotencyKey || crypto.randomUUID(),
-      };
-
-      sessionStorage.setItem(KEY, JSON.stringify(rascunhoComChave));
-      setRascunho(rascunhoComChave);
-
-      await confirmarDespesa(getDatabase(), {
-        ...rascunhoComChave,
-        confirmarCaixinhaNegativa:
-          caixinhaFicaraNegativa && confirmouCaixinhaNegativa,
+  async function confirmar(){
+    if(!revisao||salvando||carregando||alertas.some(a=>!confirmadas.includes(a.id))||erro)return;
+    setSalvando(true);setErro(null);
+    try{
+      await confirmarDespesa(getDatabase(),{
+        descricao:revisao.descricao,categoria:revisao.categoria,valorCentavos:revisao.valorCentavos,
+        dataMovimento:revisao.dataMovimento,contaOrigemId:revisao.contaOrigemId,
+        alocacoes:revisao.alocacoes.map(a=>({caixinhaId:a.caixinhaId,valorCentavos:a.valorCentavos,regraDistribuicaoId:a.regraDistribuicaoId})),
+        idempotencyKey:revisao.idempotencyKey,
+        confirmarCaixinhasNegativas:confirmadas,
       });
-
-      sessionStorage.removeItem(KEY);
-      setSucesso(true);
-    } catch (error) {
-      const mensagem =
-        error instanceof Error
-          ? error.message
-          : "Não foi possível confirmar a despesa.";
-
-      if (mensagem.includes("É necessária confirmação explícita")) {
-        setCaixinhaFicaraNegativa(true);
-        setConfirmouCaixinhaNegativa(false);
-      }
-
-      setErro(mensagem);
-    } finally {
-      setSalvando(false);
-    }
+      sessionStorage.removeItem(KEY);sessionStorage.removeItem(RASCUNHO_KEY);setSucesso(true);
+    }catch(e){setErro(e instanceof Error?e.message:"Não foi possível confirmar a despesa.");}
+    finally{setSalvando(false);}
   }
 
-  if (!rascunho) {
-    return (
-      <main className="app-shell receita-page">
-        <p className="receita-loading">Carregando confirmação…</p>
-      </main>
-    );
-  }
-
-  return (
-    <>
-      <main className="app-shell receita-page revisao-page">
-        <header className="receita-header">
-          <Link
-            className="receita-back"
-            href="/despesas"
-            aria-label="Voltar para a despesa"
-          >
-            <FiArrowLeft />
-          </Link>
-          <div>
-            <p className="receita-eyebrow">CONFIRMAÇÃO</p>
-            <h1>
-              Confirmar <em>despesa</em>
-            </h1>
-          </div>
-        </header>
-
-        {sucesso ? (
-          <section className="revisao-main">
-            <div className="revisao-empty">
-              <FiCheckCircle />
-              <div>
-                <h2>Despesa confirmada</h2>
-                <p>A saída foi registrada com sucesso.</p>
-                <button
-                  className="button-primary receita-submit"
-                  onClick={() => router.push("/dashboard")}
-                >
-                  Ir para o início
-                </button>
-              </div>
-            </div>
+  if(!revisao)return <main className="app-shell receita-page"><p className="receita-loading">Carregando confirmação…</p></main>;
+  return <>
+    <main className="app-shell receita-page revisao-page">
+      <header className="receita-header"><Link className="receita-back" href="/despesas/revisar" aria-label="Voltar para revisão"><FiArrowLeft/></Link><div><p className="receita-eyebrow">CONFIRMAÇÃO</p><h1>Confirmar <em>despesa</em></h1></div></header>
+      {sucesso?<section className="revisao-main"><div className="revisao-empty"><FiCheckCircle/><div><h2>Despesa confirmada</h2><p>A saída e sua distribuição foram registradas com sucesso.</p><button className="button-primary receita-submit" onClick={()=>router.push("/dashboard")}>Ir para o início</button></div></div></section>:
+      <div className="revisao-layout">
+        <section className="revisao-main">
+          <article className="revisao-receita-card"><span>DESPESA</span><strong>{revisao.descricao}</strong><b>{money(revisao.valorCentavos)}</b></article>
+          <section className="revisao-lista"><div className="revisao-section-head"><div><p>CONFERÊNCIA FINAL</p><h2>Distribuição da despesa</h2></div><FiCheckCircle/></div>
+            <div className="revisao-linha"><span><strong>Categoria</strong><small>{revisao.categoria}</small></span></div>
+            <div className="revisao-linha"><span><strong>Origem do pagamento</strong><small>{contaNome||"Carregando…"}</small></span></div>
+            <div className="revisao-linha"><span><strong>Data</strong><small>{dataLegivel(revisao.dataMovimento)}</small></span></div>
+            {revisao.alocacoes.length===0?<div className="revisao-empty"><p>Nenhuma caixinha participará. O valor permanecerá não alocado.</p></div>:revisao.alocacoes.map(a=><div className="revisao-linha" key={a.id}><span><strong>{a.nomeCaixinha}</strong><small>{a.nomeRegra}</small></span><strong>{money(a.valorCentavos)}</strong></div>)}
           </section>
-        ) : (
-          <div className="revisao-layout">
-            <section className="revisao-main">
-              <article className="revisao-receita-card">
-                <span>DESPESA</span>
-                <strong>{rascunho.descricao}</strong>
-                <b>{money(rascunho.valorCentavos)}</b>
-              </article>
-
-              <section className="revisao-lista">
-                <div className="revisao-section-head">
-                  <div>
-                    <p>CONFERÊNCIA FINAL</p>
-                    <h2>Origem da despesa</h2>
-                  </div>
-                  <FiCheckCircle />
-                </div>
-                <div className="revisao-linha">
-                  <span>
-                    <strong>Categoria</strong>
-                    <small>{rascunho.categoria}</small>
-                  </span>
-                </div>
-                <div className="revisao-linha">
-                  <span>
-                    <strong>Origem do pagamento</strong>
-                    <small>{contaNome || "Carregando…"}</small>
-                  </span>
-                </div>
-                <div className="revisao-linha">
-                  <span>
-                    <strong>Caixinha</strong>
-                    <small>{caixinhaNome || "Carregando…"}</small>
-                  </span>
-                </div>
-                <div className="revisao-linha">
-                  <span>
-                    <strong>Data</strong>
-                    <small>{dataLegivel(rascunho.dataMovimento)}</small>
-                  </span>
-                </div>
-              </section>
-
-              {caixinhaFicaraNegativa ? (
-                <section className="modal-form-error" role="alert">
-                  <p>
-                    <strong>Atenção: a caixinha ficará negativa.</strong>
-                  </p>
-                  <p>
-                    Saldo atual: {money(saldoCaixinhaAtual ?? 0)}. Saldo após a
-                    despesa:{" "}
-                    {money(
-                      (saldoCaixinhaAtual ?? 0) - rascunho.valorCentavos,
-                    )}
-                    .
-                  </p>
-                  <label>
-                    <input
-                      type="checkbox"
-                      checked={confirmouCaixinhaNegativa}
-                      onChange={(event) =>
-                        setConfirmouCaixinhaNegativa(event.target.checked)
-                      }
-                    />{" "}
-                    Confirmo que desejo registrar a despesa mesmo deixando a
-                    caixinha negativa.
-                  </label>
-                </section>
-              ) : null}
-            </section>
-
-            <aside className="revisao-resumo">
-              <p>CONFIRMAÇÃO</p>
-              <div>
-                <span>Despesa</span>
-                <strong>{money(rascunho.valorCentavos)}</strong>
-              </div>
-              {erro ? (
-                <p className="modal-form-error" role="alert">
-                  <FiAlertCircle /> {erro}
-                </p>
-              ) : null}
-              <button
-                className="button-primary receita-submit"
-                disabled={
-                  salvando ||
-                  carregandoOrigem ||
-                  (caixinhaFicaraNegativa && !confirmouCaixinhaNegativa)
-                }
-                onClick={confirmar}
-              >
-                {salvando
-                  ? "Confirmando…"
-                  : carregandoOrigem
-                    ? "Carregando origem…"
-                    : "Confirmar e registrar"}
-              </button>
-              <p className="revisao-note">
-                Ao confirmar, a operação será gravada no dispositivo.
-              </p>
-            </aside>
-          </div>
-        )}
-      </main>
-      <BottomNavigation active="/movimentacoes" />
-    </>
-  );
+          {alertas.length>0?<section className="modal-form-error" role="alert"><strong>Atenção: uma ou mais caixinhas ficarão negativas.</strong>
+            {alertas.map(a=><label key={a.id} style={{display:"block",marginTop:".8rem"}}><span>{a.nome}: {money(a.atual)} → {money(a.projetado)}.</span><br/><input type="checkbox" checked={confirmadas.includes(a.id)} onChange={e=>setConfirmadas(ids=>e.target.checked?[...ids,a.id]:ids.filter(id=>id!==a.id))}/> Confirmo que esta caixinha pode ficar negativa.</label>)}
+          </section>:null}
+        </section>
+        <aside className="revisao-resumo"><p>CONFIRMAÇÃO</p><div><span>Despesa</span><strong>{money(revisao.valorCentavos)}</strong></div><div><span>Distribuído</span><strong>{money(totalAlocado)}</strong></div><div className="highlight"><span>Não alocado</span><strong>{money(naoAlocado)}</strong></div>
+          {erro?<p className="modal-form-error" role="alert"><FiAlertCircle/> {erro}</p>:null}
+          <button className="button-primary receita-submit" disabled={salvando||carregando||alertas.some(a=>!confirmadas.includes(a.id))||Boolean(erro)} onClick={confirmar}>{salvando?"Confirmando…":carregando?"Carregando…":"Confirmar e registrar"}</button>
+          <p className="revisao-note">Nenhum efeito financeiro será gravado até a confirmação final.</p>
+        </aside>
+      </div>}
+    </main><BottomNavigation active="/movimentacoes"/>
+  </>;
 }
