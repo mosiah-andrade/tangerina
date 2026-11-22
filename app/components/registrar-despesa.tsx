@@ -10,7 +10,7 @@ import { getDatabase } from "@/lib/persistence/database";
 import type { Caixinha, Conta } from "@/lib/persistence/entities";
 
 function formatarValorDigitado(valor: string): string {
-  const digitos = valor.replace(/\\D/g, "");
+  const digitos = valor.replace(/\D/g, "");
   if (!digitos) return "";
 
   const centavos = Number(digitos);
@@ -114,7 +114,7 @@ export function RegistrarDespesa() {
         <label className="field-group"><span className="field-label"><FiFileText /> Descrição</span><input className="text-input" value={descricao} onChange={(e) => setDescricao(e.target.value)} placeholder="Ex.: Supermercado" autoFocus required /></label>
         <label className="field-group"><span className="field-label"><FiTag /> Categoria</span><input className="text-input" value={categoria} onChange={(e) => setCategoria(e.target.value)} placeholder="Ex.: Alimentação" required /></label>
         <label className="field-group"><span className="field-label"><FiDollarSign /> Valor gasto</span><input className="text-input receita-value-input" inputMode="numeric" value={valor} onChange={(e) => setValor(formatarValorDigitado(e.target.value))} placeholder="0,00" aria-describedby="despesa-valor-ajuda" required /><span className="field-hint" id="despesa-valor-ajuda">Digite os números; os centavos são formatados automaticamente.</span></label>
-        <label className="field-group"><span className="field-label">Conta ou carteira de origem</span><select className="text-input" value={contaOrigemId} onChange={(e) => setContaOrigemId(e.target.value)} disabled={carregando || contas.length === 0} required><option value="">{carregando ? "Carregando contas..." : contas.length === 0 ? "Nenhuma conta ou carteira ativa disponível" : "Selecione a origem do pagamento"}</option>{contas.map((item) => <option key={item.id} value={item.id}>{item.nome}{item.tipo === "carteira_fisica" ? " (Carteira física)" : " (Conta bancária)"}</option>)}</select></label>
+        <label className="field-group"><span className="field-label">Conta ou carteira de origem</span><select className="text-input" value={contaOrigemId} onChange={(e) => setContaOrigemId(e.target.value)} disabled={carregando || contas.length === 0} required><option value="">{carregando ? "Carregando contas..." : contas.length === 0 ? "Nenhuma conta ou carteira ativa disponível" : "Selecione a origem do pagamento"}</option>{contas.map((item) => <option key={item.id} value={item.id}>{item.nome}{item.instituicao ? ` — ${item.instituicao}` : ""}{item.tipo === "carteira_fisica" ? " (Carteira física)" : " (Conta bancária)"}</option>)}</select></label>
         <label className="field-group"><span className="field-label">Caixinha de origem</span><select className="text-input" value={caixinhaId} onChange={(e) => setCaixinhaId(e.target.value)} disabled={carregando}><option value="">Não alocado</option>{caixinhas.map((item) => <option key={item.id} value={item.id}>{item.nome}</option>)}</select></label>
         <label className="field-group"><span className="field-label"><FiCalendar /> Data da despesa</span><input className="text-input" type="date" value={data} onChange={(e) => setData(e.target.value)} required /></label>
         {erro ? <p className="modal-form-error" role="alert">{erro}</p> : null}
