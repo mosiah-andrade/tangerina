@@ -1,5 +1,6 @@
 import type { TangerinaDatabase } from "@/lib/persistence/database";
 import { calcularSaldoConta } from "@/lib/persistence/contas/saldo";
+import { calcularSaldoCaixinhaPorAlocacoes } from "@/lib/persistence/caixinhas/saldo";
 import type { Alocacao, Auditoria, EfeitoSaldo, Movimento } from "@/lib/persistence/entities";
 import { executarTransacaoPersistencia } from "@/lib/persistence/transactions";
 
@@ -29,24 +30,6 @@ function validarDataMovimento(valor: string): boolean {
     !Number.isNaN(data.getTime()) &&
     data.toISOString().slice(0, 10) === valor
   );
-}
-
-function calcularSaldoCaixinha(
-  saldoInicialCentavos: number,
-  alocacoes: Alocacao[],
-): number {
-  return alocacoes.reduce((saldo, alocacao) => {
-    switch (alocacao.tipo) {
-      case "credito_receita":
-      case "transferencia_entrada":
-        return saldo + alocacao.valorCentavos;
-      case "debito_despesa":
-      case "transferencia_saida":
-        return saldo - alocacao.valorCentavos;
-      case "ajuste":
-        return saldo + alocacao.valorCentavos;
-    }
-  }, saldoInicialCentavos);
 }
 
 function mesmaDespesa(
@@ -156,8 +139,8 @@ export async function confirmarDespesa(
           .where("caixinhaId")
           .equals(caixinha.id)
           .toArray();
-        const saldoAtualCaixinha = calcularSaldoCaixinha(
-          caixinha.saldoInicialCentavos,
+        const saldoAtualCaixinha = calcularSaldoCaixinhaPorAlocacoes(
+          caixinha,
           alocacoesDaCaixinha,
         );
         const saldoProjetadoCaixinha =
