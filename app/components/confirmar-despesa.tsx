@@ -36,10 +36,11 @@ export function ConfirmarDespesa() {
       if(!salvo){ router.replace("/despesas"); return ()=>{ativo=false;}; }
       const parsed=JSON.parse(salvo) as RevisaoDespesa;
       if(!parsed || !Array.isArray(parsed.alocacoes) || !parsed.idempotencyKey) throw new Error("Revisão inválida");
-      setRevisao(parsed);
       void (async()=>{
         try {
           const db=getDatabase(); await db.open();
+          if(!ativo)return;
+          setRevisao(parsed);
           const conta=await db.contas.get(parsed.contaOrigemId);
           if(!ativo)return;
           setContaNome(conta?conta.nome+" — "+(conta.tipo==="carteira_fisica"?"Carteira física":"Conta bancária"):"Origem indisponível");
