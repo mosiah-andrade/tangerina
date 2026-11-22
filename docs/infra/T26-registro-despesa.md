@@ -64,15 +64,11 @@ Movimento, efeitos, alocação e auditoria são gravados em uma única transaç�
 
 ## Pendências de validação
 
-Esta documentação registra a implementação na branch, mas não declara a T26 concluída.
+## Validação final
 
-Antes da conclusão ainda é necessário:
+Em 22/11/2026, o usuário confirmou que os testes manuais da T26 foram aprovados. O check de deployment Vercel associado ao commit final da branch também retornou sucesso. Esta validação manual é registrada conforme confirmação do usuário; não representa execução manual realizada pelo assistente.
 
-1. Executar `npm run test`, `npm run typecheck`, `npm run lint` e `npm run build` no diretório `app`.
-2. Validar manualmente os fluxos em dispositivos/tamanhos mobile e desktop.
-3. Conferir o comportamento com dados existentes e caixinhas arquivadas.
-4. Revisar os resultados de CI e do preview.
-5. Abrir Pull Request para revisão e aguardar aprovação antes do merge.
+Os testes automatizados da suíte, typecheck, lint e build devem ser considerados conforme os checks efetivamente disponíveis no GitHub/Vercel. A integração à `main` será registrada após o merge do Pull Request.
 
 ## Relação com os requisitos
 
@@ -101,7 +97,7 @@ Arquivos adicionais/atualizados:
 - `app/lib/persistence/despesas/confirmar-despesa.ts`
 - `app/tests/persistence-despesas.test.mjs`
 
-A compilação e os testes completos desta revisão ainda precisam ser validados. O primeiro deployment após a inclusão da nova tela revelou um erro de sintaxe na consolidação das alocações; esse erro foi corrigido em `8207db6`, e um novo preview está em execução.
+O primeiro deployment após a inclusão da nova tela revelou um erro de sintaxe na consolidação das alocações; esse erro foi corrigido em `8207db6`. O deployment final da branch alcançou `READY` e o check Vercel do commit final retornou sucesso.
 
 
 ## Decisão aprovada relacionada a retiradas de caixinhas
