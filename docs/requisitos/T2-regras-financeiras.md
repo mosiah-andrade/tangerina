@@ -499,3 +499,44 @@ O T2 é considerado concluído quando as regras financeiras estiverem documentad
 | Versão | Alteração |
 |---|---|
 | 1.0 | Consolidação das regras financeiras aprovadas para o MVP |
+
+
+## 18. Retirada de valores de uma caixinha
+
+### RN-045 — Retirada manual para o saldo não alocado
+
+A retirada de uma caixinha é uma movimentação interna de alocação, não uma despesa nem uma receita.
+
+- O usuário seleciona uma única caixinha ativa e informa manualmente o valor que deseja retirar.
+- As regras automáticas de distribuição não são executadas na retirada. Essas regras orientam a distribuição de receitas; não determinam o valor de uma retirada.
+- A retirada pode ser parcial.
+- O valor deve ser maior que zero e não pode superar o saldo disponível da caixinha. Não é permitido aprofundar saldo negativo por meio de retirada.
+- O valor retirado reduz a alocação virtual da caixinha e aumenta, pelo mesmo montante, o saldo não alocado.
+- Como as caixinhas são divisões virtuais do dinheiro consolidado, a retirada não altera o saldo de conta bancária, carteira física ou saldo bancário consolidado.
+- A operação não cria receita nem despesa e deve constar no histórico como retirada/liberação de alocação.
+- A operação deve ser atômica, identificada e idempotente. Cancelar antes da confirmação não produz efeitos financeiros.
+
+**Exemplo:** uma caixinha com R$ 500,00 libera R$ 100,00. Seu saldo passa a R$ 400,00 e o saldo não alocado aumenta R$ 100,00. O saldo bancário consolidado permanece inalterado.
+
+### RN-046 — Diferença entre retirada, transferência e despesa
+
+- **Retirada:** move valor de uma caixinha para o saldo não alocado; não altera conta/carteira e não é receita/despesa.
+- **Transferência:** move valor entre origens/destinos financeiros ou entre caixinhas, conforme as regras de transferência; não é receita/despesa.
+- **Despesa:** registra consumo/pagamento, reduz a conta ou carteira de origem e, quando distribuída, reduz as caixinhas participantes.
+
+### CT-019 — Retirada parcial de caixinha
+
+Dada uma caixinha com R$ 500,00 e saldo não alocado de R$ 200,00, ao retirar R$ 100,00:
+
+- A caixinha deve ficar com R$ 400,00.
+- O saldo não alocado deve passar a R$ 300,00.
+- O saldo da conta/carteira e o saldo bancário consolidado devem permanecer inalterados.
+- Nenhuma receita ou despesa deve ser criada.
+
+### CT-020 — Retirada superior ao saldo disponível
+
+Dada uma caixinha com R$ 50,00, uma retirada de R$ 50,01 deve ser bloqueada, sem criar movimentação nem alterar saldos.
+
+### T2-D10 — Retirada manual sem regras de distribuição
+
+Aprovada em 22/11/2026: retirada seleciona uma caixinha e um valor manual; não executa regras automáticas; transfere o valor virtualmente para o saldo não alocado; não altera contas/carteiras nem gera receita/despesa; não permite retirar mais que o saldo disponível.
