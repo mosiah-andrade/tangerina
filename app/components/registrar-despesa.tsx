@@ -42,8 +42,10 @@ export function RegistrarDespesa() {
   const [erro, setErro] = useState<string | null>(null);
 
   useEffect(() => {
-    setData(obterDataLocalHoje());
     let ativo = true;
+    queueMicrotask(() => {
+      if (ativo) setData(obterDataLocalHoje());
+    });
     async function carregar() {
       try {
         const db = getDatabase();
