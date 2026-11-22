@@ -102,3 +102,14 @@ Arquivos adicionais/atualizados:
 - `app/tests/persistence-despesas.test.mjs`
 
 A compilação e os testes completos desta revisão ainda precisam ser validados. O primeiro deployment após a inclusão da nova tela revelou um erro de sintaxe na consolidação das alocações; esse erro foi corrigido em `8207db6`, e um novo preview está em execução.
+
+
+## Decisão aprovada relacionada a retiradas de caixinhas
+
+A decisão de retirada foi aprovada em 22/11/2026 e documentada normativamente em `docs/requisitos/T2-regras-financeiras.md` (RN-045, RN-046, CT-019, CT-020 e T2-D10).
+
+A retirada não faz parte do fluxo de registro de despesas da T26 e não deve ser implementada como despesa: o usuário selecionará uma caixinha e informará um valor manual; o valor será liberado para o saldo não alocado, sem executar regras de distribuição e sem alterar conta/carteira ou saldo bancário consolidado. O valor não poderá exceder o saldo disponível. A implementação da interface/operação de retirada deverá ser planejada em tarefa própria do roadmap, sem ampliar retroativamente o escopo da T26.
+
+## Situação da T26
+
+A implementação está na branch `feat/t26-registro-despesa` e o preview Vercel associado ao commit `3dc2ccf` chegou ao estado `READY`, indicando que o deployment de preview foi concluído. Não há execução de GitHub Actions registrada para esta branch no momento desta atualização. A validação manual dos cenários descritos na documentação permanece necessária antes de integrar à `main`.
