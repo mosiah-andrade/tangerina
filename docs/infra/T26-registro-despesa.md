@@ -79,3 +79,26 @@ Antes da conclusão ainda é necessário:
 - T2 RN-001, RN-005, RN-006, RN-020 a RN-025, RN-042 e RN-043.
 - T2 CT-006, CT-007, CT-011, CT-012, CT-014 e CT-016.
 - T3 CA05, CA06, CA17, CA18 e CA21.
+
+## Distribuição de despesas entre caixinhas
+
+A etapa de registro encaminha para `/despesas/revisar`, que reutiliza a lógica de distribuição e a apresentação da revisão de receitas:
+
+- Lista as caixinhas ativas e suas regras ativas.
+- Permite marcar quais caixinhas participam somente desta despesa.
+- Recalcula as sugestões considerando exclusivamente as regras das caixinhas selecionadas.
+- Mostra cada regra como uma linha independente, com sugestão e valor editável sem alterar a regra persistida.
+- Impede que o total distribuído ultrapasse o valor da despesa e apresenta o saldo não alocado.
+- Na confirmação, calcula o saldo projetado de cada caixinha e exige confirmação individual quando alguma ficar negativa.
+- Persiste um único débito na conta/carteira de origem e os débitos virtuais das caixinhas em uma única transação.
+- Consolida regras múltiplas da mesma caixinha em uma alocação final por caixinha.
+
+Arquivos adicionais/atualizados:
+- `app/components/revisar-distribuicao-despesa.tsx`
+- `app/app/despesas/revisar/page.tsx`
+- `app/components/registrar-despesa.tsx`
+- `app/components/confirmar-despesa.tsx`
+- `app/lib/persistence/despesas/confirmar-despesa.ts`
+- `app/tests/persistence-despesas.test.mjs`
+
+A compilação e os testes completos desta revisão ainda precisam ser validados. O primeiro deployment após a inclusão da nova tela revelou um erro de sintaxe na consolidação das alocações; esse erro foi corrigido em `8207db6`, e um novo preview está em execução.
