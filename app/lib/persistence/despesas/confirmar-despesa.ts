@@ -1,8 +1,8 @@
-import type { TangerinaDatabase } from "@/lib/persistence/database";
-import { calcularSaldoConta } from "@/lib/persistence/contas/saldo";
-import { calcularSaldoCaixinhaPorAlocacoes } from "@/lib/persistence/caixinhas/saldo";
-import type { Alocacao, Auditoria, EfeitoSaldo, Movimento } from "@/lib/persistence/entities";
-import { executarTransacaoPersistencia } from "@/lib/persistence/transactions";
+import type { TangerinaDatabase } from "../database.ts";
+import { calcularSaldoConta } from "../contas/saldo.ts";
+import { calcularSaldoCaixinhaPorAlocacoes } from "../caixinhas/saldo.ts";
+import type { Alocacao, Auditoria, EfeitoSaldo, Movimento } from "../entities.ts";
+import { executarTransacaoPersistencia } from "../transactions.ts";
 
 export type ConfirmarDespesaInput = {
   descricao: string;
