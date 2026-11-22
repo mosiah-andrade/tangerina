@@ -27,6 +27,7 @@ export function RevisarDistribuicaoDespesa() {
   const [caixinhas, setCaixinhas] = useState<Array<{id:string;nome:string}>>([]);
   const [selecionadas, setSelecionadas] = useState<string[]>([]);
   const [excedente, setExcedente] = useState(0);
+  const [regrasDistribuicao, setRegrasDistribuicao] = useState<DistributionRuleInput[]>([]);
   const [carregando, setCarregando] = useState(true);
   const [erro, setErro] = useState<string | null>(null);
   const [editada, setEditada] = useState(false);
@@ -61,6 +62,7 @@ export function RevisarDistribuicaoDespesa() {
         setCaixinhas(ativas.map((c) => ({id:c.id,nome:c.nome})));
         setSelecionadas(ativas.map((c) => c.id));
         setExcedente(resultado.excedenteCentavos);
+        setRegrasDistribuicao(entradas);
         setLinhas([
           ...regrasAtivas.map((r) => {
             const c = ativas.find((x) => x.id === r.caixinhaId)!;
@@ -83,6 +85,27 @@ export function RevisarDistribuicaoDespesa() {
   const total = useMemo(() => visiveis.reduce((s,l) => s+l.valorCentavos,0), [visiveis]);
   const naoAlocado = (rascunho?.valorCentavos ?? 0)-total;
   const inconsistente = naoAlocado < 0;
+
+  function alternarCaixinha(id:string) {
+    const novasSelecionadas = selecionadas.includes(id)
+      ? selecionadas.filter((atual) => atual !== id)
+      : [...selecionadas, id];
+    setSelecionadas(novasSelecionadas);
+    if (!rascunho) return;
+    const regrasSelecionadas = regrasDistribuicao.filter((regra) => {
+      const linha = linhas.find((item) => item.regraDistribuicaoId === regra.id);
+      return linha && novasSelecionadas.includes(linha.caixinhaId);
+    });
+    const resultado = calcularDistribuicao(rascunho.valorCentavos, regrasSelecionadas);
+    const sugestoes = new Map(resultado.alocacoes.map((item) => [item.regraDistribuicaoId, item.valorCentavos]));
+    setExcedente(resultado.excedenteCentavos);
+    setLinhas((atuais) => atuais.map((linha) => {
+      if (!linha.regraDistribuicaoId) return linha;
+      const sugestao = sugestoes.get(linha.regraDistribuicaoId) ?? 0;
+      return { ...linha, sugestaoCentavos: sugestao, valorCentavos: sugestao };
+    }));
+    setEditada(false);
+  }
 
   function editar(id:string, texto:string) {
     try {
@@ -127,7 +150,7 @@ export function RevisarDistribuicaoDespesa() {
                   const marcada=selecionadas.includes(c.id);
                   const qtd=linhas.filter((l)=>l.caixinhaId===c.id && l.regraDistribuicaoId).length;
                   return <label key={c.id} className={"revisao-caixinha-check"+(marcada?" is-selected":"")}>
-                    <input type="checkbox" checked={marcada} onChange={()=>setSelecionadas((a)=>marcada?a.filter((id)=>id!==c.id):[...a,c.id])}/>
+                    <input type="checkbox" checked={marcada} onChange={()=>alternarCaixinha(c.id)}/>
                     <span className="revisao-caixinha-checkmark"><FiCheck /></span>
                     <span className="revisao-caixinha-copy"><strong>{c.nome}</strong><small>{qtd>0?qtd+(qtd===1?" regra ativa":" regras ativas"):"Sem regra automática"}</small></span>
                   </label>;
