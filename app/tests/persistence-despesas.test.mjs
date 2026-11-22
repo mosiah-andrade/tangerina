@@ -107,7 +107,7 @@ test("exige confirmação explícita antes de deixar a caixinha negativa", async
 
     await assert.rejects(
       () => confirmarDespesa(db, input),
-      /caixinha .* ficará negativa/,
+      /deixará a caixinha .* negativa/,
     );
     assert.equal(await db.movimentos.count(), 0);
     assert.equal(await db.efeitosSaldo.count(), 0);
