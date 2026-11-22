@@ -394,3 +394,60 @@
   .revisao-caixinhas-checklist { padding: 0.9rem; }
   .revisao-checklist-grid { grid-template-columns: 1fr; }
 }
+
+
+/* Conferência visual dos saldos das caixinhas na confirmação de despesas */
+.revisao-saldos-caixinhas {
+  display: grid;
+  gap: 1rem;
+  padding: 1.15rem;
+  border: 1px solid rgba(197, 155, 39, .3);
+  border-radius: 1.35rem;
+  background: #FDFCF8;
+  color: #0B3C2A;
+}
+.revisao-saldos-head {
+  display: flex;
+  align-items: flex-start;
+  gap: .75rem;
+  color: #8A6715;
+}
+.revisao-saldos-head > svg { flex: 0 0 auto; margin-top: .15rem; }
+.revisao-saldos-head strong { display: block; color: #0B3C2A; }
+.revisao-saldos-head p { margin: .2rem 0 0; color: #66756f; font-size: .85rem; line-height: 1.45; }
+.revisao-saldos-lista { display: grid; gap: .7rem; }
+.revisao-saldo-caixinha {
+  display: grid;
+  gap: .8rem;
+  padding: 1rem;
+  border: 1px solid rgba(11, 60, 42, .12);
+  border-radius: 1rem;
+  background: #fff;
+}
+.revisao-saldo-caixinha.is-negative {
+  border-color: rgba(157, 48, 40, .3);
+  background: #FFF8F6;
+}
+.revisao-saldo-titulo,.revisao-saldo-valores,.revisao-saldo-valores > span {
+  display: flex;
+  justify-content: space-between;
+  gap: .75rem;
+}
+.revisao-saldo-titulo { align-items: center; }
+.revisao-saldo-titulo > span { color: #66756f; font-size: .75rem; text-align: right; }
+.revisao-saldo-caixinha.is-negative .revisao-saldo-titulo > span,
+.revisao-saldo-caixinha.is-negative .revisao-saldo-valores > span:last-child strong { color: #9D3028; }
+.revisao-saldo-valores > span { flex-direction: column; gap: .2rem; }
+.revisao-saldo-valores small { color: #66756f; font-size: .72rem; }
+.revisao-saldo-valores strong { color: #0B3C2A; font-variant-numeric: tabular-nums; }
+.revisao-saldo-confirmacao {
+  display: flex;
+  align-items: flex-start;
+  gap: .55rem;
+  padding-top: .75rem;
+  border-top: 1px solid rgba(157, 48, 40, .15);
+  color: #8F2D26;
+  font-size: .85rem;
+  line-height: 1.4;
+}
+.revisao-saldo-confirmacao input { flex: 0 0 auto; margin-top: .15rem; accent-color: #0B3C2A; }
