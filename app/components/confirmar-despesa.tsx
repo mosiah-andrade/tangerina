@@ -73,7 +73,18 @@ export function ConfirmarDespesa() {
       await confirmarDespesa(getDatabase(),{
         descricao:revisao.descricao,categoria:revisao.categoria,valorCentavos:revisao.valorCentavos,
         dataMovimento:revisao.dataMovimento,contaOrigemId:revisao.contaOrigemId,
-        alocacoes:Array.from(revisao.alocacoes.reduce((mapa,a)=>{const atual=mapa.get(a.caixinhaId);mapa.set(a.caixinhaId,{caixinhaId:a.caixinhaId,valorCentavos:(atual?.valorCentavos??0)+a.valorCentavos,regraDistribuicaoId:atual?.regraDistribuicaoId??a.regraDistribuicaoId});return mapa;},new Map<string,{caixinhaId:string;valorCentavos:number;regraDistribuicaoId?:string}>()).values(),
+        alocacoes: (() => {
+          const porCaixinha = revisao.alocacoes.reduce((mapa, item) => {
+            const atual = mapa.get(item.caixinhaId);
+            mapa.set(item.caixinhaId, {
+              caixinhaId: item.caixinhaId,
+              valorCentavos: (atual?.valorCentavos ?? 0) + item.valorCentavos,
+              regraDistribuicaoId: atual?.regraDistribuicaoId ?? item.regraDistribuicaoId,
+            });
+            return mapa;
+          }, new Map<string, { caixinhaId: string; valorCentavos: number; regraDistribuicaoId?: string }>());
+          return Array.from(porCaixinha.values());
+        })(),
         idempotencyKey:revisao.idempotencyKey,
         confirmarCaixinhasNegativas:confirmadas,
       });
