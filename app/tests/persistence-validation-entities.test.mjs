@@ -128,6 +128,17 @@ test("validates a complete movement", () => {
   assert.equal(validarMovimento(movimentoValido).valido, true);
 });
 
+test("validates an optional movement category", () => {
+  assert.equal(
+    validarMovimento({ ...movimentoValido, categoria: "Alimentação" }).valido,
+    true,
+  );
+  assert.equal(
+    validarMovimento({ ...movimentoValido, categoria: 123 }).valido,
+    false,
+  );
+});
+
 test("validates movement optional identifiers and dates", () => {
   assert.equal(
     validarMovimento({
