@@ -7,7 +7,7 @@ import { FiArrowLeft, FiArrowRight, FiCalendar, FiDollarSign, FiFileText, FiTag 
 import { BottomNavigation } from "@/components/bottom-navigation";
 import { parseMoneyToCents } from "@/domain/finance/money";
 import { getDatabase } from "@/lib/persistence/database";
-import type { Caixinha, Conta } from "@/lib/persistence/entities";
+import type { Conta } from "@/lib/persistence/entities";
 
 function formatarValorDigitado(valor: string): string {
   const digitos = valor.replace(/\D/g, "");
@@ -37,7 +37,6 @@ export type DespesaRascunho = {
   valorCentavos: number;
   dataMovimento: string;
   contaOrigemId: string;
-  caixinhaId?: string;
   idempotencyKey: string;
 };
 
@@ -48,9 +47,7 @@ export function RegistrarDespesa() {
   const [valor, setValor] = useState("");
   const [data, setData] = useState("");
   const [contas, setContas] = useState<Conta[]>([]);
-  const [caixinhas, setCaixinhas] = useState<Caixinha[]>([]);
   const [contaOrigemId, setContaOrigemId] = useState("");
-  const [caixinhaId, setCaixinhaId] = useState("");
   const [carregando, setCarregando] = useState(true);
   const [erro, setErro] = useState<string | null>(null);
 
@@ -63,13 +60,9 @@ export function RegistrarDespesa() {
       try {
         const db = getDatabase();
         await db.open();
-        const [contasAtivas, caixinhasAtivas] = await Promise.all([
-          db.contas.filter((item) => item.ativa).toArray(),
-          db.caixinhas.filter((item) => item.ativa).toArray(),
-        ]);
+        const contasAtivas = await db.contas.filter((item) => item.ativa).toArray();
         if (!ativo) return;
         setContas(contasAtivas);
-        setCaixinhas(caixinhasAtivas);
         if (contasAtivas.length === 1) setContaOrigemId(contasAtivas[0].id);
       } catch {
         if (ativo) setErro("Não foi possível carregar as contas e caixinhas.");
@@ -96,11 +89,10 @@ export function RegistrarDespesa() {
         valorCentavos,
         dataMovimento: data,
         contaOrigemId,
-        ...(caixinhaId ? { caixinhaId } : {}),
         idempotencyKey: crypto.randomUUID(),
       };
       sessionStorage.setItem("tangerina.despesa.rascunho", JSON.stringify(rascunho));
-      router.push("/despesas/confirmar");
+      router.push("/despesas/revisar");
     } catch (error) {
       setErro(error instanceof Error ? error.message : "Informe os dados corretamente.");
     }
@@ -115,12 +107,11 @@ export function RegistrarDespesa() {
         <label className="field-group"><span className="field-label"><FiTag /> Categoria</span><input className="text-input" value={categoria} onChange={(e) => setCategoria(e.target.value)} placeholder="Ex.: Alimentação" required /></label>
         <label className="field-group"><span className="field-label"><FiDollarSign /> Valor gasto</span><input className="text-input receita-value-input" inputMode="numeric" value={valor} onChange={(e) => setValor(formatarValorDigitado(e.target.value))} placeholder="0,00" aria-describedby="despesa-valor-ajuda" required /><span className="field-hint" id="despesa-valor-ajuda">Digite os números; os centavos são formatados automaticamente.</span></label>
         <label className="field-group"><span className="field-label">Conta ou carteira de origem</span><select className="text-input" value={contaOrigemId} onChange={(e) => setContaOrigemId(e.target.value)} disabled={carregando || contas.length === 0} required><option value="">{carregando ? "Carregando contas..." : contas.length === 0 ? "Nenhuma conta ou carteira ativa disponível" : "Selecione a origem do pagamento"}</option>{contas.map((item) => <option key={item.id} value={item.id}>{item.nome}{item.instituicao ? ` — ${item.instituicao}` : ""}{item.tipo === "carteira_fisica" ? " (Carteira física)" : " (Conta bancária)"}</option>)}</select></label>
-        <label className="field-group"><span className="field-label">Caixinha de origem</span><select className="text-input" value={caixinhaId} onChange={(e) => setCaixinhaId(e.target.value)} disabled={carregando}><option value="">Não alocado</option>{caixinhas.map((item) => <option key={item.id} value={item.id}>{item.nome}</option>)}</select></label>
         <label className="field-group"><span className="field-label"><FiCalendar /> Data da despesa</span><input className="text-input" type="date" value={data} onChange={(e) => setData(e.target.value)} required /></label>
         {erro ? <p className="modal-form-error" role="alert">{erro}</p> : null}
         <button className="button-primary receita-submit" type="submit">Continuar para confirmação <FiArrowRight /></button>
       </form>
-      <aside className="receita-side"><section className="receita-side-card"><p className="receita-side-card__label">PRÓXIMA ETAPA</p><p className="receita-side-card__value">Confirmar</p><p className="receita-side-card__hint">Nada será alterado até a confirmação final.</p></section><p className="receita-note">Sem caixinha, a despesa sai do saldo não alocado. Com caixinha, reduz também a alocação virtual escolhida.</p></aside>
+      <aside className="receita-side"><section className="receita-side-card"><p className="receita-side-card__label">PRÓXIMA ETAPA</p><p className="receita-side-card__value">Confirmar</p><p className="receita-side-card__hint">Nada será alterado até a confirmação final.</p></section><p className="receita-note">Na próxima etapa, escolha quais caixinhas participarão da despesa e revise a distribuição antes de confirmar.</p></aside>
     </div>
   </main><BottomNavigation active="/movimentacoes" /></>;
 }
