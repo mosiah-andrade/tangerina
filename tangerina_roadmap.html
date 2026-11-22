@@ -165,7 +165,7 @@ const milestones = [
   ["T25","Testar cenários de distribuição","CONCLUÍDA E VALIDADA. Cenários de distribuição foram validados ao longo das T23 e T24: distribuição inferior ao total com cálculo de não alocado, múltiplas caixinhas, múltiplas regras na mesma caixinha, regra fixa, edição pontual por lançamento, alocação manual, bloqueio de excedente acima do disponível, persistência após recarregar e proteção contra dupla contagem. Checks automatizados e manuais aprovados.","Qualidade",4]
  ]},
  {id:"M5",title:"Despesas e transferências",desc:"Manter o histórico e os saldos coerentes em todos os movimentos.",weeks:"Semanas 6–7",hours:24,outcome:"Saída: despesas e transferências afetam os saldos corretos e não contam como receita indevida.",tasks:[
-  ["T26","Criar fluxo de registro de despesa","Valor, categoria/descrição, data, conta bancária e caixinha de origem.","Funcionalidade",4],
+  ["T26","Criar fluxo de registro de despesa","IMPLEMENTAÇÃO CONCLUÍDA NA BRANCH feat/t26-registro-despesa: formulário com origem em conta/carteira ativa, revisão de distribuição por múltiplas caixinhas, seleção individual das participantes, recálculo das regras selecionadas, edição pontual sem alterar regras salvas, confirmação de saldo negativo por caixinha, persistência atômica e idempotente, sem dupla contagem. Preview Vercel READY no commit 3dc2ccf. Validação manual dos cenários e integração à main permanecem pendentes; ver docs/infra/T26-registro-despesa.md.","Funcionalidade",4],
   ["T27","Definir tratamento de saldo insuficiente","Solicitar decisão explícita: permitir negativo ou registrar diferença pendente; nunca ajustar silenciosamente.","Financeiro",3],
   ["T28","Implementar transferências entre caixinhas","Alterar apenas alocações virtuais; não gerar receita ou despesa consolidada.","Financeiro",4],
   ["T29","Implementar transferências entre contas bancárias","Reduzir origem e aumentar destino sem alterar receita/despesa consolidada.","Financeiro",4],
@@ -208,6 +208,8 @@ completed.T15 = true;
 completed.T24 = true;
 // T25 concluída e validada nos cenários de distribuição.
 completed.T25 = true;
+// T26 implementação concluída na branch; validação manual e integração permanecem pendentes, conforme documentação.
+completed.T26 = true;
 const allTasks = () => milestones.flatMap(m => m.tasks.map(t => ({m,t})));
 // T16, T17 e T18 concluídas: manter marcadas mesmo com localStorage antigo.
 completed.T16 = true;
