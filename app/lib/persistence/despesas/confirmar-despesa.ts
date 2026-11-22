@@ -11,8 +11,10 @@ export type ConfirmarDespesaInput = {
   dataMovimento: string;
   contaOrigemId: string;
   caixinhaId?: string;
+  alocacoes?: Array<{ caixinhaId: string; valorCentavos: number; regraDistribuicaoId?: string }>;
   idempotencyKey: string;
   confirmarCaixinhaNegativa?: boolean;
+  confirmarCaixinhasNegativas?: string[];
 };
 
 function formatarMoeda(valorCentavos: number): string {
@@ -73,6 +75,18 @@ export async function confirmarDespesa(
     throw new Error("A caixinha selecionada é inválida.");
   }
 
+  const alocacoesEntrada = input.alocacoes ?? (input.caixinhaId ? [{ caixinhaId: input.caixinhaId, valorCentavos: input.valorCentavos }] : []);
+  if (alocacoesEntrada.some((item) => !item.caixinhaId || !Number.isSafeInteger(item.valorCentavos) || item.valorCentavos < 0)) {
+    throw new Error("A distribuição da despesa contém uma alocação inválida.");
+  }
+  const totalAlocado = alocacoesEntrada.reduce((total, item) => total + item.valorCentavos, 0);
+  if (totalAlocado > input.valorCentavos) throw new Error("A distribuição da despesa não pode exceder seu valor total.");
+  const idsCaixinhas = new Set<string>();
+  for (const item of alocacoesEntrada) {
+    if (idsCaixinhas.has(item.caixinhaId)) throw new Error("Cada caixinha deve aparecer uma única vez na distribuição final.");
+    idsCaixinhas.add(item.caixinhaId);
+  }
+
   const agora = new Date().toISOString();
 
   const movimentoId = await executarTransacaoPersistencia(
@@ -121,39 +135,19 @@ export async function confirmarDespesa(
         );
       }
 
-      const caixinha = input.caixinhaId
-        ? await db.caixinhas.get(input.caixinhaId)
-        : undefined;
-
-      if (input.caixinhaId && !caixinha) {
-        throw new Error("A caixinha de origem não foi encontrada.");
-      }
-      if (caixinha && !caixinha.ativa) {
-        throw new Error(
-          `A caixinha "${caixinha.nome}" está arquivada e não pode registrar uma despesa.`,
-        );
-      }
-
-      if (caixinha) {
-        const alocacoesDaCaixinha = await db.alocacoes
-          .where("caixinhaId")
-          .equals(caixinha.id)
-          .toArray();
-        const saldoAtualCaixinha = calcularSaldoCaixinhaPorAlocacoes(
-          caixinha,
-          alocacoesDaCaixinha,
-        );
-        const saldoProjetadoCaixinha =
-          saldoAtualCaixinha - input.valorCentavos;
-
-        if (
-          saldoProjetadoCaixinha < 0 &&
-          !input.confirmarCaixinhaNegativa
-        ) {
-          throw new Error(
-            `A despesa deixará a caixinha "${caixinha.nome}" negativa. Saldo atual: ${formatarMoeda(saldoAtualCaixinha)}. Saldo após a despesa: ${formatarMoeda(saldoProjetadoCaixinha)}. É necessária confirmação explícita para continuar.`,
-          );
+      const caixinhasValidadas = [] as Array<{ id: string; valorCentavos: number }>;
+      for (const item of alocacoesEntrada) {
+        const caixinha = await db.caixinhas.get(item.caixinhaId);
+        if (!caixinha) throw new Error(`A caixinha "${item.caixinhaId}" não foi encontrada.`);
+        if (!caixinha.ativa) throw new Error(`A caixinha "${caixinha.nome}" está arquivada e não pode registrar uma despesa.`);
+        const alocacoesDaCaixinha = await db.alocacoes.where("caixinhaId").equals(caixinha.id).toArray();
+        const saldoAtual = calcularSaldoCaixinhaPorAlocacoes(caixinha, alocacoesDaCaixinha);
+        const saldoProjetado = saldoAtual - item.valorCentavos;
+        const confirmou = input.confirmarCaixinhasNegativas?.includes(caixinha.id) ?? input.confirmarCaixinhaNegativa ?? false;
+        if (saldoProjetado < 0 && !confirmou) {
+          throw new Error(`A despesa deixará a caixinha "${caixinha.nome}" negativa. Saldo atual: ${formatarMoeda(saldoAtual)}. Saldo após a despesa: ${formatarMoeda(saldoProjetado)}. É necessária confirmação explícita para continuar.`);
         }
+        caixinhasValidadas.push({ id: caixinha.id, valorCentavos: item.valorCentavos });
       }
 
       const novoMovimentoId = crypto.randomUUID();
@@ -168,21 +162,16 @@ export async function confirmarDespesa(
         valorCentavos: input.valorCentavos,
         dataMovimento: input.dataMovimento,
         contaOrigemId: input.contaOrigemId,
-        caixinhaId: input.caixinhaId,
+        caixinhaId: alocacoesEntrada.length === 1 ? alocacoesEntrada[0].caixinhaId : undefined,
         idempotencyKey: input.idempotencyKey,
         confirmedAt: agora,
       };
 
-      const alocacao: Alocacao | undefined = input.caixinhaId
-        ? {
-            id: crypto.randomUUID(),
-            createdAt: agora,
-            movimentoId: novoMovimentoId,
-            caixinhaId: input.caixinhaId,
-            tipo: "debito_despesa",
-            valorCentavos: input.valorCentavos,
-          }
-        : undefined;
+      const alocacoes: Alocacao[] = alocacoesEntrada.filter((item) => item.valorCentavos > 0).map((item) => ({
+        id: crypto.randomUUID(), createdAt: agora, movimentoId: novoMovimentoId,
+        caixinhaId: item.caixinhaId, tipo: "debito_despesa", valorCentavos: item.valorCentavos,
+        regraDistribuicaoId: item.regraDistribuicaoId,
+      }));
 
       const efeitos: EfeitoSaldo[] = [
         {
@@ -194,23 +183,15 @@ export async function confirmarDespesa(
           valorCentavosAssinado: -input.valorCentavos,
           estado: "ativo",
         },
-        ...(input.caixinhaId
-          ? [
-              {
-                id: crypto.randomUUID(),
-                createdAt: agora,
-                movimentoId: novoMovimentoId,
-                tipoAlvo: "caixinha" as const,
-                alvoId: input.caixinhaId,
-                valorCentavosAssinado: -input.valorCentavos,
-                estado: "ativo" as const,
-              },
-            ]
-          : []),
+        ...alocacoesEntrada.filter((item) => item.valorCentavos > 0).map((item) => ({
+          id: crypto.randomUUID(), createdAt: agora, movimentoId: novoMovimentoId,
+          tipoAlvo: "caixinha" as const, alvoId: item.caixinhaId,
+          valorCentavosAssinado: -item.valorCentavos, estado: "ativo" as const,
+        })),
       ];
 
       await db.movimentos.add(movimento);
-      if (alocacao) await db.alocacoes.add(alocacao);
+      if (alocacoes.length) await db.alocacoes.bulkAdd(alocacoes);
       await db.efeitosSaldo.bulkAdd(efeitos);
 
       const auditoria: Auditoria = {
@@ -228,6 +209,7 @@ export async function confirmarDespesa(
           dataMovimento: movimento.dataMovimento,
           contaOrigemId: movimento.contaOrigemId ?? null,
           caixinhaId: movimento.caixinhaId ?? null,
+          alocacoes: alocacoesEntrada,
         },
       };
       await db.auditorias.add(auditoria);
