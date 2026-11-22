@@ -36,6 +36,8 @@ export function calcularSaldoCaixinhaPorAlocacoes(
         return saldo - alocacao.valorCentavos;
       case "ajuste":
         return saldo + alocacao.valorCentavos;
+      default:
+        return saldo;
     }
   }, caixinha.saldoInicialCentavos);
 }
