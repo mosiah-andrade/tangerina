@@ -91,7 +91,9 @@ export function ConfirmarDespesa() {
       };
 
       sessionStorage.setItem(KEY, JSON.stringify(rascunhoValidado));
-      setRascunho(rascunhoValidado);
+      queueMicrotask(() => {
+        if (ativo) setRascunho(rascunhoValidado);
+      });
 
       void (async () => {
         try {
