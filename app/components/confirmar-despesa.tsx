@@ -32,7 +32,7 @@ function ehRascunhoDespesa(
   if (typeof valor !== "object" || valor === null) return false;
 
   const item = valor as Record<string, unknown>;
-  if (typeof item.dataMovimento !== "string" || !/^\\d{4}-\\d{2}-\\d{2}$/.test(item.dataMovimento)) return false;
+  if (typeof item.dataMovimento !== "string") return false;
   const data = new Date(`${item.dataMovimento}T00:00:00.000Z`);
   if (Number.isNaN(data.getTime()) || data.toISOString().slice(0, 10) !== item.dataMovimento) return false;
 
@@ -44,8 +44,6 @@ function ehRascunhoDespesa(
     typeof item.valorCentavos === "number" &&
     Number.isSafeInteger(item.valorCentavos) &&
     item.valorCentavos > 0 &&
-    typeof item.dataMovimento === "string" &&
-    /^\d{4}-\d{2}-\d{2}$/.test(item.dataMovimento) &&
     typeof item.contaOrigemId === "string" &&
     item.contaOrigemId.length > 0 &&
     (item.caixinhaId === undefined ||
