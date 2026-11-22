@@ -162,7 +162,7 @@ export async function confirmarDespesa(
         valorCentavos: input.valorCentavos,
         dataMovimento: input.dataMovimento,
         contaOrigemId: input.contaOrigemId,
-        caixinhaId: alocacoesEntrada.length === 1 ? alocacoesEntrada[0].caixinhaId : undefined,
+        caixinhaId: input.alocacoes ? undefined : input.caixinhaId,
         idempotencyKey: input.idempotencyKey,
         confirmedAt: agora,
       };
