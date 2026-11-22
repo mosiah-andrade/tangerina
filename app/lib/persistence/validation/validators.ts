@@ -302,6 +302,7 @@ export function validarMovimento(valor: unknown): ValidationResult {
       "cancelado",
     ]),
     ...validarString(valor.descricao, "descricao"),
+    ...validarCampoOpcional(valor, "categoria", validarString),
     ...validarCentavos(valor.valorCentavos, "valorCentavos", 1),
     ...validarDataISO(valor.dataMovimento, "dataMovimento"),
     ...validarString(valor.idempotencyKey, "idempotencyKey"),

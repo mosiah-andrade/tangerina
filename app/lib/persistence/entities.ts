@@ -57,6 +57,7 @@ export interface Movimento extends EntidadeBase {
   tipo: TipoMovimento;
   status: StatusMovimento;
   descricao: string;
+  categoria?: string;
   valorCentavos: Centavos;
   dataMovimento: DataISO;
   idempotencyKey: string;
