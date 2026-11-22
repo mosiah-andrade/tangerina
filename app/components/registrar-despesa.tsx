@@ -25,6 +25,7 @@ export type DespesaRascunho = {
   dataMovimento: string;
   contaOrigemId: string;
   caixinhaId?: string;
+  idempotencyKey: string;
 };
 
 export function RegistrarDespesa() {
@@ -48,7 +49,7 @@ export function RegistrarDespesa() {
         const db = getDatabase();
         await db.open();
         const [contasAtivas, caixinhasAtivas] = await Promise.all([
-          db.contas.filter((item) => item.ativa && item.tipo === "bancaria").toArray(),
+          db.contas.filter((item) => item.ativa).toArray(),
           db.caixinhas.filter((item) => item.ativa).toArray(),
         ]);
         if (!ativo) return;
@@ -73,7 +74,7 @@ export function RegistrarDespesa() {
       if (!descricao.trim()) throw new Error("Informe uma descrição para a despesa.");
       if (!categoria.trim()) throw new Error("Informe uma categoria para a despesa.");
       if (valorCentavos <= 0) throw new Error("Informe um valor maior que zero.");
-      if (!contaOrigemId) throw new Error(contas.length ? "Selecione a conta bancária." : "Cadastre uma conta bancária ativa antes de registrar uma despesa.");
+      if (!contaOrigemId) throw new Error(contas.length ? "Selecione a origem do pagamento." : "Cadastre uma conta bancária ou carteira física ativa antes de registrar uma despesa.");
       const rascunho: DespesaRascunho = {
         descricao: descricao.trim(),
         categoria: categoria.trim(),
@@ -81,6 +82,7 @@ export function RegistrarDespesa() {
         dataMovimento: data,
         contaOrigemId,
         ...(caixinhaId ? { caixinhaId } : {}),
+        idempotencyKey: crypto.randomUUID(),
       };
       sessionStorage.setItem("tangerina.despesa.rascunho", JSON.stringify(rascunho));
       router.push("/despesas/confirmar");
@@ -97,7 +99,7 @@ export function RegistrarDespesa() {
         <label className="field-group"><span className="field-label"><FiFileText /> Descrição</span><input className="text-input" value={descricao} onChange={(e) => setDescricao(e.target.value)} placeholder="Ex.: Supermercado" autoFocus required /></label>
         <label className="field-group"><span className="field-label"><FiTag /> Categoria</span><input className="text-input" value={categoria} onChange={(e) => setCategoria(e.target.value)} placeholder="Ex.: Alimentação" required /></label>
         <label className="field-group"><span className="field-label"><FiDollarSign /> Valor gasto</span><input className="text-input receita-value-input" inputMode="decimal" value={valor} onChange={(e) => setValor(e.target.value)} placeholder="0,00" required /></label>
-        <label className="field-group"><span className="field-label">Conta bancária</span><select className="text-input" value={contaOrigemId} onChange={(e) => setContaOrigemId(e.target.value)} disabled={carregando} required><option value="">Selecione a conta</option>{contas.map((item) => <option key={item.id} value={item.id}>{item.nome}</option>)}</select></label>
+        <label className="field-group"><span className="field-label">Conta ou carteira de origem</span><select className="text-input" value={contaOrigemId} onChange={(e) => setContaOrigemId(e.target.value)} disabled={carregando} required><option value="">Selecione a origem do pagamento</option>{contas.map((item) => <option key={item.id} value={item.id}>{item.nome}{item.tipo === "carteira_fisica" ? " (Carteira física)" : " (Conta bancária)"}</option>)}</select></label>
         <label className="field-group"><span className="field-label">Caixinha de origem</span><select className="text-input" value={caixinhaId} onChange={(e) => setCaixinhaId(e.target.value)} disabled={carregando}><option value="">Não alocado</option>{caixinhas.map((item) => <option key={item.id} value={item.id}>{item.nome}</option>)}</select></label>
         <label className="field-group"><span className="field-label"><FiCalendar /> Data da despesa</span><input className="text-input" type="date" value={data} onChange={(e) => setData(e.target.value)} required /></label>
         {erro ? <p className="modal-form-error" role="alert">{erro}</p> : null}
