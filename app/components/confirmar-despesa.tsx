@@ -44,12 +44,13 @@ export function ConfirmarDespesa() {
           if(!ativo)return;
           setContaNome(conta?conta.nome+" — "+(conta.tipo==="carteira_fisica"?"Carteira física":"Conta bancária"):"Origem indisponível");
           const alertasCalculados:AlertaCaixinha[]=[];
-          for(const item of parsed.alocacoes){
-            const caixinha=await db.caixinhas.get(item.caixinhaId);
+          const valoresPorCaixinha = parsed.alocacoes.reduce((mapa,item)=>mapa.set(item.caixinhaId,(mapa.get(item.caixinhaId)??0)+item.valorCentavos),new Map<string,number>());
+          for(const [caixinhaId,valorCaixinha] of valoresPorCaixinha){
+            const caixinha=await db.caixinhas.get(caixinhaId);
             if(!caixinha) throw new Error("Uma das caixinhas selecionadas não está mais disponível.");
             const alocacoes=await db.alocacoes.where("caixinhaId").equals(caixinha.id).toArray();
             const atual=calcularSaldoCaixinhaPorAlocacoes(caixinha,alocacoes);
-            const projetado=atual-item.valorCentavos;
+            const projetado=atual-valorCaixinha;
             if(projetado<0) alertasCalculados.push({id:caixinha.id,nome:caixinha.nome,atual,projetado});
           }
           if(ativo)setAlertas(alertasCalculados);
@@ -72,7 +73,7 @@ export function ConfirmarDespesa() {
       await confirmarDespesa(getDatabase(),{
         descricao:revisao.descricao,categoria:revisao.categoria,valorCentavos:revisao.valorCentavos,
         dataMovimento:revisao.dataMovimento,contaOrigemId:revisao.contaOrigemId,
-        alocacoes:revisao.alocacoes.map(a=>({caixinhaId:a.caixinhaId,valorCentavos:a.valorCentavos,regraDistribuicaoId:a.regraDistribuicaoId})),
+        alocacoes:Array.from(revisao.alocacoes.reduce((mapa,a)=>{const atual=mapa.get(a.caixinhaId);mapa.set(a.caixinhaId,{caixinhaId:a.caixinhaId,valorCentavos:(atual?.valorCentavos??0)+a.valorCentavos,regraDistribuicaoId:atual?.regraDistribuicaoId??a.regraDistribuicaoId});return mapa;},new Map<string,{caixinhaId:string;valorCentavos:number;regraDistribuicaoId?:string}>()).values(),
         idempotencyKey:revisao.idempotencyKey,
         confirmarCaixinhasNegativas:confirmadas,
       });
