@@ -184,11 +184,17 @@ export function ConfirmarDespesa() {
       sessionStorage.removeItem(KEY);
       setSucesso(true);
     } catch (error) {
-      setErro(
+      const mensagem =
         error instanceof Error
           ? error.message
-          : "Não foi possível confirmar a despesa.",
-      );
+          : "Não foi possível confirmar a despesa.";
+
+      if (mensagem.includes("É necessária confirmação explícita")) {
+        setCaixinhaFicaraNegativa(true);
+        setConfirmouCaixinhaNegativa(false);
+      }
+
+      setErro(mensagem);
     } finally {
       setSalvando(false);
     }
