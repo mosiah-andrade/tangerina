@@ -451,3 +451,20 @@
   line-height: 1.4;
 }
 .revisao-saldo-confirmacao input { flex: 0 0 auto; margin-top: .15rem; accent-color: #0B3C2A; }
+
+/* T26 — distribuição de despesas compacta, com saldo atual por caixinha */
+.revisao-layout--despesa { grid-template-columns: minmax(0, 1fr); }
+.revisao-distribuicao-compacta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: .5rem 1.25rem;
+  padding: .9rem 1rem;
+  border: 1px solid rgba(11, 60, 42, .12);
+  border-radius: 1rem;
+  background: rgba(253, 252, 248, .9);
+  color: #66756f;
+  font-size: .82rem;
+}
+.revisao-distribuicao-compacta strong { color: #0B3C2A; font-variant-numeric: tabular-nums; }
+.revisao-caixinha-copy small:last-child { color: #0B3C2A; font-weight: 650; }
