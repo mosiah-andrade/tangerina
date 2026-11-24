@@ -413,14 +413,40 @@
 
 
 @media (min-width: 900px) {
-  /* O menu precisa escapar da coluna lateral e ficar visível ao lado dela. */
+  /* No desktop, o seletor entra no fluxo da coluna e empurra os links seguintes. */
   .bottom-nav-register-menu {
-    position: fixed;
-    top: auto;
-    right: auto;
-    bottom: 24px;
-    left: 260px;
-    width: min(420px, calc(100vw - 284px));
-    margin: 0;
+    position: static;
+    width: 100%;
+    max-width: none;
+    margin: 2px 0 8px;
+    padding: 12px;
+    border-radius: 14px;
+    box-shadow: 0 8px 24px rgba(6, 38, 26, .1);
+    animation: bottom-nav-menu-in .16s ease-out;
+  }
+
+  .bottom-nav-register-heading {
+    margin-bottom: 8px;
+  }
+
+  .bottom-nav-register-heading strong {
+    font-size: 19px;
+  }
+
+  .bottom-nav-register-option {
+    min-height: 54px;
+    gap: 9px !important;
+    padding: 8px !important;
+    border-radius: 10px;
+  }
+
+  .bottom-nav-register-option-icon {
+    flex-basis: 32px;
+    width: 32px;
+    height: 32px;
+  }
+
+  .bottom-nav-register-option-copy small {
+    font-size: 9px;
   }
 }
