@@ -175,24 +175,34 @@ flowchart TD
 ```mermaid
 flowchart TD
     A[Caixinhas] --> B[Transferir valores]
-    B --> C[Selecionar origem e destino]
-    C --> D[Informar valor, data e justificativa opcional]
-    D --> E[Validar origem, destino e valor]
-    E --> F[Revisar redução e aumento previstos]
-    F --> G{Confirmar?}
-    G -- Não --> H[Editar ou cancelar]
-    H --> C
-    G -- Sim --> I[Gravar transferência atomicamente]
-    I --> J{Gravação concluída?}
-    J -- Não --> K[Informar falha]
-    J -- Sim --> L[Atualizar caixinhas e histórico]
+    B --> C[Selecionar caixinha de origem]
+    C --> D[Selecionar destino entre as demais caixinhas]
+    D --> E[Informar valor ou usar Transferir todo o saldo disponível]
+    E --> F[Validar saldo, origem, destino e valor]
+    F --> G[Revisar saída da origem e entrada no destino]
+    G --> H{Confirmar?}
+    H -- Não --> I[Editar ou cancelar]
+    I --> C
+    H -- Sim --> J[Gravar dois registros vinculados atomicamente]
+    J --> K{Gravação concluída?}
+    K -- Não --> L[Informar falha sem efeitos parciais]
+    K -- Sim --> M[Atualizar saldos, metas e históricos]
 ```
 
-**Regras do fluxo:**
-- A origem e o destino devem ser diferentes.
-- A operação reduz uma caixinha e aumenta outra.
-- A transferência não altera o saldo bancário consolidado e não é nova receita ou despesa.
-- A validação de saldo deve seguir as regras de negócio aprovadas para a operação.
+**Regras do fluxo aprovadas na T28:**
+- Selecionar primeiro a origem; somente depois apresentar os destinos, excluindo a própria origem.
+- Campo de valor inicia em R$ 0,00. O link “Transferir todo o saldo disponível” preenche o campo, que permanece editável.
+- Origem com saldo zero ou negativo não pode transferir. O valor não pode exceder o saldo disponível nem deixar a origem negativa.
+- Destino negativo pode receber transferência, inclusive em valor superior ao déficit.
+- A operação reduz a origem e aumenta o destino pelo mesmo valor; não altera saldo bancário consolidado nem gera receita ou despesa.
+- Criar dois registros vinculados por identificador único: saída na origem e entrada no destino.
+- Gravar os dois registros, efeitos e auditoria atomicamente, com proteção contra duplicidade.
+- Editar ou cancelar por qualquer um dos registros deve alterar a transferência inteira.
+- Edição pode alterar valor e destino; deve revalidar o saldo da origem após reverter conceitualmente o efeito original e recalcular metas envolvidas.
+- Cancelamento que deixe o destino negativo exige confirmação explícita com saldo projetado. Recusa mantém a transferência intacta.
+- Metas baseadas no saldo da caixinha são recalculadas após transferência, edição e cancelamento.
+- Para excluir caixinha com saldo positivo, transferir o saldo antes; para saldo negativo, regularizar o déficit. Depois de zerada, pode excluir mesmo com histórico, que permanece preservado e vinculado à caixinha excluída.
+- A especificação e os casos de teste aprovados estão em `docs/requisitos/T28-transferencias-caixinhas.md`. A aprovação documental não declara a implementação concluída.
 
 ## 9. Fluxo de transferência entre contas bancárias
 
