@@ -133,7 +133,7 @@ export function CentralTransferencias() {
             <div className="transferencias-list">
               {historico.map(({ movimento, origem, destino }) => (
                 <article className="transferencia-history-item" key={movimento.id}>
-                  <span className="transferencia-history-icon"><FiArrowLeftRight size={18} /></span>
+                  <span className="transferencia-history-icon"><FiRepeat size={18} /></span>
                   <div className="transferencia-history-main">
                     <strong>{origem} <FiArrowRight size={13} /> {destino}</strong>
                     <span>{formatarData(movimento.dataMovimento)} · {movimento.descricao}</span>
