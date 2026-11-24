@@ -416,3 +416,12 @@ a.transferencia-action-card:hover{transform:translateY(-2px);border-color:var(--
 .transferencias-confirmation .caixinhas-modal__actions button {
   text-align: center;
 }
+
+
+/* Centralização real do conteúdo dos botões (inclusive quando usam flex). */
+.transferencias-confirmation .caixinhas-modal__actions button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
