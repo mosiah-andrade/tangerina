@@ -132,28 +132,42 @@ flowchart TD
 flowchart TD
     A[Despesas e retiradas] --> B[Nova movimentação]
     B --> C[Selecionar tipo, valor, data e descrição]
-    C --> D[Selecionar conta bancária e caixinha]
-    D --> E[Validar saldos e regras]
-    E --> F{Saldo da caixinha suficiente?}
-    F -- Sim --> I[Revisar movimentação]
-    F -- Não --> G[Mostrar saldo disponível e diferença]
-    G --> H{Usuário confirma saldo negativo?}
-    H -- Não --> X[Editar ou cancelar]
-    X --> C
-    H -- Sim --> I
-    I --> J{Confirmar gravação?}
-    J -- Não --> X
-    J -- Sim --> K[Gravar movimentação e auditoria]
-    K --> L{Gravação concluída?}
-    L -- Não --> M[Informar falha]
-    L -- Sim --> N[Atualizar saldos e histórico]
+    C --> D[Selecionar conta bancária ou carteira e caixinha]
+    D --> E[Calcular saldos projetados]
+    E --> F{Origem é carteira física?}
+    F -- Sim --> G{Carteira tem saldo suficiente?}
+    G -- Não --> X[Bloquear e informar diferença]
+    G -- Sim --> I[Revisar movimentação]
+    F -- Não --> H{Conta bancária ficará negativa?}
+    H -- Sim --> J[Exibir saldo atual, despesa e saldo projetado]
+    J --> K{Autoriza saldo bancário negativo?}
+    K -- Não --> X
+    K -- Sim --> L{Caixinha ficará negativa?}
+    H -- Não --> L
+    L -- Sim --> M[Exibir aviso e saldo projetado da caixinha]
+    M --> N{Autoriza caixinha negativa?}
+    N -- Não --> X
+    N -- Sim --> I
+    L -- Não --> I
+    I --> O{Confirmar gravação?}
+    O -- Não --> X
+    O -- Sim --> P[Gravar despesa, efeitos e auditoria atomicamente]
+    P --> Q{Gravação concluída?}
+    Q -- Não --> R[Informar falha sem efeitos parciais]
+    Q -- Sim --> S[Atualizar saldos e histórico]
 ```
 
 **Regras do fluxo:**
-- Se a caixinha ficar negativa, a aplicação exige confirmação explícita.
-- A movimentação deve ser registrada uma única vez; uma diferença não pode gerar uma segunda despesa duplicada.
-- A regra de bloqueio de retirada acima do saldo bancário deve ser respeitada.
-- Retirada em dinheiro é uma transferência para a carteira física; despesas posteriores são registradas a partir dessa carteira, conforme a modelagem aprovada.
+- A conta bancária pode ficar negativa exclusivamente por despesa e mediante autorização explícita. A revisão mostra saldo atual, valor integral da despesa e saldo projetado.
+- A autorização bancária é solicitada em cada despesa que deixe ou mantenha a conta negativa.
+- Se a caixinha ficar negativa, exige autorização própria e independente da autorização bancária. Se ambos os saldos ficarem negativos, os dois avisos devem aparecer na mesma revisão.
+- Todas as autorizações necessárias devem ser concedidas antes de salvar. Recusar ou cancelar qualquer uma descarta a operação inteira, sem efeitos parciais.
+- A despesa é registrada integralmente; não dividir automaticamente nem criar pendência para a diferença.
+- Carteira física nunca pode ficar negativa. Despesa acima do saldo da carteira é bloqueada.
+- Transferências entre contas e saques acima do saldo disponível da conta de origem continuam bloqueados.
+- Edição de despesa que deixe ou mantenha a conta bancária negativa exige nova autorização; efeitos anteriores são substituídos pelos novos sem duplicidade.
+- Cancelar despesa reverte seus efeitos e preserva auditoria, inclusive quando a operação original gerou saldo negativo.
+- Retirada em dinheiro é transferência para carteira física; despesas posteriores são registradas a partir dessa carteira.
 - A interface deve diferenciar despesa, retirada e transferência.
 
 ## 8. Fluxo de transferência entre caixinhas
@@ -304,7 +318,7 @@ Os seguintes pontos deverão ser resolvidos durante o detalhamento da arquitetur
 
 1. Escolha final entre importação por substituição ou mesclagem.
 2. Detalhes de calendário para recorrências em dias inexistentes.
-3. Regras completas para saldo negativo em cada tipo de movimentação.
+3. Regras de saldo negativo em despesas bancárias, confirmações independentes, edição, cancelamento, transferências, saques e carteira física foram definidas na T27 e registradas no T2.
 4. Política visual definitiva para navegação inferior e menu secundário.
 5. Necessidade futura de PIN/senha local e criptografia de exportação.
 
@@ -324,3 +338,10 @@ A ação central **Registrar** abre um seletor contextual com três destinos exp
 O seletor pode ser fechado pelo botão de fechar, pela própria ação central ou pela tecla Escape. A escolha navega para o fluxo correspondente. O componente mantém rótulos textuais e acessibilidade por teclado, não dependendo apenas das cores.
 
 **Limite atual:** o destino `/transferencias` ainda é uma seção informativa/em construção. Este ajuste oferece a escolha e navegação, mas não implementa o formulário ou a persistência da transferência.
+
+
+## 17. Atualização — T27: tratamento de saldo insuficiente (24/11/2026)
+
+O fluxo de despesas foi atualizado para refletir as decisões aprovadas na T27. Despesas bancárias podem gerar saldo negativo mediante confirmação explícita; o saldo negativo da caixinha exige autorização independente. A revisão apresenta os saldos projetados e impede gravação parcial. Edição segue a mesma regra de autorização, enquanto cancelamento reverte os efeitos com auditoria. Carteira física, transferências entre contas e saques permanecem bloqueados quando excedem o saldo disponível.
+
+As regras normativas e os casos de teste detalhados estão em `docs/requisitos/T2-regras-financeiras.md` (RN-023, RN-047 a RN-049 e CT-021 a CT-029).
