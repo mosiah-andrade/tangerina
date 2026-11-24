@@ -109,3 +109,21 @@ A retirada não faz parte do fluxo de registro de despesas da T26 e não deve se
 ## Situação da T26
 
 A implementação está na branch `feat/t26-registro-despesa` e o preview Vercel associado ao commit `3dc2ccf` chegou ao estado `READY`, indicando que o deployment de preview foi concluído. Não há execução de GitHub Actions registrada para esta branch no momento desta atualização. A validação manual dos cenários descritos na documentação permanece necessária antes de integrar à `main`.
+
+
+## Correções de consistência e experiência — 24/11/2026
+
+Após validação do usuário, foram identificadas três falhas e aplicadas correções na branch `fix/t26-saldos-caixinhas-despesas`:
+
+1. **Saldo zerado nas caixinhas após carregar demonstração:** a listagem consultava `efeitosSaldo`, enquanto o saldo funcional e a confirmação usam o livro de `alocacoes`. A listagem agora calcula o saldo pelo mesmo livro de alocações. O conjunto de demonstração também passa a incluir os efeitos virtuais de crédito das três caixinhas e o débito da despesa demonstrativa, mantendo os registros de saldo coerentes.
+2. **Distribuição de despesas:** cada caixinha participante passa a exibir seu saldo atual na própria seleção da segunda etapa. O painel lateral repetia o valor total da despesa, a distribuição e o não alocado, já apresentados na tela; foi removido e substituído por uma linha compacta com distribuído e não alocado.
+3. **Confirmação idempotente sem débito visível:** a chave idempotente anteriormente aceitava uma despesa existente sem comparar as alocações registradas com a distribuição revisada. Agora, antes de retornar sucesso para uma operação já existente, compara os débitos persistidos por caixinha com os débitos esperados. Se houver divergência, interrompe a confirmação com erro explícito em vez de exibir sucesso sem garantir a distribuição.
+
+Arquivos alterados nesta correção:
+- `app/lib/persistence/caixinhas/listar.ts`
+- `app/lib/persistence/demo/seed.ts`
+- `app/components/revisar-distribuicao-despesa.tsx`
+- `app/lib/persistence/despesas/confirmar-despesa.ts`
+- `app/app/styles/receitas.css`
+
+**Atenção sobre dados de demonstração já carregados:** a atualização do gerador corrige novas cargas do conjunto demonstrativo. Se a rotina de demonstração não sobrescrever dados existentes, os registros antigos do IndexedDB precisarão ser atualizados pela própria rotina de carga/reconciliação, sem limpar os dados do usuário.
