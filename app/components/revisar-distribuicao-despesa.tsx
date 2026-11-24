@@ -8,6 +8,7 @@ import { BottomNavigation } from "@/components/bottom-navigation";
 import { calcularDistribuicao, type DistributionRuleInput } from "@/domain/finance/distribution";
 import { parseMoneyToCents } from "@/domain/finance/money";
 import { getDatabase } from "@/lib/persistence/database";
+import { calcularSaldoCaixinhaPorAlocacoes } from "@/lib/persistence/caixinhas/saldo";
 import { criarRepositorioRegrasDistribuicao } from "@/lib/persistence/repositories";
 import type { RegraDistribuicao } from "@/lib/persistence/entities";
 
@@ -24,7 +25,7 @@ export function RevisarDistribuicaoDespesa() {
   const router = useRouter();
   const [rascunho, setRascunho] = useState<Rascunho | null>(null);
   const [linhas, setLinhas] = useState<Linha[]>([]);
-  const [caixinhas, setCaixinhas] = useState<Array<{id:string;nome:string}>>([]);
+  const [caixinhas, setCaixinhas] = useState<Array<{id:string;nome:string;saldoAtualCentavos:number}>>([]);
   const [selecionadas, setSelecionadas] = useState<string[]>([]);
   const [excedente, setExcedente] = useState(0);
   const [regrasDistribuicao, setRegrasDistribuicao] = useState<DistributionRuleInput[]>([]);
@@ -41,9 +42,10 @@ export function RevisarDistribuicaoDespesa() {
         const despesa = JSON.parse(salvo) as Rascunho;
         const db = getDatabase();
         await db.open();
-        const [regras, todasCaixinhas] = await Promise.all([
+        const [regras, todasCaixinhas, alocacoesSalvas] = await Promise.all([
           criarRepositorioRegrasDistribuicao(db).listar(),
           db.caixinhas.toArray(),
+          db.alocacoes.toArray(),
         ]);
         const ativas = todasCaixinhas.filter((c) => c.ativa);
         const regrasAtivas = regras
@@ -59,7 +61,7 @@ export function RevisarDistribuicaoDespesa() {
         const comRegra = new Set(regrasAtivas.map((r) => r.caixinhaId));
         if (!ativo) return;
         setRascunho(despesa);
-        setCaixinhas(ativas.map((c) => ({id:c.id,nome:c.nome})));
+        setCaixinhas(ativas.map((c) => ({id:c.id,nome:c.nome,saldoAtualCentavos:calcularSaldoCaixinhaPorAlocacoes(c,alocacoesSalvas)})));
         setSelecionadas(ativas.map((c) => c.id));
         setExcedente(resultado.excedenteCentavos);
         setRegrasDistribuicao(entradas);
@@ -136,7 +138,7 @@ export function RevisarDistribuicaoDespesa() {
         <div><p className="receita-eyebrow">REVISÃO</p><h1>Revise a <em>distribuição</em></h1></div>
       </header>
       {erro ? <p className="modal-form-error" role="alert">{erro}</p> : null}
-      {rascunho && <div className="revisao-layout">
+      {rascunho && <div className="revisao-layout revisao-layout--despesa">
         <section className="revisao-main">
           <article className="revisao-receita-card"><span>DESPESA</span><strong>{rascunho.descricao}</strong><b>{money(rascunho.valorCentavos)}</b></article>
           <section className="revisao-lista" aria-label="Distribuição da despesa">
@@ -152,7 +154,7 @@ export function RevisarDistribuicaoDespesa() {
                   return <label key={c.id} className={"revisao-caixinha-check"+(marcada?" is-selected":"")}>
                     <input type="checkbox" checked={marcada} onChange={()=>alternarCaixinha(c.id)}/>
                     <span className="revisao-caixinha-checkmark"><FiCheck /></span>
-                    <span className="revisao-caixinha-copy"><strong>{c.nome}</strong><small>{qtd>0?qtd+(qtd===1?" regra ativa":" regras ativas"):"Sem regra automática"}</small></span>
+                    <span className="revisao-caixinha-copy"><strong>{c.nome}</strong><small>{qtd>0?qtd+(qtd===1?" regra ativa":" regras ativas"):"Sem regra automática"}</small><small>Saldo atual: {money(c.saldoAtualCentavos)}</small></span>
                   </label>;
                 })}
               </div>
@@ -161,15 +163,12 @@ export function RevisarDistribuicaoDespesa() {
               visiveis.map((l)=><label className="revisao-linha" key={l.id}><span><strong>{l.nomeCaixinha}</strong><small>{l.nomeRegra}</small><small>Sugestão desta regra: {money(l.sugestaoCentavos)}</small></span><input aria-label={"Valor da regra "+l.nomeRegra+" para "+l.nomeCaixinha} inputMode="decimal" defaultValue={(l.valorCentavos/100).toFixed(2).replace(".",",")} onBlur={(e)=>editar(l.id,e.target.value)}/></label>)}
           </section>
         </section>
-        <aside className="revisao-resumo">
-          <p>RESUMO DA DESPESA</p>
-          <div><span>Despesa</span><strong>{money(rascunho.valorCentavos)}</strong></div>
-          <div><span>Distribuído</span><strong>{money(total)}</strong></div>
-          <div className={naoAlocado<0?"danger":"highlight"}><span>Não alocado</span><strong>{money(naoAlocado)}</strong></div>
-          {excedente>0&&!editada?<p className="revisao-alert">As sugestões automáticas ultrapassaram o valor disponível em {money(excedente)}. Ajuste os valores para continuar.</p>:null}
-          <button className="button-primary receita-submit" type="button" disabled={inconsistente} onClick={continuar}>Continuar para confirmação <FiCheck /></button>
-          <p className="revisao-note">A gravação da despesa acontece somente após a confirmação final.</p>
-        </aside>
+        <div className="revisao-distribuicao-compacta" aria-live="polite">
+          <span>Distribuído: <strong>{money(total)}</strong></span>
+          <span>Não alocado: <strong>{money(naoAlocado)}</strong></span>
+        </div>
+        {excedente>0&&!editada?<p className="revisao-alert">As sugestões automáticas ultrapassaram o valor disponível em {money(excedente)}. Ajuste os valores para continuar.</p>:null}
+        <button className="button-primary receita-submit" type="button" disabled={inconsistente} onClick={continuar}>Continuar para confirmação <FiCheck /></button>
       </div>}
     </main>
     <BottomNavigation active="/movimentacoes" />
