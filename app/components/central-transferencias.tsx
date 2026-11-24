@@ -2,9 +2,12 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { FiArrowRight, FiClock, FiRepeat, FiPlus } from "react-icons/fi";
+import { FiArrowRight, FiClock, FiRepeat, FiPlus, FiX } from "react-icons/fi";
 import { BottomNavigation } from "@/components/bottom-navigation";
 import { formatMoneyFromCents } from "@/lib/format-money";
+import { parseMoneyToCents } from "@/domain/finance/money";
+import { listarCaixinhasComSaldo, type CaixinhaComSaldo } from "@/lib/persistence/caixinhas/listar";
+import { transferirEntreCaixinhas } from "@/lib/persistence/caixinhas/transferir";
 import { getDatabase } from "@/lib/persistence/database";
 import type { Alocacao, Caixinha, Movimento } from "@/lib/persistence/entities";
 
@@ -23,6 +26,14 @@ function formatarData(data: string) {
 export function CentralTransferencias() {
   const [historico, setHistorico] = useState<TransferenciaHistorico[] | null>(null);
   const [erro, setErro] = useState<string | null>(null);
+  const [mostrarModal, setMostrarModal] = useState(false);
+  const [caixinhas, setCaixinhas] = useState<CaixinhaComSaldo[]>([]);
+  const [origemId, setOrigemId] = useState("");
+  const [destinoId, setDestinoId] = useState("");
+  const [valor, setValor] = useState("0,00");
+  const [data, setData] = useState(new Date().toLocaleDateString("en-CA"));
+  const [erroModal, setErroModal] = useState<string | null>(null);
+  const [salvando, setSalvando] = useState(false);
 
   useEffect(() => {
     let ativo = true;
@@ -73,6 +84,70 @@ export function CentralTransferencias() {
     return () => { ativo = false; };
   }, []);
 
+  async function abrirNovaTransferencia() {
+    setErroModal(null);
+    setOrigemId("");
+    setDestinoId("");
+    setValor("0,00");
+    setData(new Date().toLocaleDateString("en-CA"));
+    try {
+      const db = getDatabase();
+      await db.open();
+      setCaixinhas(await listarCaixinhasComSaldo(db));
+      setMostrarModal(true);
+    } catch {
+      setErroModal("Não foi possível carregar suas caixinhas.");
+      setMostrarModal(true);
+    }
+  }
+
+  const origemSelecionada = caixinhas.find((item) => item.caixinha.id === origemId);
+  const destinos = caixinhas.filter((item) => item.caixinha.ativa && item.caixinha.id !== origemId);
+
+  async function confirmarTransferencia(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setErroModal(null);
+    setSalvando(true);
+    try {
+      const db = getDatabase();
+      await db.open();
+      await transferirEntreCaixinhas(db, {
+        caixinhaOrigemId: origemId,
+        caixinhaDestinoId: destinoId,
+        valorCentavos: parseMoneyToCents(valor.trim()),
+        dataMovimento: data,
+        idempotencyKey: crypto.randomUUID(),
+      });
+      setMostrarModal(false);
+      const [movimentos, alocacoes, listaCaixinhas] = await Promise.all([
+        db.movimentos.where("tipo").equals("transferencia_caixinhas").toArray(),
+        db.alocacoes.toArray(),
+        db.caixinhas.toArray(),
+      ]);
+      const nomes = new Map((listaCaixinhas as Caixinha[]).map((item) => [item.id, item.nome] as const));
+      const porMovimento = new Map<string, Alocacao[]>();
+      for (const alocacao of alocacoes) {
+        const grupo = porMovimento.get(alocacao.movimentoId) ?? [];
+        grupo.push(alocacao);
+        porMovimento.set(alocacao.movimentoId, grupo);
+      }
+      setHistorico((movimentos as Movimento[]).map((movimento) => {
+        const relacionadas = porMovimento.get(movimento.id) ?? [];
+        const origem = relacionadas.find((item) => item.tipo === "transferencia_saida");
+        const destino = relacionadas.find((item) => item.tipo === "transferencia_entrada");
+        return {
+          movimento,
+          origem: origem ? nomes.get(origem.caixinhaId) ?? "Caixinha excluída" : "Origem indisponível",
+          destino: destino ? nomes.get(destino.caixinhaId) ?? "Caixinha excluída" : "Destino indisponível",
+        };
+      }).sort((a, b) => b.movimento.dataMovimento.localeCompare(a.movimento.dataMovimento) || b.movimento.createdAt.localeCompare(a.movimento.createdAt)));
+    } catch (error) {
+      setErroModal(error instanceof Error ? error.message : "Não foi possível realizar a transferência.");
+    } finally {
+      setSalvando(false);
+    }
+  }
+
   return (
     <>
       <main className="app-shell transferencias-page">
@@ -86,10 +161,10 @@ export function CentralTransferencias() {
             <h1>Transferências</h1>
             <span>Consulte e acompanhe as movimentações entre seus espaços financeiros.</span>
           </div>
-          <Link href="/caixinhas?transferir=1" className="transferencias-new-button">
+          <button type="button" onClick={() => void abrirNovaTransferencia()} className="transferencias-new-button">
             <FiPlus size={17} />
             Nova transferência
-          </Link>
+          </button>
         </section>
 
         <section className="transferencias-history" aria-labelledby="transferencias-history-title">
@@ -134,6 +209,44 @@ export function CentralTransferencias() {
           )}
         </section>
       </main>
+      {mostrarModal && (
+        <div className="caixinhas-modal-backdrop" role="presentation">
+          <section className="caixinhas-modal" role="dialog" aria-modal="true" aria-labelledby="central-transferencia-title">
+            <button className="caixinhas-modal__close" type="button" onClick={() => setMostrarModal(false)} aria-label="Fechar" disabled={salvando}><FiX /></button>
+            <p className="caixinhas-modal__eyebrow">MOVIMENTAÇÃO INTERNA</p>
+            <h2 id="central-transferencia-title">Transferir entre caixinhas</h2>
+            <form onSubmit={confirmarTransferencia}>
+              <label className="field-group">
+                <span className="field-label">1. De qual caixinha?</span>
+                <select className="text-input" value={origemId} onChange={(event) => { setOrigemId(event.target.value); setDestinoId(""); }} required>
+                  <option value="">Selecione a origem</option>
+                  {caixinhas.filter((item) => item.caixinha.ativa).map((item) => <option key={item.caixinha.id} value={item.caixinha.id} disabled={item.saldoAtualCentavos <= 0}>{item.caixinha.nome} — {formatMoneyFromCents(item.saldoAtualCentavos)}</option>)}
+                </select>
+                {origemSelecionada && <span className="field-hint">Disponível: {formatMoneyFromCents(Math.max(0, origemSelecionada.saldoAtualCentavos))}</span>}
+              </label>
+              <label className="field-group">
+                <span className="field-label">2. Para qual caixinha?</span>
+                <select className="text-input" value={destinoId} onChange={(event) => setDestinoId(event.target.value)} required disabled={!origemId}>
+                  <option value="">{origemId ? "Selecione o destino" : "Escolha primeiro a origem"}</option>
+                  {destinos.map((item) => <option key={item.caixinha.id} value={item.caixinha.id}>{item.caixinha.nome} — {formatMoneyFromCents(item.saldoAtualCentavos)}</option>)}
+                </select>
+              </label>
+              <label className="field-group">
+                <span className="field-label">Valor da transferência</span>
+                <input className="text-input transferencia-valor" inputMode="decimal" value={valor} onChange={(event) => setValor(event.target.value)} required />
+                {origemSelecionada && origemSelecionada.saldoAtualCentavos > 0 && <button className="transferencia-tudo" type="button" onClick={() => setValor((origemSelecionada.saldoAtualCentavos / 100).toFixed(2).replace(".", ","))}>Transferir todo o saldo disponível</button>}
+              </label>
+              <label className="field-group"><span className="field-label">Data</span><input className="text-input" type="date" value={data} onChange={(event) => setData(event.target.value)} required /></label>
+              <p className="caixinhas-note">A transferência altera somente os saldos virtuais das caixinhas. Não movimenta suas contas bancárias nem altera seu patrimônio total.</p>
+              {erroModal && <p className="caixinhas-error" role="alert">{erroModal}</p>}
+              <div className="caixinhas-modal__actions">
+                <button className="button-secondary" type="button" onClick={() => setMostrarModal(false)} disabled={salvando}>Cancelar</button>
+                <button className="button-primary" type="submit" disabled={salvando || !origemId || !destinoId}>{salvando ? "Transferindo..." : "Confirmar transferência"}</button>
+              </div>
+            </form>
+          </section>
+        </div>
+      )}
       <BottomNavigation active="/transferencias" />
     </>
   );
