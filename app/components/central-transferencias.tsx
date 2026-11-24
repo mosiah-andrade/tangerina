@@ -40,7 +40,6 @@ export function CentralTransferencias() {
   const [salvando, setSalvando] = useState(false);
   const [menuAbertoId, setMenuAbertoId] = useState<string | null>(null);
   const [transferenciaEditando, setTransferenciaEditando] = useState<TransferenciaHistorico | null>(null);
-  const [origemEdicaoId, setOrigemEdicaoId] = useState("");
 
   useEffect(() => {
     let ativo = true;
@@ -130,7 +129,6 @@ export function CentralTransferencias() {
       const entrada = alocacoes.find((a) => a.tipo === "transferencia_entrada");
       if (!saida || !entrada) throw new Error("Não foi possível localizar os registros vinculados.");
       setCaixinhas(lista);
-      setOrigemEdicaoId(saida.caixinhaId);
       setOrigemId(saida.caixinhaId);
       setDestinoId(entrada.caixinhaId);
       setValor((item.movimento.valorCentavos / 100).toFixed(2).replace(".", ","));
@@ -203,11 +201,11 @@ export function CentralTransferencias() {
         });
       } else {
         await transferirEntreCaixinhas(db, {
-        caixinhaOrigemId: origemId,
-        caixinhaDestinoId: destinoId,
-        valorCentavos: parseMoneyToCents(valor.trim()),
-        dataMovimento: data,
-        idempotencyKey: crypto.randomUUID(),
+          caixinhaOrigemId: origemId,
+          caixinhaDestinoId: destinoId,
+          valorCentavos: parseMoneyToCents(valor.trim()),
+          dataMovimento: data,
+          idempotencyKey: crypto.randomUUID(),
         });
       }
       setMostrarModal(false);
