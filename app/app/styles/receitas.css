@@ -554,3 +554,18 @@
   .revisao-negativo-linha { align-items: flex-start; }
   .revisao-negativo-linha label { padding-top: .15rem; }
 }
+
+
+/* T26 — estado visual do checkbox na lista direta de distribuição */
+.revisao-direta-selecao input:checked + .revisao-caixinha-checkmark {
+  border-color: var(--color-gold, #c59b27);
+  background: var(--color-gold, #c59b27);
+  color: #fff;
+}
+.revisao-direta-selecao input:focus-visible + .revisao-caixinha-checkmark {
+  outline: 2px solid var(--color-green, #0B3C2A);
+  outline-offset: 3px;
+}
+.revisao-direta-selecao:has(input:checked) strong {
+  color: #0B3C2A;
+}
