@@ -60,7 +60,11 @@ test("registra transferência parcial com saída e entrada vinculadas", async ()
     assert.equal(await saldoDaCaixinha(db, origem), 7_000);
     assert.equal(await saldoDaCaixinha(db, destino), 5_000);
     assert.equal(await db.efeitosSaldo.count(), 0);
-    assert.equal(await db.auditorias.where("entidadeId").equals(resultado.movimentoId).count(), 1);
+    const auditorias = await db.auditorias.toArray();
+    assert.equal(
+      auditorias.filter((item) => item.entidadeId === resultado.movimentoId).length,
+      1,
+    );
   } finally {
     await db.delete();
   }
