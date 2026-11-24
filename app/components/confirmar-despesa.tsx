@@ -121,7 +121,7 @@ export function ConfirmarDespesa() {
           <button className="button-primary receita-submit" disabled={salvando||carregando||alertas.some(a=>a.projetado<0&&!confirmadas.includes(a.id))||Boolean(erro)} onClick={confirmar}>{salvando?"Confirmando…":carregando?"Carregando…":"Confirmar e registrar"}</button>
           <p className="revisao-note">A despesa só será gravada após a confirmação.</p>
         </section>
-      </div>}}
+      </div>}
     </main><BottomNavigation active="/movimentacoes"/>
   </>;
 }
