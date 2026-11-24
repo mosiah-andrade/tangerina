@@ -253,17 +253,24 @@ Após a confirmação:
 
 Se o usuário cancelar a confirmação de uma despesa que deixaria a caixinha negativa, nenhum saldo deve ser alterado e nenhuma movimentação confirmada deve ser criada.
 
-### RN-023 — Saldo bancário insuficiente
+### RN-023 — Saldo bancário insuficiente em despesas
 
-Por padrão, o sistema deve bloquear uma despesa cujo valor seja superior ao saldo disponível da conta bancária escolhida.
+Uma despesa paga por conta bancária pode deixar o saldo da conta negativo somente após autorização explícita do usuário na revisão da movimentação.
 
-A mensagem deve informar:
+A revisão deve apresentar, de forma clara:
 
-- Valor da despesa.
-- Saldo disponível.
-- Valor que falta.
+- Saldo atual da conta.
+- Valor integral da despesa.
+- Saldo projetado após a despesa.
+- Valor do déficit projetado, quando houver.
 
-O sistema não deve permitir saldo bancário negativo por meio de uma confirmação comum de despesa no MVP.
+A despesa é registrada integralmente; não deve ser dividida automaticamente em uma parte paga e outra pendente, nem gerar uma pendência automática.
+
+A autorização é exigida sempre que o saldo projetado da conta ficar negativo, inclusive quando a conta já estiver negativa antes da despesa e continuar negativa depois dela. A confirmação deve ser feita novamente em cada nova despesa.
+
+Essa exceção vale exclusivamente para despesas pagas por conta bancária. Não autoriza saldo negativo em carteira física nem permite transferências ou saques acima do saldo disponível da origem.
+
+Sem autorização, a operação inteira deve ser cancelada, sem qualquer efeito financeiro.
 
 ### RN-024 — Saldo insuficiente na carteira física
 
@@ -405,7 +412,9 @@ Ao editar uma movimentação, o sistema deve substituir seus efeitos anteriores 
 
 A edição não pode aplicar novamente a movimentação inteira e duplicar os efeitos nos saldos.
 
-Se os novos dados violarem uma regra financeira — por exemplo, deixarem uma conta bancária negativa — a edição deve ser bloqueada ou exigir correção antes de ser salva.
+Se a edição de uma despesa paga por conta bancária resultar em saldo negativo, deve exigir nova autorização explícita, seguindo RN-023. A autorização é necessária também quando a conta já estiver negativa e continuar negativa após a edição. Se a autorização for recusada ou cancelada, a edição inteira não será salva e os efeitos anteriores da movimentação permanecerão intactos.
+
+As demais violações de regras financeiras continuam sujeitas a bloqueio ou correção antes de salvar.
 
 ### RN-041 — Cancelamento rastreável
 
@@ -433,6 +442,20 @@ Relatórios de receitas e despesas devem excluir transferências internas.
 
 Transferências entre contas, entre caixinhas e da conta bancária para a carteira física não são receitas nem despesas de consumo.
 
+### RN-047 — Confirmação independente de conta e caixinha negativas
+
+Quando uma despesa deixar simultaneamente negativa a conta bancária de origem e uma ou mais caixinhas associadas, cada tipo de saldo negativo deve ser apresentado como uma autorização independente. A revisão deve mostrar os saldos atuais, o valor da despesa e os saldos projetados correspondentes.
+
+Todas as autorizações necessárias devem ser concedidas antes da gravação. Se o usuário recusar ou cancelar qualquer uma delas, a despesa inteira deve ser descartada. Nenhuma parte dos efeitos financeiros pode ser aplicada.
+
+### RN-048 — Edição de despesa com saldo bancário negativo
+
+A edição de uma despesa confirmada segue a mesma regra de autorização de RN-023. A revisão deve calcular o efeito líquido da edição, substituindo os efeitos anteriores pelos novos, sem duplicidade. Sempre que o saldo bancário projetado ficar negativo, inclusive se permanecer negativo, deve ser solicitada nova autorização.
+
+### RN-049 — Cancelamento de despesa com saldo negativo
+
+O cancelamento de uma despesa que tenha deixado a conta bancária ou uma caixinha negativa deve ser permitido conforme RN-041. A reversão deve recalcular os saldos, preservar o registro original e sua auditoria e não exigir autorização para manter saldo negativo, pois a reversão não aprofunda o déficit causado pela despesa cancelada.
+
 ## 12. Casos de teste essenciais
 
 | ID | Cenário | Resultado esperado |
@@ -443,12 +466,21 @@ Transferências entre contas, entre caixinhas e da conta bancária para a cartei
 | CT-004 | Distribuição maior que o valor disponível | Bloquear confirmação |
 | CT-005 | Percentual sobre saldo restante | Calcular sobre o saldo atualizado |
 | CT-006 | Despesa excede a caixinha, mas cabe no saldo bancário | Solicitar confirmação e permitir caixinha negativa |
-| CT-007 | Despesa excede saldo bancário | Bloquear e preservar os saldos |
+| CT-007 | Despesa excede saldo bancário, usuário autoriza | Registrar a despesa integral e deixar a conta negativa conforme o saldo projetado |
+| CT-021 | Despesa excede saldo bancário e usuário recusa/cancela autorização | Não criar movimentação nem alterar qualquer saldo |
+| CT-022 | Conta já negativa recebe nova despesa | Exigir nova autorização mesmo que a conta permaneça negativa |
+| CT-023 | Despesa deixa conta e caixinha negativas | Exibir autorizações independentes com saldos projetados; só gravar após ambas |
+| CT-024 | Usuário recusa uma das autorizações independentes | Descartar a operação inteira, sem efeitos parciais |
+| CT-025 | Editar despesa e gerar saldo bancário negativo | Solicitar nova autorização e substituir efeitos anteriores sem duplicidade |
+| CT-026 | Editar despesa mantendo conta já negativa | Solicitar nova autorização; preservar versão anterior se cancelar |
+| CT-027 | Cancelar despesa que deixou conta/caixinha negativa | Permitir reversão integral, recuperar saldos e preservar auditoria |
 | CT-008 | Transferência entre caixinhas | Preservar saldo bancário consolidado |
-| CT-009 | Transferência entre contas bancárias | Preservar saldo bancário consolidado |
-| CT-010 | Saque para carteira física | Reduzir banco e aumentar carteira sem gerar despesa |
+| CT-009 | Transferência entre contas bancárias acima do saldo disponível | Bloquear a operação e preservar os dois saldos |
+| CT-028 | Transferência entre contas com saldo suficiente | Debitar origem e creditar destino pelo mesmo valor |
+| CT-010 | Saque para carteira física com saldo suficiente | Reduzir banco e aumentar carteira sem gerar despesa |
+| CT-029 | Saque acima do saldo bancário disponível | Bloquear saque; conta e carteira permanecem inalteradas |
 | CT-011 | Despesa paga em dinheiro | Reduzir carteira e registrar a despesa uma única vez |
-| CT-012 | Carteira física insuficiente | Bloquear a despesa por padrão |
+| CT-012 | Carteira física insuficiente | Bloquear a despesa; nunca permitir carteira negativa |
 | CT-013 | Conciliação com diferença | Solicitar justificativa, mostrar prévia e registrar ajuste |
 | CT-014 | Cancelamento antes da confirmação | Não aplicar efeitos financeiros |
 | CT-015 | Edição de movimentação confirmada | Registrar valores antigos/novos e recalcular efeitos |
@@ -477,7 +509,7 @@ A implementação das regras deverá assegurar:
 | T2-D02 | Bloquear configuração inicial se o total das caixinhas superar o saldo bancário | Aprovada |
 | T2-D03 | Executar regras de distribuição na ordem configurada e bloquear excesso | Aprovada |
 | T2-D04 | Permitir caixinha negativa após confirmação explícita de despesa | Aprovada |
-| T2-D05 | Bloquear despesas que excedam o saldo bancário por padrão | Aprovada |
+| T2-D05 | Permitir despesa bancária que gere saldo negativo mediante autorização explícita; exigir nova autorização em cada despesa que deixe ou mantenha a conta negativa | Aprovada |
 | T2-D06 | Registrar saque como transferência para carteira física | Aprovada |
 | T2-D07 | Arredondar para o centavo mais próximo sem exceder o disponível | Aprovada |
 | T2-D08 | Permitir edição direta de movimentações confirmadas com auditoria | Aprovada |
@@ -499,6 +531,7 @@ O T2 é considerado concluído quando as regras financeiras estiverem documentad
 | Versão | Alteração |
 |---|---|
 | 1.0 | Consolidação das regras financeiras aprovadas para o MVP |
+| 1.1 | T27 (24/11/2026): autorização de saldo bancário negativo em despesas, confirmações independentes, edição, cancelamento e novos casos de teste |
 
 
 ## 18. Retirada de valores de uma caixinha
