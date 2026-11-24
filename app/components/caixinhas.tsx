@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { FiArchive, FiBox, FiEdit3, FiPlus, FiX } from "react-icons/fi";
+import { FiArchive, FiArrowDownUp, FiBox, FiEdit3, FiPlus, FiX } from "react-icons/fi";
 import { BottomNavigation } from "@/components/bottom-navigation";
 import { formatMoneyFromCents } from "@/lib/format-money";
 import { parseMoneyToCents } from "@/domain/finance/money";
@@ -12,6 +12,7 @@ import { arquivarCaixinha } from "@/lib/persistence/caixinhas/arquivar";
 import { criarCaixinha } from "@/lib/persistence/caixinhas/criar";
 import { editarCaixinha } from "@/lib/persistence/caixinhas/editar";
 import { listarCaixinhasComSaldo, type CaixinhaComSaldo } from "@/lib/persistence/caixinhas/listar";
+import { transferirEntreCaixinhas } from "@/lib/persistence/caixinhas/transferir";
 
 type FormState = { nome: string; descricao: string; saldo: string };
 
@@ -24,6 +25,13 @@ export function Caixinhas() {
   const [mostrarForm, setMostrarForm] = useState(false);
   const [erro, setErro] = useState<string | null>(null);
   const [salvando, setSalvando] = useState(false);
+  const [mostrarTransferencia, setMostrarTransferencia] = useState(false);
+  const [origemId, setOrigemId] = useState("");
+  const [destinoId, setDestinoId] = useState("");
+  const [valorTransferencia, setValorTransferencia] = useState("0,00");
+  const [dataTransferencia, setDataTransferencia] = useState(new Date().toLocaleDateString("en-CA"));
+  const [erroTransferencia, setErroTransferencia] = useState<string | null>(null);
+  const [transferindo, setTransferindo] = useState(false);
 
   async function carregar() {
     const db = getDatabase();
@@ -90,6 +98,48 @@ export function Caixinhas() {
     } finally { setSalvando(false); }
   }
 
+  function abrirTransferencia() {
+    setOrigemId("");
+    setDestinoId("");
+    setValorTransferencia("0,00");
+    setDataTransferencia(new Date().toLocaleDateString("en-CA"));
+    setErroTransferencia(null);
+    setMostrarTransferencia(true);
+  }
+
+  const origemSelecionada = itens?.find((item) => item.caixinha.id === origemId);
+  const destinosDisponiveis = itens?.filter(
+    (item) => item.caixinha.ativa && item.caixinha.id !== origemId,
+  ) ?? [];
+
+  async function confirmarTransferencia(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setErroTransferencia(null);
+    try {
+      const valorCentavos = parseMoneyToCents(valorTransferencia.trim());
+      const db = getDatabase();
+      await db.open();
+      setTransferindo(true);
+      await transferirEntreCaixinhas(db, {
+        caixinhaOrigemId: origemId,
+        caixinhaDestinoId: destinoId,
+        valorCentavos,
+        dataMovimento: dataTransferencia,
+        idempotencyKey: crypto.randomUUID(),
+      });
+      setMostrarTransferencia(false);
+      await carregar();
+    } catch (error) {
+      setErroTransferencia(
+        error instanceof Error
+          ? error.message
+          : "Não foi possível realizar a transferência.",
+      );
+    } finally {
+      setTransferindo(false);
+    }
+  }
+
   async function arquivar(id: string) {
     if (!window.confirm("Arquivar esta caixinha? Os dados serão preservados.")) return;
     try { const db = getDatabase(); await db.open(); await arquivarCaixinha(db, id); await carregar(); }
@@ -121,7 +171,7 @@ export function Caixinhas() {
       </section>
 
       {erro && <p className="caixinhas-error" role="alert">{erro}</p>}
-      <div className="caixinhas-section-heading"><h2>Suas caixinhas</h2><button className="button-secondary caixinhas-add-small" onClick={abrirNova}><FiPlus /> Adicionar</button></div>
+      <div className="caixinhas-section-heading"><h2>Suas caixinhas</h2><div className="caixinhas-heading-actions"><button className="button-secondary" type="button" onClick={abrirTransferencia}><FiArrowDownUp /> Transferir</button><button className="button-secondary caixinhas-add-small" onClick={abrirNova}><FiPlus /> Adicionar</button></div></div>
 
       {itens === null && !erro ? <section className="caixinhas-state" aria-live="polite"><p className="field-hint">Carregando suas caixinhas...</p></section> : itens === null ? null : itens.length === 0 ? (
         <section className="caixinhas-empty surface-card"><span className="caixinhas-empty__icon"><FiBox size={22} /></span><strong>Você ainda não criou uma caixinha.</strong><p>Crie caixinhas para organizar partes do seu dinheiro por objetivo, sem duplicar seu saldo real.</p></section>
@@ -147,6 +197,50 @@ export function Caixinhas() {
           {!editando && <label className="field-group"><span className="field-label">Saldo inicial</span><input className="text-input" inputMode="decimal" value={form.saldo} onChange={(e) => setForm({ ...form, saldo: e.target.value })} /><span className="field-hint">Use vírgula para os centavos.</span></label>}
           <p className="caixinhas-note">Caixinhas organizam seu patrimônio. O valor alocado não é somado novamente ao saldo das contas.</p>
           <div className="caixinhas-modal__actions"><button className="button-secondary" type="button" onClick={() => setMostrarForm(false)} disabled={salvando}>Cancelar</button><button className="button-primary" type="submit" disabled={salvando}>{salvando ? "Salvando..." : "Salvar caixinha"}</button></div>
+        </form>
+      </section>
+    </div>}
+    {mostrarTransferencia && <div className="caixinhas-modal-backdrop" role="presentation">
+      <section className="caixinhas-modal" role="dialog" aria-modal="true" aria-labelledby="transferencia-title">
+        <button className="caixinhas-modal__close" type="button" onClick={() => setMostrarTransferencia(false)} aria-label="Fechar"><FiX /></button>
+        <p className="caixinhas-modal__eyebrow">MOVIMENTAÇÃO INTERNA</p>
+        <h2 id="transferencia-title">Transferir entre caixinhas</h2>
+        <form onSubmit={confirmarTransferencia}>
+          <label className="field-group">
+            <span className="field-label">1. De qual caixinha?</span>
+            <select className="text-input" value={origemId} onChange={(event) => { setOrigemId(event.target.value); setDestinoId(""); setErroTransferencia(null); }} required>
+              <option value="">Selecione a origem</option>
+              {(itens ?? []).filter((item) => item.caixinha.ativa).map((item) => (
+                <option key={item.caixinha.id} value={item.caixinha.id} disabled={item.saldoAtualCentavos <= 0}>
+                  {item.caixinha.nome} — {formatMoneyFromCents(item.saldoAtualCentavos)}
+                  {item.saldoAtualCentavos <= 0 ? " (sem saldo disponível)" : ""}
+                </option>
+              ))}
+            </select>
+            {origemSelecionada && <span className="field-hint">Disponível para transferência: {formatMoneyFromCents(Math.max(0, origemSelecionada.saldoAtualCentavos))}</span>}
+          </label>
+          <label className="field-group">
+            <span className="field-label">2. Para qual caixinha?</span>
+            <select className="text-input" value={destinoId} onChange={(event) => setDestinoId(event.target.value)} required disabled={!origemId}>
+              <option value="">{origemId ? "Selecione o destino" : "Escolha primeiro a origem"}</option>
+              {destinosDisponiveis.map((item) => <option key={item.caixinha.id} value={item.caixinha.id}>{item.caixinha.nome} — {formatMoneyFromCents(item.saldoAtualCentavos)}</option>)}
+            </select>
+          </label>
+          <label className="field-group">
+            <span className="field-label">Valor da transferência</span>
+            <input className="text-input transferencia-valor" inputMode="decimal" value={valorTransferencia} onChange={(event) => setValorTransferencia(event.target.value)} required />
+            {origemSelecionada && origemSelecionada.saldoAtualCentavos > 0 && <button className="transferencia-tudo" type="button" onClick={() => setValorTransferencia((origemSelecionada.saldoAtualCentavos / 100).toFixed(2).replace(".", ","))}>Transferir todo o saldo disponível</button>}
+          </label>
+          <label className="field-group">
+            <span className="field-label">Data</span>
+            <input className="text-input" type="date" value={dataTransferencia} onChange={(event) => setDataTransferencia(event.target.value)} required />
+          </label>
+          <p className="caixinhas-note">A transferência altera somente os saldos virtuais das caixinhas. Não movimenta suas contas bancárias nem altera seu patrimônio total.</p>
+          {erroTransferencia && <p className="caixinhas-error" role="alert">{erroTransferencia}</p>}
+          <div className="caixinhas-modal__actions">
+            <button className="button-secondary" type="button" onClick={() => setMostrarTransferencia(false)} disabled={transferindo}>Cancelar</button>
+            <button className="button-primary" type="submit" disabled={transferindo || !origemId || !destinoId}>{transferindo ? "Transferindo..." : "Confirmar transferência"}</button>
+          </div>
         </form>
       </section>
     </div>}
