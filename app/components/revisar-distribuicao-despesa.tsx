@@ -151,22 +151,22 @@ export function RevisarDistribuicaoDespesa() {
         <section className="revisao-lista revisao-distribuicao-direta" aria-label="Distribuição da despesa">
           <div className="revisao-section-head"><div><p>SUAS CAIXINHAS</p><h2>Como distribuir?</h2></div></div>
           <p className="revisao-note">Marque as caixinhas e informe quanto desta despesa será descontado de cada uma.</p>
-          <div className="revisao-direta-lista">
+          <div className="revisao-direta-lista ">
             {caixinhas.map((c) => {
               const marcada = selecionadas.includes(c.id);
               const sugestao = sugestoesPorCaixinha.get(c.id) ?? 0;
               const valor = valoresPorCaixinha.get(c.id) ?? 0;
-              return <div key={c.id} className={"revisao-direta-item" + (marcada ? " is-selected" : "")}>
-                <label className="revisao-direta-selecao">
+              return <div key={c.id} className={"revisao-direta-item " + (marcada ? " is-selected" : "")}>
+                <label className="revisao-direta-selecao p-8" aria-label={"Selecionar caixinha " + c.nome}>
                   <input type="checkbox" checked={marcada} onChange={() => alternarCaixinha(c.id)} />
                   <span className="revisao-caixinha-checkmark"><FiCheck /></span>
                   <span><strong>{c.nome}</strong><small>Saldo atual: {money(c.saldoAtualCentavos)}</small></span>
                 </label>
-                {marcada ? <label className="revisao-direta-valor">
+                {marcada ? <label className="revisao-direta-valor pr-8" aria-label={"Valor da despesa em " + c.nome}>
                   <span>Valor</span>
                   <input aria-label={"Valor da despesa em " + c.nome} inputMode="decimal" defaultValue={(valor / 100).toFixed(2).replace(".", ",")} key={c.id + "-" + valor} onBlur={(e) => editarCaixinha(c.id, e.target.value)} />
                   {sugestao > 0 && !editada ? <small>Sugestão: {money(sugestao)}</small> : null}
-                </label> : <span className="revisao-direta-ignorada">Não participa</span>}
+                </label> : <span className="revisao-direta-ignorada pr-8">Não participa</span>}
               </div>;
             })}
           </div>
