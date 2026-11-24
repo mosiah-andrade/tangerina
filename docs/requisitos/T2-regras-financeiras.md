@@ -456,6 +456,35 @@ A edição de uma despesa confirmada segue a mesma regra de autorização de RN-
 
 O cancelamento de uma despesa que tenha deixado a conta bancária ou uma caixinha negativa deve ser permitido conforme RN-041. A reversão deve recalcular os saldos, preservar o registro original e sua auditoria e não exigir autorização para manter saldo negativo, pois a reversão não aprofunda o déficit causado pela despesa cancelada.
 
+
+### RN-050 — Transferência entre caixinhas: seleção e valor
+
+O fluxo de transferência deve solicitar primeiro a caixinha de origem e, em seguida, apresentar as demais caixinhas como destinos, excluindo a própria origem. O campo de valor deve iniciar em zero. A ação “Transferir todo o saldo disponível” preenche o campo com o saldo disponível da origem, mantendo o valor editável. O valor informado deve ser positivo, válido e persistido em centavos inteiros.
+
+### RN-051 — Limite de saldo na transferência entre caixinhas
+
+A origem deve possuir saldo positivo e disponível. Transferências de saída são bloqueadas quando a origem estiver zerada ou negativa e nunca podem exceder o saldo disponível nem deixar a origem negativa. Caixinhas negativas podem receber transferências; o valor recebido pode ultrapassar o déficit e deixar o destino positivo, sem confirmação especial.
+
+### RN-052 — Dois registros vinculados por transferência entre caixinhas
+
+Cada transferência deve gerar dois registros vinculados por identificador único: saída na origem e entrada no destino. Ambos devem ser gravados com seus efeitos financeiros de forma atômica e idempotente. A transferência altera somente as alocações virtuais, preserva o saldo bancário consolidado e não gera receita ou despesa.
+
+### RN-053 — Edição de transferência entre caixinhas
+
+A transferência pode ser editada a partir de qualquer um dos registros vinculados. A edição pode alterar valor e destino, desde que origem e destino sejam diferentes e a origem tenha saldo suficiente. A validação considera o saldo atual da origem após reverter conceitualmente o efeito original. Os dois registros são atualizados em conjunto, sem duplicidade, com auditoria dos valores e vínculos anteriores e novos.
+
+### RN-054 — Cancelamento de transferência entre caixinhas
+
+A transferência pode ser cancelada a partir de qualquer um dos registros vinculados; o cancelamento afeta ambos atomicamente e preserva histórico e auditoria. Se a reversão deixar o destino negativo, o sistema deve apresentar o saldo projetado e solicitar confirmação explícita. Se o usuário recusar, a transferência permanece intacta.
+
+### RN-055 — Metas vinculadas a caixinhas transferidas
+
+Quando o progresso de uma meta for baseado no saldo da caixinha associada, transferências de saída reduzem o progresso e transferências de entrada aumentam o progresso. Edição, troca de destino e cancelamento devem recalcular o progresso das metas de todas as caixinhas afetadas. A transferência não é receita nem despesa.
+
+### RN-056 — Exclusão de caixinha com histórico de transferências
+
+Uma caixinha com saldo positivo só pode ser excluída após transferir seu saldo disponível para outra caixinha. Uma caixinha com saldo negativo deve ter o déficit regularizado antes da exclusão. Após ficar zerada, pode ser excluída mesmo que tenha histórico; a exclusão não apaga movimentações antigas nem os vínculos das transferências. Caixinha sem movimentações e sem saldo pode ser excluída normalmente.
+
 ## 12. Casos de teste essenciais
 
 | ID | Cenário | Resultado esperado |
