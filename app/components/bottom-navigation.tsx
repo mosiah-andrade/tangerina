@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import {
-  FiArrowDownLeft, FiArrowLeftRight, FiCreditCard, FiGrid, FiHome,
+  FiArrowDownLeft, FiRepeat, FiCreditCard, FiGrid, FiHome,
   FiPlus, FiTrendingUp, FiTrendingDown, FiTarget, FiX,
 } from "react-icons/fi";
 
@@ -17,7 +17,7 @@ const items = [
 const registrationOptions = [
   { href: "/receitas", label: "Receita", description: "Registrar uma entrada de dinheiro", Icon: FiTrendingUp, tone: "income" },
   { href: "/despesas", label: "Despesa", description: "Registrar uma saída de dinheiro", Icon: FiTrendingDown, tone: "expense" },
-  { href: "/transferencias", label: "Transferência", description: "Mover dinheiro entre contas", Icon: FiArrowLeftRight, tone: "transfer" },
+  { href: "/transferencias", label: "Transferência", description: "Mover dinheiro entre contas", Icon: FiRepeat, tone: "transfer" },
 ];
 
 type BottomNavigationProps = { active?: string };
