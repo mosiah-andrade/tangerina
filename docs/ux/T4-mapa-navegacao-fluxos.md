@@ -311,3 +311,16 @@ Os seguintes pontos deverão ser resolvidos durante o detalhamento da arquitetur
 ## 16. Resultado
 
 O mapa de navegação e os fluxos principais estão documentados. A T4 pode ser marcada como concluída quanto à definição documental de UX. A implementação das telas, testes de usabilidade e validação dos fluxos permanecem tarefas futuras e não são declaradas concluídas por este documento.
+
+
+## Ajuste de UX — ação Registrar na navegação inferior
+
+A ação central **Registrar** abre um seletor contextual com três destinos explícitos:
+
+- **Receita:** `/receitas`, para registrar entrada.
+- **Despesa:** `/despesas`, para registrar saída.
+- **Transferência:** `/transferencias`, para mover valores entre contas.
+
+O seletor pode ser fechado pelo botão de fechar, pela própria ação central ou pela tecla Escape. A escolha navega para o fluxo correspondente. O componente mantém rótulos textuais e acessibilidade por teclado, não dependendo apenas das cores.
+
+**Limite atual:** o destino `/transferencias` ainda é uma seção informativa/em construção. Este ajuste oferece a escolha e navegação, mas não implementa o formulário ou a persistência da transferência.
