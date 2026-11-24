@@ -32,7 +32,7 @@ test("loads the complete demonstration scenario atomically", async () => {
       contas: 2,
       caixinhas: 3,
       movimentos: 3,
-      efeitosSaldo: 4,
+      efeitosSaldo: 8,
       alocacoes: 3,
       regrasDistribuicao: 3,
       recorrencias: 1,
@@ -43,7 +43,7 @@ test("loads the complete demonstration scenario atomically", async () => {
     assert.equal(await db.contas.count(), 2);
     assert.equal(await db.caixinhas.count(), 3);
     assert.equal(await db.movimentos.count(), 3);
-    assert.equal(await db.efeitosSaldo.count(), 4);
+    assert.equal(await db.efeitosSaldo.count(), 8);
     assert.equal(await db.alocacoes.count(), 3);
     assert.equal(await db.regrasDistribuicao.count(), 3);
     assert.equal(await db.recorrencias.count(), 1);
@@ -109,7 +109,7 @@ test("resets only the demonstration scenario and its metadata atomically", async
       contas: 2,
       caixinhas: 3,
       movimentos: 3,
-      efeitosSaldo: 4,
+      efeitosSaldo: 8,
       alocacoes: 3,
       regrasDistribuicao: 3,
       recorrencias: 1,
