@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { FiArchive, FiArrowDownUp, FiBox, FiEdit3, FiPlus, FiX } from "react-icons/fi";
+import { FiArchive, FiRepeat, FiBox, FiEdit3, FiPlus, FiX } from "react-icons/fi";
 import { BottomNavigation } from "@/components/bottom-navigation";
 import { formatMoneyFromCents } from "@/lib/format-money";
 import { parseMoneyToCents } from "@/domain/finance/money";
@@ -179,7 +179,7 @@ export function Caixinhas() {
       </section>
 
       {erro && <p className="caixinhas-error" role="alert">{erro}</p>}
-      <div className="caixinhas-section-heading"><h2>Suas caixinhas</h2><div className="caixinhas-heading-actions"><button className="button-secondary" type="button" onClick={abrirTransferencia}><FiArrowDownUp /> Transferir</button><button className="button-secondary caixinhas-add-small" onClick={abrirNova}><FiPlus /> Adicionar</button></div></div>
+      <div className="caixinhas-section-heading"><h2>Suas caixinhas</h2><div className="caixinhas-heading-actions"><button className="button-secondary" type="button" onClick={abrirTransferencia}><FiRepeat /> Transferir</button><button className="button-secondary caixinhas-add-small" onClick={abrirNova}><FiPlus /> Adicionar</button></div></div>
 
       {itens === null && !erro ? <section className="caixinhas-state" aria-live="polite"><p className="field-hint">Carregando suas caixinhas...</p></section> : itens === null ? null : itens.length === 0 ? (
         <section className="caixinhas-empty surface-card"><span className="caixinhas-empty__icon"><FiBox size={22} /></span><strong>Você ainda não criou uma caixinha.</strong><p>Crie caixinhas para organizar partes do seu dinheiro por objetivo, sem duplicar seu saldo real.</p></section>
