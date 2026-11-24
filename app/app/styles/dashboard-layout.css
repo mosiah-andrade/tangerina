@@ -377,7 +377,7 @@
 }
 .bottom-nav-primary-action[aria-expanded="true"] .bottom-nav-icon { background: var(--gold-dark); transform: rotate(45deg); }
 .bottom-nav-register-menu {
-  position: absolute; z-index: 10; right: 12px; bottom: calc(100% + 14px + max(8px, env(safe-area-inset-bottom)));
+  position: absolute; z-index: 10; pointer-events: auto; right: 12px; bottom: calc(100% + 14px + max(8px, env(safe-area-inset-bottom)));
   left: 12px; width: min(456px, calc(100% - 24px)); margin-inline: auto; padding: 16px;
   border: 1px solid rgba(11, 60, 42, .12); border-radius: 22px; background: var(--silk, #fdfcf8);
   box-shadow: 0 18px 50px rgba(6, 38, 26, .2); animation: bottom-nav-menu-in .18s ease-out;
@@ -409,4 +409,18 @@
 @keyframes bottom-nav-menu-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 @media (prefers-reduced-motion: reduce) {
   .bottom-nav-register-menu, .bottom-nav-register-option, .bottom-nav-primary-action .bottom-nav-icon { animation: none; transition: none; }
+}
+
+
+@media (min-width: 900px) {
+  /* O menu precisa escapar da coluna lateral e ficar visível ao lado dela. */
+  .bottom-nav-register-menu {
+    position: fixed;
+    top: auto;
+    right: auto;
+    bottom: 24px;
+    left: 260px;
+    width: min(420px, calc(100vw - 284px));
+    margin: 0;
+  }
 }
