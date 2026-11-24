@@ -212,3 +212,12 @@
   .caixinhas-bento .caixinha-card:first-child .caixinha-card__main strong{font-size:var(--text-base)}
   .caixinhas-bento .caixinha-card:first-child .caixinha-card__value{font-size:var(--text-lg)}
 }
+
+
+/* T28 — transferência entre caixinhas */
+.caixinhas-heading-actions{display:flex;align-items:center;gap:var(--space-2);flex-wrap:wrap}
+.caixinhas-heading-actions button{display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.transferencia-tudo{justify-self:start;width:fit-content;padding:0;border:0;background:transparent;color:var(--color-emerald);font-size:var(--text-sm);font-weight:700;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+.transferencia-tudo:hover{color:var(--color-gold-dark)}
+.transferencia-valor{font-size:1.25rem;font-weight:700;letter-spacing:-.02em}
+@media(max-width:520px){.caixinhas-heading-actions{gap:6px}.caixinhas-heading-actions button{padding-inline:10px;font-size:12px}}
