@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { FiArrowRight, FiClock, FiRepeat, FiCreditCard } from "react-icons/fi";
+import { FiArrowRight, FiClock, FiRepeat, FiPlus } from "react-icons/fi";
 import { BottomNavigation } from "@/components/bottom-navigation";
 import { formatMoneyFromCents } from "@/lib/format-money";
 import { getDatabase } from "@/lib/persistence/database";
@@ -81,42 +81,25 @@ export function CentralTransferencias() {
           <span className="context-label">MOVIMENTAÇÕES</span>
         </header>
 
-        <section className="dashboard-greeting transferencias-intro">
-          <p>ORGANIZAÇÃO DO DINHEIRO</p>
-          <h1>Transferências</h1>
-          <span>Movimente valores entre seus espaços financeiros e acompanhe o histórico.</span>
-        </section>
-
-        <section className="transferencias-actions" aria-label="Nova transferência">
-          <h2>Nova transferência</h2>
-          <Link href="/caixinhas" className="transferencia-action-card">
-            <span className="transferencia-action-icon"><FiRepeat size={21} /></span>
-            <span className="transferencia-action-copy">
-              <strong>Entre caixinhas</strong>
-              <small>Mover valores entre suas caixinhas sem alterar o saldo bancário.</small>
-              <em>Transferir agora <FiArrowRight size={14} /></em>
-            </span>
-            <FiArrowRight className="transferencia-action-arrow" />
-          </Link>
-
-          <div className="transferencia-action-card transferencia-action-card--disabled" aria-disabled="true">
-            <span className="transferencia-action-icon"><FiCreditCard size={21} /></span>
-            <span className="transferencia-action-copy">
-              <strong>Entre contas bancárias</strong>
-              <small>Transferir valores entre contas cadastradas no Tangerina.</small>
-              <em>Disponível em uma próxima etapa</em>
-            </span>
-            <span className="transferencia-coming-soon">Em breve</span>
+        <section className="transferencias-intro">
+          <div>
+            <p>ORGANIZAÇÃO DO DINHEIRO</p>
+            <h1>Transferências</h1>
+            <span>Consulte e acompanhe as movimentações entre seus espaços financeiros.</span>
           </div>
+          <Link href="/caixinhas" className="transferencias-new-button">
+            <FiPlus size={17} />
+            Nova transferência
+          </Link>
         </section>
 
         <section className="transferencias-history" aria-labelledby="transferencias-history-title">
           <div className="transferencias-history-heading">
             <div>
               <p>ACOMPANHAMENTO</p>
-              <h2 id="transferencias-history-title">Histórico</h2>
+              <h2 id="transferencias-history-title">Histórico de transferências</h2>
             </div>
-            <span>{historico?.length ?? 0}</span>
+            <span>{historico?.length ?? 0} registros</span>
           </div>
 
           {erro ? (
@@ -130,20 +113,24 @@ export function CentralTransferencias() {
               <p>Quando você mover valores entre caixinhas, os registros aparecerão nesta lista.</p>
             </div>
           ) : (
-            <div className="transferencias-list">
-              {historico.map(({ movimento, origem, destino }) => (
-                <article className="transferencia-history-item" key={movimento.id}>
-                  <span className="transferencia-history-icon"><FiRepeat size={18} /></span>
-                  <div className="transferencia-history-main">
-                    <strong>{origem} <FiArrowRight size={13} /> {destino}</strong>
-                    <span>{formatarData(movimento.dataMovimento)} · {movimento.descricao}</span>
-                    <small className={movimento.status === "cancelado" ? "transferencia-status transferencia-status--cancelled" : "transferencia-status"}>
-                      {movimento.status === "cancelado" ? "Cancelada" : movimento.status === "confirmado" ? "Concluída" : "Pendente"}
-                    </small>
-                  </div>
-                  <strong className="transferencia-history-value">{formatMoneyFromCents(movimento.valorCentavos)}</strong>
-                </article>
-              ))}
+            <div className="transferencias-table-wrap">
+              <table className="transferencias-table">
+                <thead>
+                  <tr><th>Origem</th><th></th><th>Destino</th><th>Data</th><th>Status</th><th className="transferencias-table-value">Valor</th></tr>
+                </thead>
+                <tbody>
+                  {historico.map(({ movimento, origem, destino }) => (
+                    <tr key={movimento.id}>
+                      <td><span className="transferencias-account"><span className="transferencias-table-icon"><FiRepeat size={15} /></span>{origem}</span></td>
+                      <td className="transferencias-table-arrow"><FiArrowRight size={15} /></td>
+                      <td>{destino}</td>
+                      <td>{formatarData(movimento.dataMovimento)}</td>
+                      <td><span className={movimento.status === "cancelado" ? "transferencia-status transferencia-status--cancelled" : "transferencia-status"}>{movimento.status === "cancelado" ? "Cancelada" : movimento.status === "confirmado" ? "Concluída" : "Pendente"}</span></td>
+                      <td className="transferencias-table-value">{formatMoneyFromCents(movimento.valorCentavos)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
           )}
         </section>
