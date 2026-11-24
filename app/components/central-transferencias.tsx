@@ -40,6 +40,7 @@ export function CentralTransferencias() {
   const [salvando, setSalvando] = useState(false);
   const [menuAbertoId, setMenuAbertoId] = useState<string | null>(null);
   const [transferenciaEditando, setTransferenciaEditando] = useState<TransferenciaHistorico | null>(null);
+  const [confirmacaoCancelamento, setConfirmacaoCancelamento] = useState<{ item: TransferenciaHistorico; etapa: "inicial" | "saldo-negativo"; saldoProjetado?: number } | null>(null);
 
   useEffect(() => {
     let ativo = true;
@@ -140,25 +141,30 @@ export function CentralTransferencias() {
     }
   }
 
-  async function cancelarTransferencia(item: TransferenciaHistorico) {
+  function solicitarCancelamento(item: TransferenciaHistorico) {
     setMenuAbertoId(null);
-    if (!window.confirm("Deseja cancelar esta transferência? Os dois registros serão revertidos.")) return;
+    setConfirmacaoCancelamento({ item, etapa: "inicial" });
+  }
+
+  async function confirmarCancelamento() {
+    if (!confirmacaoCancelamento) return;
+    const { item, etapa } = confirmacaoCancelamento;
     try {
       const db = getDatabase();
       await db.open();
-      const resultado = await cancelarTransferenciaEntreCaixinhas(db, { registroId: item.movimento.id });
-      if (resultado.saldoDestinoProjetadoCentavos < 0) {
-        const confirmado = window.confirm(
-          `A reversão deixará a caixinha de destino com saldo de ${formatMoneyFromCents(resultado.saldoDestinoProjetadoCentavos)}. Deseja confirmar mesmo assim?`,
-        );
-        if (!confirmado) return;
-        await cancelarTransferenciaEntreCaixinhas(db, {
-          registroId: item.movimento.id,
-          confirmarSaldoNegativo: true,
-        });
+      if (etapa === "inicial") {
+        const resultado = await cancelarTransferenciaEntreCaixinhas(db, { registroId: item.movimento.id });
+        if (resultado.saldoDestinoProjetadoCentavos < 0) {
+          setConfirmacaoCancelamento({ item, etapa: "saldo-negativo", saldoProjetado: resultado.saldoDestinoProjetadoCentavos });
+          return;
+        }
+      } else {
+        await cancelarTransferenciaEntreCaixinhas(db, { registroId: item.movimento.id, confirmarSaldoNegativo: true });
       }
+      setConfirmacaoCancelamento(null);
       await recarregarHistorico();
     } catch (error) {
+      setConfirmacaoCancelamento(null);
       setErro(error instanceof Error ? error.message : "Não foi possível cancelar a transferência.");
     }
   }
@@ -280,7 +286,7 @@ export function CentralTransferencias() {
                             {menuAbertoId === movimento.id && (
                               <div className="transferencias-menu" role="menu">
                                 <button type="button" role="menuitem" onClick={() => void abrirEdicao({ movimento, origem, destino })}>Editar transferência</button>
-                                <button type="button" role="menuitem" onClick={() => void cancelarTransferencia({ movimento, origem, destino })}>Cancelar transferência</button>
+                                <button type="button" role="menuitem" onClick={() => solicitarCancelamento({ movimento, origem, destino })}>Cancelar transferência</button>
                               </div>
                             )}
                           </div>
@@ -329,6 +335,26 @@ export function CentralTransferencias() {
                 <button className="button-primary" type="submit" disabled={salvando || !origemId || !destinoId}>{salvando ? "Salvando..." : transferenciaEditando ? "Salvar alterações" : "Confirmar transferência"}</button>
               </div>
             </form>
+          </section>
+        </div>
+      )}
+      {confirmacaoCancelamento && (
+        <div className="caixinhas-modal-backdrop" role="presentation">
+          <section className="caixinhas-modal transferencias-confirmation" role="alertdialog" aria-modal="true" aria-labelledby="transferencia-confirm-title" aria-describedby="transferencia-confirm-description">
+            <div className="transferencias-confirmation-icon" aria-hidden="true"><FiRepeat size={21} /></div>
+            <p className="caixinhas-modal__eyebrow">CONFIRMAÇÃO</p>
+            <h2 id="transferencia-confirm-title">{confirmacaoCancelamento.etapa === "inicial" ? "Cancelar transferência?" : "O destino ficará com saldo negativo"}</h2>
+            <p id="transferencia-confirm-description" className="transferencias-confirmation-description">
+              {confirmacaoCancelamento.etapa === "inicial"
+                ? <>A transferência de <strong>{formatMoneyFromCents(confirmacaoCancelamento.item.movimento.valorCentavos)}</strong> de <strong>{confirmacaoCancelamento.item.origem}</strong> para <strong>{confirmacaoCancelamento.item.destino}</strong> será revertida. Essa ação não poderá ser desfeita.</>
+                : <>Ao reverter esta transferência, a caixinha <strong>{confirmacaoCancelamento.item.destino}</strong> ficará com saldo de <strong>{formatMoneyFromCents(confirmacaoCancelamento.saldoProjetado ?? 0)}</strong>. Deseja continuar mesmo assim?</>}
+            </p>
+            <div className="caixinhas-modal__actions">
+              <button className="button-secondary" type="button" onClick={() => setConfirmacaoCancelamento(null)}>Manter transferência</button>
+              <button className="button-primary transferencias-confirm-danger" type="button" onClick={() => void confirmarCancelamento()}>
+                {confirmacaoCancelamento.etapa === "inicial" ? "Continuar" : "Confirmar cancelamento"}
+              </button>
+            </div>
           </section>
         </div>
       )}
