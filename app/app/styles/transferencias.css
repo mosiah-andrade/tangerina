@@ -306,3 +306,30 @@ a.transferencia-action-card:hover{transform:translateY(-2px);border-color:var(--
   }
 }
 
+
+
+/* Ações discretas por linha do histórico */
+.transferencias-row-actions { width: 48px; text-align: center; }
+.transferencias-row-menu { position: relative; display: inline-flex; }
+.transferencias-more-button {
+  display: grid; place-items: center; width: 32px; height: 32px;
+  border: 1px solid transparent; border-radius: 9px;
+  background: transparent; color: var(--muted); cursor: pointer;
+}
+.transferencias-more-button:hover,
+.transferencias-more-button[aria-expanded="true"] {
+  border-color: var(--line); background: var(--silk); color: var(--emerald);
+}
+.transferencias-menu {
+  position: absolute; z-index: 30; top: calc(100% + 5px); right: 0;
+  display: grid; min-width: 190px; padding: 5px;
+  border: 1px solid var(--line); border-radius: 12px;
+  background: #fff; box-shadow: 0 12px 30px rgba(6,38,26,.14);
+}
+.transferencias-menu button {
+  padding: 10px 11px; border: 0; border-radius: 8px;
+  background: transparent; color: var(--charcoal); text-align: left;
+  font: inherit; font-size: 11px; cursor: pointer;
+}
+.transferencias-menu button:hover { background: var(--silk); color: var(--emerald); }
+.transferencias-menu button:last-child:hover { color: var(--color-danger); }
