@@ -18,6 +18,14 @@ type FormState = { nome: string; descricao: string; saldo: string };
 
 const initialForm: FormState = { nome: "", descricao: "", saldo: "0,00" };
 
+function dataLocalISO() {
+  const hoje = new Date();
+  const ano = hoje.getFullYear();
+  const mes = String(hoje.getMonth() + 1).padStart(2, "0");
+  const dia = String(hoje.getDate()).padStart(2, "0");
+  return `${ano}-${mes}-${dia}`;
+}
+
 export function Caixinhas() {
   const [itens, setItens] = useState<CaixinhaComSaldo[] | null>(null);
   const [form, setForm] = useState<FormState>(initialForm);
@@ -29,7 +37,7 @@ export function Caixinhas() {
   const [origemId, setOrigemId] = useState("");
   const [destinoId, setDestinoId] = useState("");
   const [valorTransferencia, setValorTransferencia] = useState("0,00");
-  const [dataTransferencia, setDataTransferencia] = useState(new Date().toLocaleDateString("en-CA"));
+  const [dataTransferencia, setDataTransferencia] = useState(dataLocalISO());
   const [erroTransferencia, setErroTransferencia] = useState<string | null>(null);
   const [transferindo, setTransferindo] = useState(false);
 
