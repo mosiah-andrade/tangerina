@@ -111,6 +111,23 @@ export async function confirmarDespesa(
             "Esta chave de confirmação já foi utilizada em outra despesa. Reabra o formulário para iniciar uma nova operação.",
           );
         }
+        const alocacoesExistentes = await db.alocacoes
+          .where("movimentoId")
+          .equals(existente.id)
+          .toArray();
+        const esperadas = alocacoesEntrada
+          .filter((item) => item.valorCentavos > 0)
+          .map((item) => ({ caixinhaId: item.caixinhaId, valorCentavos: item.valorCentavos }))
+          .sort((a, b) => a.caixinhaId.localeCompare(b.caixinhaId));
+        const registradas = alocacoesExistentes
+          .filter((item) => item.tipo === "debito_despesa")
+          .map((item) => ({ caixinhaId: item.caixinhaId, valorCentavos: item.valorCentavos }))
+          .sort((a, b) => a.caixinhaId.localeCompare(b.caixinhaId));
+        if (JSON.stringify(registradas) !== JSON.stringify(esperadas)) {
+          throw new Error(
+            "Esta despesa já foi iniciada, mas sua distribuição não corresponde à revisão atual. Volte e inicie uma nova confirmação para evitar registrar uma despesa sem atualizar as caixinhas.",
+          );
+        }
         return existente.id;
       }
 
