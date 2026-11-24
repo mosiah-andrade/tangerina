@@ -127,3 +127,22 @@ Arquivos alterados nesta correção:
 - `app/app/styles/receitas.css`
 
 **Atenção sobre dados de demonstração já carregados:** a atualização do gerador corrige novas cargas do conjunto demonstrativo. Se a rotina de demonstração não sobrescrever dados existentes, os registros antigos do IndexedDB precisarão ser atualizados pela própria rotina de carga/reconciliação, sem limpar os dados do usuário.
+
+
+## Simplificação da distribuição e conferência — 24/11/2026
+
+Aprovada pelo usuário a simplificação das etapas de distribuição e confirmação:
+
+- A lista de caixinhas tornou-se o próprio checklist de participação e distribuição. Cada item mostra saldo atual, seleção e campo único para informar o valor destinado àquela caixinha.
+- As regras ativas continuam servindo como sugestão inicial agregada por caixinha; a edição do valor é pontual e não altera regras salvas.
+- A distribuição é consolidada por caixinha antes de avançar para a confirmação, preservando uma única alocação/débito por caixinha.
+- A tela final foi enxugada: categoria, origem e data aparecem em uma linha compacta; a distribuição é listada sem painel lateral repetitivo.
+- A conferência de saldo negativo mostra somente as caixinhas que ficarão negativas, com saldo atual, saldo projetado e confirmação individual.
+- Totais distribuído/não alocado e botão de confirmação ficam em um rodapé único.
+
+Arquivos:
+- `app/components/revisar-distribuicao-despesa.tsx`
+- `app/components/confirmar-despesa.tsx`
+- `app/app/styles/receitas.css`
+
+A confirmação individual de saldo negativo, a gravação somente após confirmação final e a idempotência da operação permanecem preservadas.
