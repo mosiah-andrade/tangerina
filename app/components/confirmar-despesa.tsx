@@ -99,32 +99,29 @@ export function ConfirmarDespesa() {
     <main className="app-shell receita-page revisao-page">
       <header className="receita-header"><Link className="receita-back" href="/despesas/revisar" aria-label="Voltar para revisão"><FiArrowLeft/></Link><div><p className="receita-eyebrow">CONFIRMAÇÃO</p><h1>Confirmar <em>despesa</em></h1></div></header>
       {sucesso?<section className="revisao-main"><div className="revisao-empty"><FiCheckCircle/><div><h2>Despesa confirmada</h2><p>A saída e sua distribuição foram registradas com sucesso.</p><button className="button-primary receita-submit" onClick={()=>router.push("/dashboard")}>Ir para o início</button></div></div></section>:
-      <div className="revisao-layout">
+      <div className="revisao-layout revisao-layout--confirmacao">
         <section className="revisao-main">
           <article className="revisao-receita-card"><span>DESPESA</span><strong>{revisao.descricao}</strong><b>{money(revisao.valorCentavos)}</b></article>
-          <section className="revisao-lista"><div className="revisao-section-head"><div><p>CONFERÊNCIA FINAL</p><h2>Distribuição da despesa</h2></div><FiCheckCircle/></div>
-            <div className="revisao-linha"><span><strong>Categoria</strong><small>{revisao.categoria}</small></span></div>
-            <div className="revisao-linha"><span><strong>Origem do pagamento</strong><small>{contaNome||"Carregando…"}</small></span></div>
-            <div className="revisao-linha"><span><strong>Data</strong><small>{dataLegivel(revisao.dataMovimento)}</small></span></div>
-            {revisao.alocacoes.length===0?<div className="revisao-empty"><p>Nenhuma caixinha participará. O valor permanecerá não alocado.</p></div>:revisao.alocacoes.map(a=><div className="revisao-linha" key={a.id}><span><strong>{a.nomeCaixinha}</strong><small>{a.nomeRegra}</small></span><strong>{money(a.valorCentavos)}</strong></div>)}
+          <section className="revisao-lista revisao-confirmacao-detalhes">
+            <div className="revisao-section-head"><div><p>CONFERÊNCIA FINAL</p><h2>Distribuição</h2></div><FiCheckCircle/></div>
+            <div className="revisao-confirmacao-meta"><span>{revisao.categoria}</span><span>{contaNome||"Carregando origem…"}</span><span>{dataLegivel(revisao.dataMovimento)}</span></div>
+            {revisao.alocacoes.length===0?<p className="revisao-note">Valor sem alocação em caixinhas.</p>:revisao.alocacoes.map(a=><div className="revisao-linha" key={a.id}><strong>{a.nomeCaixinha}</strong><strong>{money(a.valorCentavos)}</strong></div>)}
           </section>
-          {alertas.length>0?<section className="revisao-saldos-caixinhas" aria-label="Saldos atuais das caixinhas">
-            <div className="revisao-saldos-head"><FiAlertCircle/><div><strong>Conferência dos saldos</strong><p>Veja quanto cada caixinha tem antes e depois desta despesa.</p></div></div>
-            <div className="revisao-saldos-lista">
-              {alertas.map(a=><article className={a.projetado<0?"revisao-saldo-caixinha is-negative":"revisao-saldo-caixinha"} key={a.id}>
-                <div className="revisao-saldo-titulo"><strong>{a.nome}</strong><span>{a.projetado<0?"Saldo ficará negativo":"Saldo após a despesa"}</span></div>
-                <div className="revisao-saldo-valores"><span><small>Saldo atual</small><strong>{money(a.atual)}</strong></span><span><small>Saldo projetado</small><strong>{money(a.projetado)}</strong></span></div>
-                {a.projetado<0?<label className="revisao-saldo-confirmacao"><input type="checkbox" checked={confirmadas.includes(a.id)} onChange={e=>setConfirmadas(ids=>e.target.checked?[...ids,a.id]:ids.filter(id=>id!==a.id))}/> Confirmo que esta caixinha pode ficar negativa.</label>:null}
-              </article>)}
-            </div>
+          {alertas.some(a=>a.projetado<0)?<section className="revisao-saldos-caixinhas revisao-saldos-compacta" aria-label="Caixinhas com saldo negativo">
+            <div className="revisao-saldos-head"><FiAlertCircle/><div><strong>Saldo negativo</strong><p>Confirme individualmente as caixinhas que ficarão negativas.</p></div></div>
+            {alertas.filter(a=>a.projetado<0).map(a=><div className="revisao-negativo-linha" key={a.id}>
+              <div><strong>{a.nome}</strong><small>Atual: {money(a.atual)} · Após: {money(a.projetado)}</small></div>
+              <label><input type="checkbox" checked={confirmadas.includes(a.id)} onChange={e=>setConfirmadas(ids=>e.target.checked?[...ids,a.id]:ids.filter(id=>id!==a.id))}/> Permitir</label>
+            </div>)}
           </section>:null}
         </section>
-        <aside className="revisao-resumo"><p>CONFIRMAÇÃO</p><div><span>Despesa</span><strong>{money(revisao.valorCentavos)}</strong></div><div><span>Distribuído</span><strong>{money(totalAlocado)}</strong></div><div className="highlight"><span>Não alocado</span><strong>{money(naoAlocado)}</strong></div>
+        <section className="revisao-confirmacao-rodape">
+          <div className="revisao-confirmacao-totais"><span>Distribuído <strong>{money(totalAlocado)}</strong></span><span>Não alocado <strong>{money(naoAlocado)}</strong></span></div>
           {erro?<p className="modal-form-error" role="alert"><FiAlertCircle/> {erro}</p>:null}
           <button className="button-primary receita-submit" disabled={salvando||carregando||alertas.some(a=>a.projetado<0&&!confirmadas.includes(a.id))||Boolean(erro)} onClick={confirmar}>{salvando?"Confirmando…":carregando?"Carregando…":"Confirmar e registrar"}</button>
-          <p className="revisao-note">Nenhum efeito financeiro será gravado até a confirmação final.</p>
-        </aside>
-      </div>}
+          <p className="revisao-note">A despesa só será gravada após a confirmação.</p>
+        </section>
+      </div>}}
     </main><BottomNavigation active="/movimentacoes"/>
   </>;
 }
