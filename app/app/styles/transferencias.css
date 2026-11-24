@@ -399,3 +399,20 @@ a.transferencia-action-card:hover{transform:translateY(-2px);border-color:var(--
 .transferencias-confirmation .transferencias-confirmation-description {
   text-align: center;
 }
+
+
+/* Alinha ao centro somente os rótulos dos botões, sem centralizar o modal. */
+.transferencias-confirmation {
+  text-align: left;
+}
+.transferencias-confirmation .transferencias-confirmation-icon {
+  margin-inline: 0;
+}
+.transferencias-confirmation .caixinhas-modal__eyebrow,
+.transferencias-confirmation h2,
+.transferencias-confirmation .transferencias-confirmation-description {
+  text-align: left;
+}
+.transferencias-confirmation .caixinhas-modal__actions button {
+  text-align: center;
+}
