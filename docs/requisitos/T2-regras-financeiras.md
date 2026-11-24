@@ -514,6 +514,7 @@ A implementação das regras deverá assegurar:
 | T2-D07 | Arredondar para o centavo mais próximo sem exceder o disponível | Aprovada |
 | T2-D08 | Permitir edição direta de movimentações confirmadas com auditoria | Aprovada |
 | T2-D09 | Não permitir que transferências aprofundem o saldo negativo da caixinha de origem | Aprovada |
+| T2-D11 | Permitir saldo bancário negativo exclusivamente por despesas autorizadas; exigir confirmação independente para caixinha negativa; aplicar a regra à edição; permitir cancelamento com reversão e auditoria; manter bloqueios para carteira física, transferências e saques sem saldo suficiente | Aprovada em 24/11/2026 |
 
 ## 15. Critério de conclusão do T2
 
