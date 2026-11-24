@@ -350,9 +350,9 @@ export function CentralTransferencias() {
                 : <>Ao reverter esta transferência, a caixinha <strong>{confirmacaoCancelamento.item.destino}</strong> ficará com saldo de <strong>{formatMoneyFromCents(confirmacaoCancelamento.saldoProjetado ?? 0)}</strong>. Deseja continuar mesmo assim?</>}
             </p>
             <div className="caixinhas-modal__actions">
-              <button className="button-secondary" type="button" onClick={() => setConfirmacaoCancelamento(null)}>Manter transferência</button>
+              <button className="button-secondary" type="button" onClick={() => setConfirmacaoCancelamento(null)}>Voltar</button>
               <button className="button-primary transferencias-confirm-danger" type="button" onClick={() => void confirmarCancelamento()}>
-                {confirmacaoCancelamento.etapa === "inicial" ? "Continuar" : "Confirmar cancelamento"}
+                {confirmacaoCancelamento.etapa === "inicial" ? "Continuar" : "Confirmar"}
               </button>
             </div>
           </section>
