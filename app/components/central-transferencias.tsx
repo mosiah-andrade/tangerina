@@ -86,7 +86,7 @@ export function CentralTransferencias() {
             <h1>Transferências</h1>
             <span>Consulte e acompanhe as movimentações entre seus espaços financeiros.</span>
           </div>
-          <Link href="/caixinhas" className="transferencias-new-button">
+          <Link href="/caixinhas?transferir=1" className="transferencias-new-button">
             <FiPlus size={17} />
             Nova transferência
           </Link>

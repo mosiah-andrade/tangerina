@@ -49,6 +49,14 @@ export function Caixinhas() {
   }
 
   useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("transferir") === "1") {
+      abrirTransferencia();
+      window.history.replaceState({}, "", window.location.pathname);
+    }
+  }, []);
+
+  useEffect(() => {
     let ativo = true;
 
     async function carregarInicial() {
