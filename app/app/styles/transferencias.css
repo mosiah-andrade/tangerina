@@ -383,3 +383,19 @@ a.transferencia-action-card:hover{transform:translateY(-2px);border-color:var(--
   line-height: 1.2;
   white-space: nowrap;
 }
+
+
+/* Centraliza o conteúdo textual do modal de confirmação. */
+.transferencias-confirmation {
+  text-align: center;
+}
+.transferencias-confirmation .transferencias-confirmation-icon {
+  margin-inline: auto;
+}
+.transferencias-confirmation .caixinhas-modal__eyebrow {
+  text-align: center;
+}
+.transferencias-confirmation h2,
+.transferencias-confirmation .transferencias-confirmation-description {
+  text-align: center;
+}
