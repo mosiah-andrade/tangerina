@@ -78,7 +78,6 @@ export function CentralTransferencias() {
       <main className="app-shell transferencias-page">
         <header className="app-header">
           <Link className="transferencias-back" href="/dashboard" aria-label="Voltar ao início">←</Link>
-          <span className="context-label">MOVIMENTAÇÕES</span>
         </header>
 
         <section className="transferencias-intro">
