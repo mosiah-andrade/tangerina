@@ -318,8 +318,8 @@ export async function editarTransferenciaEntreCaixinhas(
         caixinhaDestinoId: entrada.caixinhaId,
       };
 
-      await adicionarCompensacao(db, movimento.id, saida.caixinhaId, saida.valorCentavos, agora);
-      await adicionarCompensacao(db, movimento.id, entrada.caixinhaId, -entrada.valorCentavos, agora);
+      // Na edição, as alocações originais são atualizadas diretamente.
+      // Compensações aqui duplicariam o efeito anterior no livro de saldos.
 
       const novaDescricao = input.descricao?.trim() || movimento.descricao;
       const movimentoAtualizado: Movimento = {
