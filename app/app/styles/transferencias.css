@@ -333,3 +333,36 @@ a.transferencia-action-card:hover{transform:translateY(-2px);border-color:var(--
 }
 .transferencias-menu button:hover { background: var(--silk); color: var(--emerald); }
 .transferencias-menu button:last-child:hover { color: var(--color-danger); }
+
+
+/* T28 — confirmação de cancelamento no padrão visual dos modais */
+.transferencias-confirmation {
+  max-width: 440px;
+}
+.transferencias-confirmation-icon {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  margin-bottom: 14px;
+  border-radius: 15px;
+  background: var(--mint);
+  color: var(--emerald);
+}
+.transferencias-confirmation-description {
+  margin: 12px 0 22px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.7;
+}
+.transferencias-confirmation-description strong {
+  color: var(--emerald);
+  font-weight: 700;
+}
+.transferencias-confirm-danger {
+  border-color: var(--color-danger) !important;
+  background: var(--color-danger) !important;
+}
+.transferencias-confirm-danger:hover {
+  filter: brightness(.94);
+}
