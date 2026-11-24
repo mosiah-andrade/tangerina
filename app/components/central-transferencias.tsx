@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { FiArrowRight, FiClock, FiRepeat, FiRepeat, FiCreditCard } from "react-icons/fi";
+import { FiArrowRight, FiClock, FiRepeat, FiCreditCard } from "react-icons/fi";
 import { BottomNavigation } from "@/components/bottom-navigation";
 import { formatMoneyFromCents } from "@/lib/format-money";
 import { getDatabase } from "@/lib/persistence/database";
