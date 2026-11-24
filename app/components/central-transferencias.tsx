@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { FiArrowRight, FiClock, FiRepeat, FiArrowLeftRight, FiCreditCard } from "react-icons/fi";
+import { FiArrowRight, FiClock, FiRepeat, FiRepeat, FiCreditCard } from "react-icons/fi";
 import { BottomNavigation } from "@/components/bottom-navigation";
 import { formatMoneyFromCents } from "@/lib/format-money";
 import { getDatabase } from "@/lib/persistence/database";
@@ -38,7 +38,7 @@ export function CentralTransferencias() {
         ]);
 
         const nomes = new Map<string, string>(
-          (caixinhas as Caixinha[]).map((caixinha) => [caixinha.id, caixinha.nome]),
+          (caixinhas as Caixinha[]).map((caixinha) => [caixinha.id, caixinha.nome] as const),
         );
         const alocacoesPorMovimento = new Map<string, Alocacao[]>();
         for (const alocacao of alocacoes) {
