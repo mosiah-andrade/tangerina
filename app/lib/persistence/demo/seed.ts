@@ -228,6 +228,42 @@ export function criarDadosDemonstracao(): DadosDemonstracao {
       estado: "ativo",
       createdAt: AGORA,
     },
+    {
+      id: "50000000-0000-4000-8000-000000000005",
+      movimentoId: IDS.movimentoReceita,
+      tipoAlvo: "caixinha",
+      alvoId: IDS.caixinhaEssenciais,
+      valorCentavosAssinado: 50000,
+      estado: "ativo",
+      createdAt: AGORA,
+    },
+    {
+      id: "50000000-0000-4000-8000-000000000006",
+      movimentoId: IDS.movimentoReceita,
+      tipoAlvo: "caixinha",
+      alvoId: IDS.caixinhaReserva,
+      valorCentavosAssinado: 30000,
+      estado: "ativo",
+      createdAt: AGORA,
+    },
+    {
+      id: "50000000-0000-4000-8000-000000000007",
+      movimentoId: IDS.movimentoReceita,
+      tipoAlvo: "caixinha",
+      alvoId: IDS.caixinhaObjetivos,
+      valorCentavosAssinado: 20000,
+      estado: "ativo",
+      createdAt: AGORA,
+    },
+    {
+      id: "50000000-0000-4000-8000-000000000008",
+      movimentoId: IDS.movimentoDespesa,
+      tipoAlvo: "caixinha",
+      alvoId: IDS.caixinhaEssenciais,
+      valorCentavosAssinado: -25000,
+      estado: "ativo",
+      createdAt: AGORA,
+    },
   ];
 
   const alocacoes: Alocacao[] = [
